@@ -1,0 +1,292 @@
+   * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      /* Apple's system font stack */
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f5f7fa;  /* very light grey – like Apple's background */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* main card – pure white, minimal radius, floating softly */
+    .login-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 28px;            /* Apple‑style large corner radius */
+      box-shadow: 0 20px 40px -12px rgba(0, 20, 30, 0.12), 0 4px 12px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      transition: all 0.2s ease;
+      border: 0.5px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .login-card:hover {
+      box-shadow: 0 28px 48px -16px rgba(0, 30, 40, 0.18);
+    }
+
+    /* ----- logo area (Apple style: centered, subtle, generous) ----- */
+    .logo-container {
+      padding: 2.8rem 2.5rem 1.2rem 2.5rem;
+      text-align: center;
+      background: #ffffff;
+    }
+
+    /* minimal, almost no ornament — just symbol + wordmark */
+    .logo-symbol {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .logo-icon {
+      font-size: 3rem;
+      color: #1d5e7a;           /* calm, muted teal – not loud */
+      font-weight: 300;
+      opacity: 0.85;
+    }
+
+    .logo-text {
+      font-size: 2rem;
+      font-weight: 500;          /* medium weight like SF Pro */
+      letter-spacing: -0.03em;
+      color: #1a3b48;
+      margin-left: 0.2rem;
+    }
+
+    .logo-text span {
+      font-weight: 350;
+      color: #6b8fa1;
+    }
+
+    /* very light descriptor — barely there */
+    .descriptor {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #8aa1ad;
+      letter-spacing: 0.2px;
+      margin-top: 0.2rem;
+    }
+
+    /* ----- body form – clean, spacious, no extra lines ----- */
+    .card-body {
+      padding: 1.8rem 2.5rem 2.5rem 2.5rem;
+      background: #ffffff;
+    }
+
+    /* field groups – minimal, like iOS input lists */
+    .field {
+      margin-bottom: 2rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #66818f;
+      margin-bottom: 0.5rem;
+      padding-left: 0.4rem;
+    }
+
+    /* input container – subtle, borderless except bottom? 
+       But we use Apple's "filled" minimal look: light bg, no border, subtle radius */
+    .input-wrapper {
+      background: #f2f6f9;        /* very light grey like Apple input fields */
+      border-radius: 14px;
+      padding: 0.1rem 0.1rem 0.1rem 1rem;
+      display: flex;
+      align-items: center;
+      border: 0.5px solid transparent;
+      transition: background 0.12s, border-color 0.12s;
+    }
+
+    .input-wrapper i {
+      color: #8aaebf;
+      font-size: 1rem;
+      width: 1.8rem;
+      text-align: center;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 0.9rem 1rem 0.9rem 0.2rem;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #17303d;
+      outline: none;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #b1c7d4;
+      font-weight: 300;
+    }
+
+    .input-wrapper:focus-within {
+      background: #edf3f8;
+      border-color: #bfd4e0;
+    }
+
+    /* remember & forgot row – minimalist */
+    .row-minimal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1rem 0 2.4rem 0.2rem;
+      font-size: 0.85rem;
+    }
+
+    /* primary button – flat, minimal, apple grey with slight touch */
+    .login-btn {
+      width: 100%;
+      background: #1a237e;        /* deep muted slate */
+      border: none;
+      padding: 1rem;
+      border-radius: 40px;
+      color: #ffd700;
+      font-weight: 500;
+      font-size: 1.1rem;
+      letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      box-shadow: 0 2px 8px rgba(0, 20, 30, 0.1);
+      margin-bottom: 2.2rem;
+      border: 0.5px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .login-btn i {
+      font-size: 1rem;
+      color: #ffd700;
+      transition: transform 0.15s;
+    }
+
+    .login-btn:hover {
+      background: #121752;
+    }
+
+    .login-btn:hover i {
+      transform: translateX(4px);
+    }
+
+    /* role pills – clean, Apple‑inspired capsule */
+    .role-capsules {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fbfd;
+      border-radius: 60px;
+      padding: 0.35rem 0.35rem 0.35rem 1.2rem;
+      border: 0.5px solid #ddeaf1;
+    }
+
+    .role-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #557d92;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .role-label i {
+      color: #1d5e7a;
+      font-size: 0.7rem;
+    }
+
+    .capsule-group {
+      display: flex;
+      gap: 0.2rem;
+    }
+
+    .capsule {
+      background: #ffffff;
+      border: 0.5px solid #bed3e3;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #1d445b;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.01);
+      transition: all 0.1s;
+    }
+
+    .capsule.manager {
+      background: #ecf5fa;
+      border-color: #aac7dd;
+    }
+
+    .capsule i {
+      font-size: 0.65rem;
+      margin-right: 0.2rem;
+      color: #1d5e7a;
+    }
+
+    /* footer – extremely minimal, almost no weight */
+    .card-footer {
+      background: #ffffff;
+      padding: 1.2rem 2.5rem 1.8rem 2.5rem;
+      border-top: 0.5px solid #e7f0f5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #7a9bb0;
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+
+    .footer-icons i {
+      margin-left: 1rem;
+      color: #b0cbd9;
+      font-size: 0.9rem;
+    }
+
+    /* subtle hint – even more minimal, almost invisible */
+    .demo-note {
+      background: transparent;
+      border: 0.5px solid #e3edf5;
+      border-radius: 50px;
+      padding: 0.3rem 1rem;
+      margin-bottom: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #608599;
+    }
+
+    .demo-note i {
+      color: #1d5e7a;
+      margin-right: 0.3rem;
+    }
+
+    .demo-tag {
+      background: #edf4f9;
+      border-radius: 30px;
+      padding: 0.2rem 1rem;
+      color: #316479;
+      font-weight: 450;
+    }
+
+    /* small adjustments */
+    @media (max-width: 460px) {
+      .logo-container { padding: 2.2rem 1.8rem 0.8rem 1.8rem; }
+      .card-body { padding: 1.5rem 1.8rem 2rem 1.8rem; }
+      .card-footer { padding: 1rem 1.8rem 1.2rem 1.8rem; }
+    }

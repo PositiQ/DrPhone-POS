@@ -1,0 +1,81 @@
+<?php
+$activePage = $activePage ?? '';
+$basePath = $basePath ?? './';
+?>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="shop-logo">
+            <img src="https://res.cloudinary.com/dhqcnszvn/image/upload/v1771863002/Gemini_Generated_Image_ijmf3cijmf3cijmf_1_1_1_gbxcyz.png" alt="logo" width="50px">
+            <div class="shop-info">
+                <h2>Doctor Phone</h2>
+                <p>Admin Dashboard</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-menu">
+        <a class="nav-item<?php echo $activePage === 'dashboard' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>index.php">
+            <i class="fas fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'sales' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>sales/index.php">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Sales</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'inventory' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>inventory/index.php">
+            <i class="fas fa-boxes"></i>
+            <span>Inventory</span>
+            <span class="badge">4</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'products' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>products/index.php">
+            <i class="fas fa-mobile"></i>
+            <span>Products</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'customers' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>customers/index.php">
+            <i class="fas fa-users"></i>
+            <span>Customers</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'invoices-quotations' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>invoices-quotations/index.php">
+            <i class="fas fa-file-invoice"></i>
+            <span>Invoices & Quotations</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'vault-balance' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>vault-balance/index.php">
+            <i class="fas fa-vault"></i>
+            <span>Vault & Balance</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'expenses' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>expenses/index.php">
+            <i class="fas fa-wallet"></i>
+            <span>Expenses</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'suppliers' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>suppliers/index.php">
+            <i class="fas fa-truck"></i>
+            <span>Suppliers</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'returns-repairs' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>returns-repairs/index.php">
+            <i class="fas fa-tools"></i>
+            <span>Returns & Repairs</span>
+            <span class="badge">3</span>
+        </a>
+
+        <div class="nav-divider"></div>
+
+        <a class="nav-item<?php echo $activePage === 'settings' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>settings/index.php">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+
+        <a class="nav-item<?php echo $activePage === 'users' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>users/index.php">
+            <i class="fas fa-user-shield"></i>
+            <span>Users</span>
+        </a>
+    </div>
+</div>
