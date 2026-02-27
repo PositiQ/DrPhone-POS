@@ -1,0 +1,13 @@
+# Redirect rules to handle page navigation
+# This ensures URLs like /components/sales/ redirect to /components/pages/sales/
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect /components/[section]/ to /components/pages/[section]/
+    # Exclude 'pages' and 'UI' directories
+    RewriteCond %{REQUEST_URI} ^/components/([^/]+)/(.*)$
+    RewriteCond %{REQUEST_URI} !^/components/pages/
+    RewriteCond %{REQUEST_URI} !^/components/UI/
+    RewriteRule ^([^/]+)/(.*)$ pages/$1/$2 [L,R=301]
+</IfModule>

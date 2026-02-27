@@ -60,6 +60,11 @@ $basePath = $basePath ?? './';
             <span>Suppliers</span>
         </a>
 
+        <a class="nav-item<?php echo $activePage === 'shops' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>shops/index.php">
+            <i class="fas fa-store"></i>
+            <span>Shops</span>
+        </a>
+
         <a class="nav-item<?php echo $activePage === 'returns-repairs' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>returns-repairs/index.php">
             <i class="fas fa-tools"></i>
             <span>Returns & Repairs</span>

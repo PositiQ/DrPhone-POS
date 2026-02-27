@@ -117,6 +117,7 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                             <button class="pill" type="button" data-status="issued">Issued</button>
                         </div>
                     </div>
+
                     <table style="width: 100%; table-layout: auto;">
                         <thead>
                             <tr>
@@ -131,7 +132,9 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                                 <th style="width: 12%;">Actions</th>
                             </tr>
                         </thead>
+
                         <tbody id="productTable">
+                            <!-- ROW 1 -->
                             <tr data-status="in-stock">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -153,18 +156,30 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                                 <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Duplicate">
-                                            <i class="fas fa-copy"></i>
+
+                                        <!-- ✅ FIXED PRINT LABEL BUTTON -->
+                                        <button
+                                          type="button"
+                                          class="button-secondary print-label-btn"
+                                          style="padding: 6px 10px; font-size: 12px;"
+                                          title="Print Label"
+                                          data-name="iPhone 14 Pro"
+                                          data-sku="SKU-IP14P-256"
+                                          data-price="289000"
+                                        >
+                                            <i class="fas fa-barcode"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
+
+                            <!-- ROW 2 -->
                             <tr data-status="low-stock">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -186,18 +201,29 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                                 <td><span class="status-badge" style="background: #fff3e0; color: #b45f06;">Low Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Duplicate">
-                                            <i class="fas fa-copy"></i>
+
+                                        <button
+                                          type="button"
+                                          class="button-secondary print-label-btn"
+                                          style="padding: 6px 10px; font-size: 12px;"
+                                          title="Print Label"
+                                          data-name="Samsung S23 Ultra"
+                                          data-sku="SKU-S23U-512"
+                                          data-price="245000"
+                                        >
+                                            <i class="fas fa-barcode"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
+
+                            <!-- ROW 3 -->
                             <tr data-status="in-stock">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -219,18 +245,29 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                                 <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Duplicate">
-                                            <i class="fas fa-copy"></i>
+
+                                        <button
+                                          type="button"
+                                          class="button-secondary print-label-btn"
+                                          style="padding: 6px 10px; font-size: 12px;"
+                                          title="Print Label"
+                                          data-name="Google Pixel 7"
+                                          data-sku="SKU-GP7-128"
+                                          data-price="185000"
+                                        >
+                                            <i class="fas fa-barcode"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
+
+                            <!-- ROW 4 -->
                             <tr data-status="sold-out">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -252,18 +289,29 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                                 <td><span class="status-badge" style="background: #ffebee; color: #c62828;">Sold Out</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Duplicate">
-                                            <i class="fas fa-copy"></i>
+
+                                        <button
+                                          type="button"
+                                          class="button-secondary print-label-btn"
+                                          style="padding: 6px 10px; font-size: 12px;"
+                                          title="Print Label"
+                                          data-name="Fast Charger 25W"
+                                          data-sku="SKU-CHG-25W"
+                                          data-price="1500"
+                                        >
+                                            <i class="fas fa-barcode"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
+
+                            <!-- ROW 5 (Issued - no barcode button in your original, keeping as-is) -->
                             <tr data-status="issued">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -297,6 +345,8 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                                     </div>
                                 </td>
                             </tr>
+
+                            <!-- ROW 6 -->
                             <tr data-status="in-stock">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -318,18 +368,28 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                                 <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
+                                        <button type="button" class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Duplicate">
-                                            <i class="fas fa-copy"></i>
+
+                                        <button
+                                          type="button"
+                                          class="button-secondary print-label-btn"
+                                          style="padding: 6px 10px; font-size: 12px;"
+                                          title="Print Label"
+                                          data-name="Wireless Earbuds Pro"
+                                          data-sku="SKU-EAR-PRO"
+                                          data-price="4500"
+                                        >
+                                            <i class="fas fa-barcode"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -350,126 +410,24 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
         </div>
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-        }
+<script>
+  document.addEventListener("click", function (e) {
+    const btn = e.target.closest(".print-label-btn");
+    if (!btn) return;
 
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const menuToggle = document.getElementById('menuToggle');
+    e.preventDefault();
 
-            if (window.innerWidth <= 768) {
-                if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
-                    sidebar.classList.remove('active');
-                }
-            }
-        });
+    const name  = encodeURIComponent(btn.dataset.name || "Product");
+    const sku   = encodeURIComponent(btn.dataset.sku || "SKU");
+    const price = encodeURIComponent(btn.dataset.price || "0");
 
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+    // adjust path to where label-print.php is located
+    const url = `label-print.php?name=${name}&sku=${sku}&price=${price}`;
 
-        const searchOverlay = document.getElementById('searchOverlay');
-        const searchModalInput = document.getElementById('globalSearchModal');
-        const searchTrigger = document.getElementById('searchTrigger');
-        const searchClose = document.getElementById('searchClose');
+    const w = window.open(url, "_blank");
+    if (!w) alert("Popup blocked! Allow popups to print labels.");
+  });
+</script>
 
-        function openSearchModal() {
-            if (!searchOverlay || !searchModalInput) {
-                return;
-            }
-
-            searchOverlay.classList.add('active');
-            searchModalInput.focus();
-            searchModalInput.select();
-        }
-
-        function closeSearchModal() {
-            if (!searchOverlay) {
-                return;
-            }
-
-            searchOverlay.classList.remove('active');
-        }
-
-        if (searchTrigger) {
-            searchTrigger.addEventListener('click', openSearchModal);
-            searchTrigger.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    openSearchModal();
-                }
-            });
-        }
-
-        if (searchClose) {
-            searchClose.addEventListener('click', closeSearchModal);
-        }
-
-        if (searchOverlay) {
-            searchOverlay.addEventListener('click', function(event) {
-                if (event.target === searchOverlay) {
-                    closeSearchModal();
-                }
-            });
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
-                event.preventDefault();
-                openSearchModal();
-            }
-
-            if (event.key === 'Escape' && searchOverlay && searchOverlay.classList.contains('active')) {
-                closeSearchModal();
-            }
-        });
-
-        // Product search functionality
-        const searchProducts = document.getElementById('searchProducts');
-        const productTable = document.getElementById('productTable');
-        
-        if (searchProducts && productTable) {
-            searchProducts.addEventListener('input', function() {
-                const query = this.value.toLowerCase();
-                const rows = productTable.querySelectorAll('tr');
-                
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(query) ? '' : 'none';
-                });
-            });
-        }
-
-        // Pill filter functionality - Stock status based
-        const pills = document.querySelectorAll('.pill');
-        pills.forEach(pill => {
-            pill.addEventListener('click', function() {
-                pills.forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
-
-                const statusFilter = this.getAttribute('data-status');
-                const rows = productTable.querySelectorAll('tr');
-
-                rows.forEach(row => {
-                    const rowStatus = row.getAttribute('data-status');
-
-                    if (statusFilter === 'all') {
-                        row.style.display = '';
-                    } else if (rowStatus === statusFilter) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
