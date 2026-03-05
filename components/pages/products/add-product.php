@@ -12,6 +12,7 @@ $pageTitle = 'Add Product';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -68,7 +69,7 @@ $pageTitle = 'Add Product';
                     </div>
                 </div>
 
-                <form class="sale-form" action="#" method="post">
+                <form class="sale-form" id="productForm" action="#" method="post">
                     <div class="chart-card">
                         <div class="chart-header">
                             <h3>Basic Information</h3>
@@ -79,8 +80,8 @@ $pageTitle = 'Add Product';
                                 <input type="text" id="productName" name="productName" placeholder="e.g., iPhone 14 Pro" required>
                             </div>
                             <div class="form-field">
-                                <label for="category">Category <span style="color: #f44336;">*</span></label>
-                                <select id="category" name="category" required>
+                                <label for="category">Category</label>
+                                <select id="category" name="category">
                                     <option value="">Select Category</option>
                                     <option>Smartphone</option>
                                     <option>Accessory</option>
@@ -101,8 +102,8 @@ $pageTitle = 'Add Product';
 
                         <div class="form-grid">
                             <div class="form-field">
-                                <label for="storage">Storage/Capacity</label>
-                                <input type="text" id="storage" name="storage" placeholder="e.g., 256GB">
+                                <label for="capacity">Storage/Capacity</label>
+                                <input type="text" id="capacity" name="capacity" placeholder="e.g., 256GB">
                             </div>
                             <div class="form-field">
                                 <label for="color">Color</label>
@@ -111,6 +112,7 @@ $pageTitle = 'Add Product';
                             <div class="form-field">
                                 <label for="condition">Condition</label>
                                 <select id="condition" name="condition">
+                                    <option value="">Select Condition</option>
                                     <option>Brand New</option>
                                     <option>Used - Like New</option>
                                     <option>Used - Good</option>
@@ -119,8 +121,8 @@ $pageTitle = 'Add Product';
                                 </select>
                             </div>
                             <div class="form-field">
-                                <label for="warranty">Warranty Period</label>
-                                <input type="text" id="warranty" name="warranty" placeholder="e.g., 1 Year">
+                                <label for="warrenty">Warranty Period</label>
+                                <input type="text" id="warrenty" name="warrenty" placeholder="e.g., 1 Year">
                             </div>
                         </div>
                     </div>
@@ -136,8 +138,8 @@ $pageTitle = 'Add Product';
                                 <div class="form-hint">Unique product identifier</div>
                             </div>
                             <div class="form-field">
-                                <label for="imei">IMEI Number</label>
-                                <input type="text" id="imei" name="imei" placeholder="15 digits for phones">
+                                <label for="IMEI">IMEI Number</label>
+                                <input type="text" id="IMEI" name="IMEI" placeholder="15 digits for phones" maxlength="15">
                             </div>
                             <div class="form-field">
                                 <label for="barcode">Barcode</label>
@@ -156,23 +158,24 @@ $pageTitle = 'Add Product';
                         </div>
                         <div class="form-grid">
                             <div class="form-field">
-                                <label for="costPrice">Cost Price (LKR) <span style="color: #f44336;">*</span></label>
-                                <input type="number" id="costPrice" name="costPrice" placeholder="0.00" step="0.01" required>
+                                <label for="cost_price">Cost Price (LKR) <span style="color: #f44336;">*</span></label>
+                                <input type="number" id="cost_price" name="cost_price" placeholder="0.00" step="0.01" required>
                                 <div class="form-hint">Purchase/wholesale price</div>
                             </div>
                             <div class="form-field">
-                                <label for="sellingPrice">Selling Price (LKR) <span style="color: #f44336;">*</span></label>
-                                <input type="number" id="sellingPrice" name="sellingPrice" placeholder="0.00" step="0.01" required>
+                                <label for="selling_price">Selling Price (LKR) <span style="color: #f44336;">*</span></label>
+                                <input type="number" id="selling_price" name="selling_price" placeholder="0.00" step="0.01" required>
                                 <div class="form-hint">Retail price for customers</div>
                             </div>
                             <div class="form-field">
-                                <label for="profitMargin">Profit Margin</label>
-                                <input type="text" id="profitMargin" name="profitMargin" placeholder="Auto-calculated" readonly>
+                                <label for="profit_margin">Profit Margin</label>
+                                <input type="text" id="profit_margin" name="profit_margin" placeholder="Auto-calculated" readonly>
                                 <div class="form-hint">Calculated automatically</div>
                             </div>
                             <div class="form-field">
-                                <label for="taxRate">Tax Rate (%)</label>
-                                <input type="number" id="taxRate" name="taxRate" placeholder="0" step="0.01">
+                                <label for="price">Display Price (LKR)</label>
+                                <input type="number" id="price" name="price" placeholder="Same as selling price" step="0.01">
+                                <div class="form-hint">Optional: price shown on product card</div>
                             </div>
                         </div>
                     </div>
@@ -183,28 +186,21 @@ $pageTitle = 'Add Product';
                         </div>
                         <div class="form-grid">
                             <div class="form-field">
-                                <label for="quantity">Opening Stock <span style="color: #f44336;">*</span></label>
-                                <input type="number" id="quantity" name="quantity" placeholder="0" min="0" required>
-                                <div class="form-hint">Initial quantity in stock</div>
-                            </div>
-                            <div class="form-field">
-                                <label for="minStock">Minimum Stock Level</label>
-                                <input type="number" id="minStock" name="minStock" placeholder="5" min="0">
-                                <div class="form-hint">Alert when stock is below</div>
+                                <label for="minimum_stock_level">Minimum Stock Level</label>
+                                <input type="number" id="minimum_stock_level" name="minimum_stock_level" placeholder="5" min="0" value="5">
+                                <div class="form-hint">Alert when stock is below this level</div>
                             </div>
                             <div class="form-field">
                                 <label for="supplier">Supplier</label>
-                                <select id="supplier" name="supplier">
-                                    <option value="">Select Supplier</option>
-                                    <option>Main Distributor Ltd</option>
-                                    <option>Tech Imports</option>
-                                    <option>Mobile Wholesale</option>
-                                    <option>Direct from Manufacturer</option>
-                                </select>
+                                <input type="text" id="supplier" name="supplier" placeholder="Supplier name">
                             </div>
                             <div class="form-field">
-                                <label for="location">Storage Location</label>
-                                <input type="text" id="location" name="location" placeholder="e.g., Shelf A1">
+                                <label for="storage_location">Storage Location</label>
+                                <input type="text" id="storage_location" name="storage_location" placeholder="e.g., Shelf A1">
+                            </div>
+                            <div class="form-field">
+                                <label for="date_added">Date Added</label>
+                                <input type="date" id="date_added" name="date_added">
                             </div>
                         </div>
                     </div>
@@ -215,30 +211,15 @@ $pageTitle = 'Add Product';
                         </div>
                         <div class="form-grid">
                             <div class="form-field">
-                                <label for="dateAdded">Date Added</label>
-                                <input type="date" id="dateAdded" name="dateAdded">
-                            </div>
-                            <div class="form-field">
-                                <label for="status">Product Status</label>
+                                <label for="status">Stock Status</label>
                                 <select id="status" name="status">
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                    <option>Discontinued</option>
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="discontinued">Discontinued</option>
+                                    <option value="in_stock">In Stock</option>
+                                    <option value="sold">Sold</option>
                                 </select>
-                            </div>
-                            <div class="form-field">
-                                <label for="featured">Featured Product</label>
-                                <select id="featured" name="featured">
-                                    <option>No</option>
-                                    <option>Yes</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label>&nbsp;</label>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
-                                    <input type="checkbox" id="trackInventory" name="trackInventory" checked style="width: auto;">
-                                    <label for="trackInventory" style="margin: 0; font-size: 13px;">Track inventory for this product</label>
-                                </div>
+                                <div class="form-hint">Current stock status</div>
                             </div>
                         </div>
 
@@ -248,21 +229,15 @@ $pageTitle = 'Add Product';
                                 <textarea id="description" name="description" placeholder="Detailed product description, features, specifications..." rows="4"></textarea>
                             </div>
                         </div>
-
-                        <div class="form-grid">
-                            <div class="form-field" style="grid-column: 1 / -1;">
-                                <label for="notes">Internal Notes</label>
-                                <textarea id="notes" name="notes" placeholder="Notes for staff only (not visible to customers)" rows="3"></textarea>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="form-actions">
                         <a class="button-secondary" href="index.php">Cancel</a>
-                        <button class="button-secondary" type="button" onclick="document.getElementById('status').value = 'Inactive'; this.form.submit();">
+                        <button class="button-secondary" type="button" id="saveDraftBtn">
+                            <i class="fas fa-save"></i>
                             Save as Draft
                         </button>
-                        <button class="button-primary" type="submit">
+                        <button class="button-primary" type="submit" id="submitBtn">
                             <i class="fas fa-check"></i>
                             Add Product
                         </button>
@@ -358,8 +333,11 @@ $pageTitle = 'Add Product';
             }
         });
 
+        // API Configuration
+        const API_URL = 'http://localhost:3000/api/products';
+
         // Auto-set date added to today
-        const dateAddedInput = document.getElementById('dateAdded');
+        const dateAddedInput = document.getElementById('date_added');
         if (dateAddedInput && !dateAddedInput.value) {
             const today = new Date();
             dateAddedInput.value = today.toISOString().slice(0, 10);
@@ -367,27 +345,30 @@ $pageTitle = 'Add Product';
 
         // Auto-generate SKU
         const productName = document.getElementById('productName');
-        const storage = document.getElementById('storage');
+        const capacity = document.getElementById('capacity');
         const skuInput = document.getElementById('sku');
 
         function generateSKU() {
             if (productName.value && !skuInput.value) {
                 const name = productName.value.substring(0, 5).toUpperCase().replace(/\s/g, '');
-                const storageVal = storage.value ? '-' + storage.value.replace(/\s/g, '') : '';
-                const random = Math.floor(Math.random() * 1000);
-                skuInput.value = `SKU-${name}${storageVal}-${random}`;
+                const capacityVal = capacity.value ? '-' + capacity.value.replace(/\s/g, '') : '';
+                const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                skuInput.value = `SKU-${name}${capacityVal}-${random}`;
             }
         }
 
         if (productName && skuInput) {
             productName.addEventListener('blur', generateSKU);
-            storage.addEventListener('blur', generateSKU);
+            if (capacity) {
+                capacity.addEventListener('blur', generateSKU);
+            }
         }
 
         // Calculate profit margin
-        const costPrice = document.getElementById('costPrice');
-        const sellingPrice = document.getElementById('sellingPrice');
-        const profitMargin = document.getElementById('profitMargin');
+        const costPrice = document.getElementById('cost_price');
+        const sellingPrice = document.getElementById('selling_price');
+        const profitMargin = document.getElementById('profit_margin');
+        const priceInput = document.getElementById('price');
 
         function updateProfitMargin() {
             const cost = parseFloat(costPrice.value) || 0;
@@ -397,6 +378,11 @@ $pageTitle = 'Add Product';
                 const profit = selling - cost;
                 const margin = ((profit / selling) * 100).toFixed(2);
                 profitMargin.value = `${margin}% (LKR ${profit.toFixed(2)})`;
+                
+                // Auto-set price to selling_price if not set
+                if (!priceInput.value) {
+                    priceInput.value = selling;
+                }
             } else {
                 profitMargin.value = '';
             }
@@ -405,6 +391,172 @@ $pageTitle = 'Add Product';
         if (costPrice && sellingPrice && profitMargin) {
             costPrice.addEventListener('input', updateProfitMargin);
             sellingPrice.addEventListener('input', updateProfitMargin);
+        }
+
+        // Form submission handler
+        const productForm = document.getElementById('productForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const saveDraftBtn = document.getElementById('saveDraftBtn');
+
+        // Save as draft handler
+        if (saveDraftBtn) {
+            saveDraftBtn.addEventListener('click', function() {
+                document.getElementById('status').value = 'inactive';
+                productForm.requestSubmit();
+            });
+        }
+
+        if (productForm) {
+            productForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Validate required fields first
+                const productNameInput = document.getElementById('productName');
+                const brandInput = document.getElementById('brand');
+                const costPriceInput = document.getElementById('cost_price');
+                const sellingPriceInput = document.getElementById('selling_price');
+                const skuInput = document.getElementById('sku');
+                
+                const errors = [];
+                
+                if (!productNameInput.value || productNameInput.value.trim() === '') {
+                    errors.push('Product Name is required');
+                }
+                if (!brandInput.value || brandInput.value.trim() === '') {
+                    errors.push('Brand is required');
+                }
+                if (!costPriceInput.value || costPriceInput.value === '') {
+                    errors.push('Cost Price is required');
+                }
+                if (!sellingPriceInput.value || sellingPriceInput.value === '') {
+                    errors.push('Selling Price is required');
+                }
+                if (!skuInput.value || skuInput.value.trim() === '') {
+                    errors.push('SKU is required');
+                }
+                
+                if (errors.length > 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        html: '<strong>Please fix these errors:</strong><br><br>' + errors.map(e => '• ' + e).join('<br>'),
+                        confirmButtonColor: '#3085d6'
+                    });
+                    return;
+                }
+                
+                // Disable submit button
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Product...';
+                
+                try {
+                    // Build payload matching the working Postman format
+                    const productData = {
+                        // Product fields (required)
+                        productName: productNameInput.value.trim(),
+                        price: parseFloat(sellingPriceInput.value),
+                        brand: brandInput.value.trim(),
+                        
+                        // Product fields (optional)
+                        description: document.getElementById('description')?.value?.trim() || null,
+                        model: document.getElementById('model')?.value?.trim() || null,
+                        color: document.getElementById('color')?.value?.trim() || null,
+                        capacity: document.getElementById('capacity')?.value?.trim() || null,
+                        condition: document.getElementById('condition')?.value?.trim() || null,
+                        warrenty: document.getElementById('warrenty')?.value?.trim() || null,
+                        IMEI: document.getElementById('IMEI')?.value?.trim() || null,
+                        barcode: document.getElementById('barcode')?.value?.trim() || null,
+                        serialNumber: document.getElementById('serialNumber')?.value?.trim() || null,
+                        
+                        // Product_Stock fields (required)
+                        sku: skuInput.value.trim(),
+                        cost_price: parseFloat(costPriceInput.value),
+                        selling_price: parseFloat(sellingPriceInput.value),
+                        
+                        // Product_Stock fields (optional)
+                        profit_margin: null,  // Will be calculated by API, but include it
+                        supplier: document.getElementById('supplier')?.value?.trim() || null,
+                        minimum_stock_level: document.getElementById('minimum_stock_level')?.value ? parseInt(document.getElementById('minimum_stock_level').value) : null,
+                        storage_location: document.getElementById('storage_location')?.value?.trim() || null,
+                        date_added: document.getElementById('date_added')?.value || null,
+                        status: document.getElementById('status')?.value || 'active'
+                    };
+                    
+                    // Remove null values to avoid validation issues
+                    Object.keys(productData).forEach(key => {
+                        if (productData[key] === null || productData[key] === '') {
+                            delete productData[key];
+                        }
+                    });
+                    
+                    // Ensure required fields are always present
+                    productData.productName = productNameInput.value.trim();
+                    productData.price = parseFloat(sellingPriceInput.value);
+                    productData.brand = brandInput.value.trim();
+                    productData.sku = skuInput.value.trim();
+                    productData.cost_price = parseFloat(costPriceInput.value);
+                    productData.selling_price = parseFloat(sellingPriceInput.value);
+                    productData.status = document.getElementById('status')?.value || 'active';
+                    
+                    console.log('Submitting product data:', productData);
+                    
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(productData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    console.log('API Response:', result);
+                    
+                    if (response.ok && result.success) {
+                        // Show success message
+                        const productId = result.newProduct?.id || result.data?.id || 'Created';
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Product Added Successfully!',
+                            html: '<strong>Product ID:</strong> ' + productId,
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            window.location.href = 'index.php';
+                        });
+                    } else {
+                        // Show error message with details
+                        let errorMsg = result.message || result.error || 'Failed to add product';
+                        
+                        // If error object has details, add them
+                        if (result.error && typeof result.error === 'object') {
+                            errorMsg += '\n\nDetails: ' + JSON.stringify(result.error);
+                        }
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            html: errorMsg + errorDetails,
+                            confirmButtonColor: '#d33'
+                        });
+                        
+                        // Re-enable submit button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Add Product';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Connection Error',
+                                html: 'Failed to add product. Please ensure the API server is running at:<br><br><code>' + API_URL + '</code><br><br><small>' + error.message + '</small>',
+                                confirmButtonColor: '#d33'
+                            });
+                    
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Add Product';
+                }
+            });
         }
     </script>
 </body>

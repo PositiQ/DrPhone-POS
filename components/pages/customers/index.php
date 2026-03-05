@@ -13,10 +13,12 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <?php include __DIR__ . '/../../UI/sidebar.php'; ?>
+        <?php include __DIR__ . '/../../UI/custom-dialog.php'; ?>
 
         <div class="main-content">
             <div class="top-header">
@@ -61,7 +63,6 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
                             <option>All Customers</option>
                             <option>Active</option>
                             <option>Inactive</option>
-                            <option>VIP</option>
                         </select>
                         <select id="creditFilter" aria-label="Credit Status">
                             <option>All Credit Status</option>
@@ -84,23 +85,23 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
                 <div class="insight-grid">
                     <div class="metric-card">
                         <h4>Total Customers</h4>
-                        <div class="metric-value">1,847</div>
+                        <div class="metric-value" id="metricTotal">0</div>
                         <div class="metric-sub">Registered customers</div>
                     </div>
                     <div class="metric-card">
                         <h4>Active Customers</h4>
-                        <div class="metric-value" style="color: #4caf50;">1,623</div>
+                        <div class="metric-value" id="metricActive" style="color: #4caf50;">0</div>
                         <div class="metric-sub">Recent purchases</div>
                     </div>
                     <div class="metric-card">
                         <h4>Outstanding Credit</h4>
-                        <div class="metric-value" style="color: #ff9800;">LKR 2.8M</div>
+                        <div class="metric-value" id="metricOutstanding" style="color: #ff9800;">LKR 0</div>
                         <div class="metric-sub">Pending payments</div>
                     </div>
                     <div class="metric-card">
-                        <h4>VIP Customers</h4>
-                        <div class="metric-value" style="color: #2196f3;">87</div>
-                        <div class="metric-sub">Premium members</div>
+                        <h4>Wholesale</h4>
+                        <div class="metric-value" id="metricWholesale" style="color: #2196f3;">0</div>
+                        <div class="metric-sub">Wholesale customers</div>
                     </div>
                 </div>
 
@@ -110,7 +111,7 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
                         <div class="filter-group" style="gap: 8px;">
                             <button class="pill active" type="button" data-filter="all">All</button>
                             <button class="pill" type="button" data-filter="active">Active</button>
-                            <button class="pill" type="button" data-filter="vip">VIP</button>
+                            <button class="pill" type="button" data-filter="wholesale">Wholesale</button>
                             <button class="pill" type="button" data-filter="credit">Has Credit</button>
                         </div>
                     </div>
@@ -128,196 +129,10 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
                             </tr>
                         </thead>
                         <tbody id="customerTable">
-                            <tr data-status="vip" data-credit="has">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1a237e; font-size: 16px; font-weight: 600;">
-                                            SK
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Sandun Kumarasinghe</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">Customer #C-1024</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>+94 77 123 4567</td>
-                                <td>sandun.k@email.com</td>
-                                <td><strong>LKR 2.4M</strong></td>
-                                <td><strong style="color: #ff9800;">LKR 125,000</strong></td>
-                                <td>2026-02-21</td>
-                                <td><span class="status-badge" style="background: #fff3e0; color: #b45f06;">VIP</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Invoice">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="active" data-credit="none">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600;">
-                                            NP
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Nimal Perera</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">Customer #C-1025</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>+94 71 234 5678</td>
-                                <td>nimal.p@email.com</td>
-                                <td><strong>LKR 850,000</strong></td>
-                                <td><strong style="color: #4caf50;">LKR 0</strong></td>
-                                <td>2026-02-18</td>
-                                <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">Active</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Invoice">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="active" data-credit="has">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600;">
-                                            AS
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Anusha Silva</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">Customer #C-1026</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>+94 76 345 6789</td>
-                                <td>anusha.s@email.com</td>
-                                <td><strong>LKR 1.2M</strong></td>
-                                <td><strong style="color: #ff9800;">LKR 45,000</strong></td>
-                                <td>2026-02-20</td>
-                                <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">Active</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Invoice">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="vip" data-credit="none">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1a237e; font-size: 16px; font-weight: 600;">
-                                            RF
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Rashmi Fernando</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">Customer #C-1027</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>+94 75 456 7890</td>
-                                <td>rashmi.f@email.com</td>
-                                <td><strong>LKR 3.1M</strong></td>
-                                <td><strong style="color: #4caf50;">LKR 0</strong></td>
-                                <td>2026-02-22</td>
-                                <td><span class="status-badge" style="background: #fff3e0; color: #b45f06;">VIP</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Invoice">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="active" data-credit="none">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600;">
-                                            KD
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Kasun De Silva</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">Customer #C-1028</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>+94 70 567 8901</td>
-                                <td>kasun.d@email.com</td>
-                                <td><strong>LKR 620,000</strong></td>
-                                <td><strong style="color: #4caf50;">LKR 0</strong></td>
-                                <td>2026-02-15</td>
-                                <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">Active</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Invoice">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="inactive" data-credit="none">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: #bdbdbd; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600;">
-                                            TP
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Thilini Pathirana</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">Customer #C-1029</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>+94 72 678 9012</td>
-                                <td>thilini.p@email.com</td>
-                                <td><strong>LKR 185,000</strong></td>
-                                <td><strong style="color: #4caf50;">LKR 0</strong></td>
-                                <td>2025-11-10</td>
-                                <td><span class="status-badge" style="background: #f5f5f5; color: #757575;">Inactive</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Invoice">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </button>
-                                    </div>
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 40px;">
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #1a237e;"></i>
+                                    <p style="margin-top: 10px; color: #7a86ad;">Loading customers...</p>
                                 </td>
                             </tr>
                         </tbody>
@@ -341,6 +156,11 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
     </div>
 
     <script>
+        const API_URL = 'http://localhost:3000/api/customers';
+        let allCustomers = [];
+        let filteredCustomers = [];
+        let activePill = 'all';
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
@@ -357,34 +177,20 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
             }
         });
 
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
         const searchOverlay = document.getElementById('searchOverlay');
         const searchModalInput = document.getElementById('globalSearchModal');
         const searchTrigger = document.getElementById('searchTrigger');
         const searchClose = document.getElementById('searchClose');
 
         function openSearchModal() {
-            if (!searchOverlay || !searchModalInput) {
-                return;
-            }
-
+            if (!searchOverlay || !searchModalInput) return;
             searchOverlay.classList.add('active');
             searchModalInput.focus();
             searchModalInput.select();
         }
 
         function closeSearchModal() {
-            if (!searchOverlay) {
-                return;
-            }
-
+            if (!searchOverlay) return;
             searchOverlay.classList.remove('active');
         }
 
@@ -421,83 +227,293 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
             }
         });
 
-        // Customer search functionality
-        const searchCustomers = document.getElementById('searchCustomers');
-        const customerTable = document.getElementById('customerTable');
-        
-        if (searchCustomers && customerTable) {
-            searchCustomers.addEventListener('input', function() {
-                const query = this.value.toLowerCase();
-                const rows = customerTable.querySelectorAll('tr');
-                
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(query) ? '' : 'none';
-                });
-            });
+        function getInitials(name) {
+            if (!name) return 'CU';
+            return name
+                .split(' ')
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(part => part[0].toUpperCase())
+                .join('');
         }
 
-        // Pill filter functionality
-        const pills = document.querySelectorAll('.pill');
-        pills.forEach(pill => {
-            pill.addEventListener('click', function() {
-                pills.forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
+        function calculateSummary(customer) {
+            const sales = customer.customer_sales || [];
+            const totalPurchases = sales.reduce((sum, sale) => sum + parseFloat(sale.total_sales_amount || 0), 0);
+            const totalPaid = sales.reduce((sum, sale) => sum + parseFloat(sale.paid_amount || 0), 0);
+            const due = Math.max(totalPurchases - totalPaid, 0);
+            const lastPurchase = sales.length > 0
+                ? sales.map(s => s.last_sales_date).sort().reverse()[0]
+                : null;
 
-                const filter = this.getAttribute('data-filter');
-                const rows = customerTable.querySelectorAll('tr');
+            return {
+                totalPurchases,
+                due,
+                lastPurchase
+            };
+        }
 
-                rows.forEach(row => {
-                    const rowStatus = row.getAttribute('data-status');
-                    const rowCredit = row.getAttribute('data-credit');
+        function updateMetrics(stats) {
+            const totalEl = document.getElementById('metricTotal');
+            const activeEl = document.getElementById('metricActive');
+            const outstandingEl = document.getElementById('metricOutstanding');
+            const wholesaleEl = document.getElementById('metricWholesale');
 
-                    if (filter === 'all') {
-                        row.style.display = '';
-                    } else if (filter === 'active') {
-                        row.style.display = rowStatus === 'active' ? '' : 'none';
-                    } else if (filter === 'vip') {
-                        row.style.display = rowStatus === 'vip' ? '' : 'none';
-                    } else if (filter === 'credit') {
-                        row.style.display = rowCredit === 'has' ? '' : 'none';
+            if (totalEl) totalEl.textContent = (stats?.total || 0).toLocaleString();
+            if (activeEl) activeEl.textContent = (stats?.active || 0).toLocaleString();
+            if (outstandingEl) outstandingEl.textContent = 'LKR ' + (stats?.totalOutstandingDues || 0).toLocaleString();
+            if (wholesaleEl) wholesaleEl.textContent = (stats?.wholesale || 0).toLocaleString();
+        }
+
+        function renderCustomers(customers) {
+            const tbody = document.getElementById('customerTable');
+            if (!tbody) return;
+
+            if (!customers.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px;">
+                            <i class="fas fa-user-slash" style="font-size: 42px; color: #c0c8df;"></i>
+                            <p style="margin-top: 10px; color: #7a86ad;">No customers found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = customers.map(customer => {
+                const summary = calculateSummary(customer);
+                const status = (customer.status || 'inactive').toLowerCase();
+                const type = (customer.type || 'regular').toLowerCase();
+                const hasCredit = summary.due > 0;
+
+                const statusStyle = status === 'active'
+                    ? 'background: #e1f7e3; color: #0d6832;'
+                    : 'background: #f5f5f5; color: #757575;';
+
+                const badgeText = type === 'wholesale' ? 'Wholesale' : (status === 'active' ? 'Active' : 'Inactive');
+
+                const lastPurchase = summary.lastPurchase
+                    ? new Date(summary.lastPurchase).toISOString().slice(0, 10)
+                    : 'N/A';
+
+                return `
+                    <tr data-status="${status}" data-type="${type}" data-credit="${hasCredit ? 'has' : 'none'}">
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600;">
+                                    ${getInitials(customer.name)}
+                                </div>
+                                <div>
+                                    <strong style="display: block; color: #1a237e;">${customer.name || 'Unknown'}</strong>
+                                    <span style="font-size: 12px; color: #7a86ad;">Customer #${customer.customer_id || 'N/A'}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${customer.phone_number || 'N/A'}</td>
+                        <td>${customer.email || 'N/A'}</td>
+                        <td><strong>LKR ${summary.totalPurchases.toLocaleString()}</strong></td>
+                        <td><strong style="color: ${hasCredit ? '#ff9800' : '#4caf50'};">LKR ${summary.due.toLocaleString()}</strong></td>
+                        <td>${lastPurchase}</td>
+                        <td><span class="status-badge" style="${statusStyle}">${badgeText}</span></td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" class="button-secondary view-btn" style="padding: 6px 10px; font-size: 12px;" title="View Details" data-id="${customer.customer_id}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button type="button" class="button-secondary edit-btn" style="padding: 6px 10px; font-size: 12px;" title="Edit" data-id="${customer.customer_id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="button-secondary delete-btn" style="padding: 6px 10px; font-size: 12px; background: #ffebee; color: #c62828;" title="Delete" data-id="${customer.customer_id}" data-name="${customer.name || 'Customer'}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function fetchCustomers() {
+            try {
+                const response = await fetch(API_URL);
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || result.message || 'Failed to fetch customers');
+                }
+
+                allCustomers = result.data || [];
+                filteredCustomers = [...allCustomers];
+                updateMetrics(result.stats || {});
+                applyFilters();
+            } catch (error) {
+                const table = document.getElementById('customerTable');
+                if (table) {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 42px; color: #f44336;"></i>
+                                <p style="margin-top: 10px; color: #f44336;">${error.message}</p>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+
+        function applyFilters() {
+            const searchValue = (document.getElementById('searchCustomers')?.value || '').toLowerCase();
+            const statusValue = (document.getElementById('statusFilter')?.value || 'All Customers').toLowerCase();
+            const creditValue = (document.getElementById('creditFilter')?.value || 'All Credit Status').toLowerCase();
+
+            const result = allCustomers.filter(customer => {
+                const summary = calculateSummary(customer);
+                const status = (customer.status || '').toLowerCase();
+                const type = (customer.type || '').toLowerCase();
+                const hasCredit = summary.due > 0;
+
+                const matchesSearch = !searchValue || [
+                    customer.customer_id,
+                    customer.name,
+                    customer.email,
+                    customer.phone_number,
+                    customer.atlernative_phone_number,
+                    customer.nic_or_passport_number,
+                ].filter(Boolean).some(value => value.toLowerCase().includes(searchValue));
+
+                let matchesPill = true;
+                if (activePill === 'active') matchesPill = status === 'active';
+                if (activePill === 'wholesale') matchesPill = type === 'wholesale';
+                if (activePill === 'credit') matchesPill = hasCredit;
+
+                let matchesStatus = true;
+                if (statusValue === 'active') matchesStatus = status === 'active';
+                if (statusValue === 'inactive') matchesStatus = status === 'inactive';
+
+                let matchesCredit = true;
+                if (creditValue === 'has outstanding') matchesCredit = hasCredit;
+                if (creditValue === 'fully paid') matchesCredit = !hasCredit;
+
+                return matchesSearch && matchesPill && matchesStatus && matchesCredit;
+            });
+
+            filteredCustomers = result;
+            renderCustomers(filteredCustomers);
+        }
+
+        document.addEventListener('click', async function(event) {
+            const viewBtn = event.target.closest('.view-btn');
+            if (viewBtn) {
+                const customerId = viewBtn.dataset.id;
+                const customer = allCustomers.find(c => c.customer_id === customerId);
+                if (!customer || !window.AppDialog) return;
+
+                const summary = calculateSummary(customer);
+                const detailsHtml = `
+                    <div class="app-dialog-section">
+                        <div class="app-dialog-section-title">PROFILE</div>
+                        <div class="app-dialog-row"><strong>ID:</strong> <code>${customer.customer_id}</code></div>
+                        <div class="app-dialog-row"><strong>Name:</strong> ${customer.name || 'N/A'}</div>
+                        <div class="app-dialog-row"><strong>Type:</strong> ${customer.type || 'N/A'}</div>
+                        <div class="app-dialog-row"><strong>Status:</strong> <span class="app-dialog-pill">${customer.status || 'N/A'}</span></div>
+                    </div>
+                    <div class="app-dialog-section">
+                        <div class="app-dialog-section-title">CONTACT</div>
+                        <div class="app-dialog-row"><strong>Phone:</strong> ${customer.phone_number || 'N/A'}</div>
+                        <div class="app-dialog-row"><strong>Alt Phone:</strong> ${customer.atlernative_phone_number || 'N/A'}</div>
+                        <div class="app-dialog-row"><strong>Email:</strong> ${customer.email || 'N/A'}</div>
+                        <div class="app-dialog-row"><strong>NIC/Passport:</strong> ${customer.nic_or_passport_number || 'N/A'}</div>
+                    </div>
+                    <div class="app-dialog-section">
+                        <div class="app-dialog-section-title">FINANCIAL</div>
+                        <div class="app-dialog-row"><strong>Total Purchases:</strong> LKR ${summary.totalPurchases.toLocaleString()}</div>
+                        <div class="app-dialog-row"><strong>Outstanding Due:</strong> LKR ${summary.due.toLocaleString()}</div>
+                        <div class="app-dialog-row"><strong>Credit Limit:</strong> LKR ${parseFloat(customer.credit_limit || 0).toLocaleString()}</div>
+                        <div class="app-dialog-row"><strong>Credit Days:</strong> ${customer.credit_days || 0}</div>
+                    </div>
+                    <div class="app-dialog-section">
+                        <div class="app-dialog-section-title">ADDRESS</div>
+                        <div class="app-dialog-row">${[customer.address, customer.city, customer.district, customer.postal_code, customer.country].filter(Boolean).join(', ') || 'N/A'}</div>
+                    </div>
+                `;
+
+                window.AppDialog.open({
+                    title: customer.name || 'Customer Details',
+                    html: detailsHtml
+                });
+                return;
+            }
+
+            const editBtn = event.target.closest('.edit-btn');
+            if (editBtn) {
+                window.location.href = `edit-customer.php?id=${encodeURIComponent(editBtn.dataset.id)}`;
+                return;
+            }
+
+            const deleteBtn = event.target.closest('.delete-btn');
+            if (deleteBtn) {
+                const customerId = deleteBtn.dataset.id;
+                const customerName = deleteBtn.dataset.name;
+
+                const confirmation = await Swal.fire({
+                    icon: 'warning',
+                    title: 'Delete Customer?',
+                    html: `Delete <strong>${customerName}</strong> (${customerId})?<br><br><small style="color:#f44336;">This will also remove related sales records.</small>`,
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#d33'
+                });
+
+                if (!confirmation.isConfirmed) return;
+
+                try {
+                    const response = await fetch(`${API_URL}/${customerId}`, { method: 'DELETE' });
+                    const result = await response.json();
+
+                    if (!response.ok || !result.success) {
+                        throw new Error(result.error || result.message || 'Failed to delete customer');
                     }
+
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted',
+                        text: 'Customer deleted successfully.'
+                    });
+
+                    fetchCustomers();
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Delete Failed',
+                        text: error.message
+                    });
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchCustomers();
+
+            const searchInput = document.getElementById('searchCustomers');
+            if (searchInput) searchInput.addEventListener('input', applyFilters);
+
+            const statusFilter = document.getElementById('statusFilter');
+            const creditFilter = document.getElementById('creditFilter');
+            if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+            if (creditFilter) creditFilter.addEventListener('change', applyFilters);
+
+            const pills = document.querySelectorAll('.pill[data-filter]');
+            pills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    pills.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    activePill = this.dataset.filter;
+                    applyFilters();
                 });
             });
         });
-
-        // Dropdown filters
-        const statusFilter = document.getElementById('statusFilter');
-        const creditFilter = document.getElementById('creditFilter');
-
-        function applyFilters() {
-            const status = statusFilter.value.toLowerCase();
-            const credit = creditFilter.value.toLowerCase();
-            const rows = customerTable.querySelectorAll('tr');
-
-            rows.forEach(row => {
-                const rowStatus = row.getAttribute('data-status') || '';
-                const rowCredit = row.getAttribute('data-credit') || '';
-
-                let showRow = true;
-
-                // Status filter
-                if (status !== 'all customers') {
-                    if (status === 'active' && rowStatus !== 'active') showRow = false;
-                    if (status === 'inactive' && rowStatus !== 'inactive') showRow = false;
-                    if (status === 'vip' && rowStatus !== 'vip') showRow = false;
-                }
-
-                // Credit filter
-                if (credit !== 'all credit status') {
-                    if (credit === 'has outstanding' && rowCredit !== 'has') showRow = false;
-                    if (credit === 'fully paid' && rowCredit !== 'none') showRow = false;
-                }
-
-                row.style.display = showRow ? '' : 'none';
-            });
-        }
-
-        if (statusFilter) statusFilter.addEventListener('change', applyFilters);
-        if (creditFilter) creditFilter.addEventListener('change', applyFilters);
     </script>
 </body>
 </html>
