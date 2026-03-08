@@ -12,6 +12,7 @@ $pageTitle = 'Create Sale';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -62,7 +63,7 @@ $pageTitle = 'Create Sale';
                     </div>
                 </div>
 
-                <form class="sale-form" action="#" method="post">
+                <form class="sale-form" id="createSaleForm" action="#" method="post">
                     <div class="chart-card">
                         <div class="chart-header">
                             <h3>Customer Details</h3>
@@ -71,13 +72,21 @@ $pageTitle = 'Create Sale';
                             <div class="form-field">
                                 <label for="customerName">Customer Name</label>
                                 <div class="inline-field">
-                                    <input type="text" id="customerName" name="customerName" class="table-input" placeholder="Walk-in Customer">
-                                    <button class="button-secondary" type="button">Quick Add Customer</button>
+                                    <div class="autocomplete-wrapper" style="width: 100%;">
+                                        <input type="text" id="customerName" name="customerName" class="table-input" placeholder="Walk-in Customer" autocomplete="off">
+                                        <div class="autocomplete-dropdown" id="customerDropdown"></div>
+                                    </div>
+                                    <button class="button-secondary" type="button" id="clearCustomerBtn">Clear</button>
                                 </div>
+                                <input type="hidden" id="customerId" name="customerId">
                             </div>
                             <div class="form-field">
                                 <label for="customerPhone">Phone Number</label>
-                                <input type="tel" id="customerPhone" name="customerPhone" placeholder="07X XXX XXXX">
+                                <div class="autocomplete-wrapper">
+                                    <input type="tel" id="customerPhone" name="customerPhone" placeholder="07X XXX XXXX" autocomplete="off">
+                                    <div class="autocomplete-dropdown" id="customerPhoneDropdown"></div>
+                                </div>
+                                <div class="form-hint">Type name or phone to search customers</div>
                             </div>
                             <div class="form-field">
                                 <label for="customerAddress">Address</label>
@@ -86,6 +95,23 @@ $pageTitle = 'Create Sale';
                             <div class="form-field">
                                 <label for="saleDate">Date</label>
                                 <input type="date" id="saleDate" name="saleDate">
+                            </div>
+                            <div class="form-field">
+                                <label for="paymentMethod">Payment Method <span style="color: #f44336;">*</span></label>
+                                <select id="paymentMethod" name="paymentMethod" required>
+                                    <option value="cash" selected>Cash</option>
+                                    <option value="card">Card</option>
+                                    <option value="mobile">Mobile</option>
+                                    <option value="bank_transfer">Bank Transfer</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label for="saleStatus">Sale Status</label>
+                                <select id="saleStatus" name="saleStatus">
+                                    <option value="completed" selected>Completed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -232,7 +258,7 @@ $pageTitle = 'Create Sale';
                         </div>
                         <div class="summary-card">
                             <span>Discount</span>
-                            <strong>LKR 0.00</strong>
+                            <input class="table-input" type="number" id="totalDiscount" min="0" step="0.01" value="0" style="margin-top: 6px;">
                         </div>
                         <div class="summary-card">
                             <span>Total</span>
@@ -343,66 +369,23 @@ $pageTitle = 'Create Sale';
             saleDateInput.value = today.toISOString().slice(0, 10);
         }
 
-        // Mock product data
-        const products = [
-            {
-                id: 'iphone14',
-                name: 'iPhone 14 Pro',
-                brand: 'Apple',
-                model: 'iPhone 14 Pro',
-                storage: '256GB',
-                color: 'Space Black',
-                price: 289000,
-                imei: '352913547821',
-                description: 'Latest iPhone with A16 Bionic chip'
-            },
-            {
-                id: 's23ultra',
-                name: 'Samsung S23 Ultra',
-                brand: 'Samsung',
-                model: 'Galaxy S23 Ultra',
-                storage: '512GB',
-                color: 'Phantom Black',
-                price: 245000,
-                imei: '352913547945',
-                description: 'Flagship Samsung with S Pen'
-            },
-            {
-                id: 'pixel7',
-                name: 'Google Pixel 7',
-                brand: 'Google',
-                model: 'Pixel 7',
-                storage: '128GB',
-                color: 'Snow',
-                price: 185000,
-                imei: '352913547233',
-                description: 'Pure Android experience'
-            },
-            {
-                id: 'xiaomi13',
-                name: 'Xiaomi 13',
-                brand: 'Xiaomi',
-                model: 'Xiaomi 13',
-                storage: '256GB',
-                color: 'Alpine Green',
-                price: 165000,
-                imei: '352913547108',
-                description: 'Flagship performance at great value'
-            }
-        ];
+        const API_BASE_URL = 'http://localhost:3000/api';
+        const PRODUCTS_API = `${API_BASE_URL}/products`;
+        const CUSTOMERS_API = `${API_BASE_URL}/customers`;
+        const SALES_API = `${API_BASE_URL}/sales`;
 
-        // Mock accessories data
-        const accessories = [
-            { id: 'charger25w', name: 'Fast Charger 25W', price: 1500, barcode: 'ACC001234567' },
-            { id: 'typec', name: 'Type-C Cable', price: 800, barcode: 'ACC001234568' },
-            { id: 'wireless', name: 'Wireless Charger', price: 3500, barcode: 'ACC001234569' },
-            { id: 'protector', name: 'Screen Protector', price: 500, barcode: 'ACC001234570' },
-            { id: 'case', name: 'Phone Case', price: 1200, barcode: 'ACC001234571' },
-            { id: 'earbuds', name: 'Earbuds', price: 4500, barcode: 'ACC001234572' }
-        ];
+        let products = [];
+        let customers = [];
 
         const productSearch = document.getElementById('productSearch');
         const productDropdown = document.getElementById('productDropdown');
+        const customerNameInput = document.getElementById('customerName');
+        const customerDropdown = document.getElementById('customerDropdown');
+        const customerIdInput = document.getElementById('customerId');
+        const customerPhoneInput = document.getElementById('customerPhone');
+        const customerPhoneDropdown = document.getElementById('customerPhoneDropdown');
+        const customerAddressInput = document.getElementById('customerAddress');
+        const clearCustomerBtn = document.getElementById('clearCustomerBtn');
         const accessoriesSearch = document.getElementById('accessoriesSearch');
         const accessoriesDropdown = document.getElementById('accessoriesDropdown');
         const imeiSearch = document.getElementById('imeiSearch');
@@ -423,9 +406,15 @@ $pageTitle = 'Create Sale';
         const clearAccessoryBtn = document.getElementById('clearAccessoryBtn');
         const subtotalValue = document.getElementById('subtotalValue');
         const totalValue = document.getElementById('totalValue');
+        const totalDiscountInput = document.getElementById('totalDiscount');
+        const paymentMethodInput = document.getElementById('paymentMethod');
+        const saleStatusInput = document.getElementById('saleStatus');
+        const saleForm = document.getElementById('createSaleForm');
+        const submitButton = saleForm ? saleForm.querySelector('button[type="submit"]') : null;
 
         let selectedProduct = null;
         let selectedAccessory = null;
+        let selectedCustomer = null;
 
         function formatLkr(amount) {
             return 'LKR ' + amount.toFixed(2);
@@ -439,6 +428,20 @@ $pageTitle = 'Create Sale';
             }
 
             dropdown.innerHTML = items.map(item => {
+                if (item.type === 'customer') {
+                    return `
+                        <div class="autocomplete-item" data-id="${item.id}">
+                            <div class="autocomplete-main">
+                                <strong>${item.name}</strong>
+                                <span class="autocomplete-meta">${item.id}</span>
+                            </div>
+                            <div class="autocomplete-secondary">
+                                <span class="autocomplete-brand">${item.phone || '-'}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 if (item.brand) {
                     // Product item
                     return `
@@ -449,7 +452,7 @@ $pageTitle = 'Create Sale';
                             </div>
                             <div class="autocomplete-secondary">
                                 <span class="autocomplete-brand">${item.brand}</span>
-                                <span class="autocomplete-price">${formatLkr(item.price)}</span>
+                                <span class="autocomplete-price">${formatLkr(item.price)}${Number.isFinite(item.stock) ? ` · Stock ${item.stock}` : ''}</span>
                             </div>
                         </div>
                     `;
@@ -496,17 +499,37 @@ $pageTitle = 'Create Sale';
                        p.model.toLowerCase().includes(search) ||
                        p.storage.toLowerCase().includes(search) ||
                        p.color.toLowerCase().includes(search) ||
+                       p.id.toLowerCase().includes(search) ||
                        p.imei.includes(search);
             });
         }
 
-        function filterAccessories(query) {
+        function filterCustomers(query) {
             const search = query.toLowerCase().trim();
             if (!search) return [];
 
-            return accessories.filter(a => {
-                return a.name.toLowerCase().includes(search);
+            return customers.filter(c => {
+                return c.name.toLowerCase().includes(search) ||
+                    c.id.toLowerCase().includes(search) ||
+                    (c.phone || '').toLowerCase().includes(search);
             });
+        }
+
+        function normalizePhone(phone) {
+            return String(phone || '').replace(/\D/g, '');
+        }
+
+        function filterCustomersByPhone(query) {
+            const normalizedQuery = normalizePhone(query);
+            if (!normalizedQuery) {
+                return [];
+            }
+
+            return customers.filter(c => normalizePhone(c.phone).includes(normalizedQuery));
+        }
+
+        function filterAccessories(query) {
+            return filterProducts(query);
         }
 
         function selectProduct(product) {
@@ -525,15 +548,93 @@ $pageTitle = 'Create Sale';
         function selectAccessory(accessory) {
             selectedAccessory = accessory;
             accessoriesSearch.value = accessory.name;
-            accessoryBarcodeInput.value = accessory.barcode;
+            accessoryBarcodeInput.value = accessory.barcode || '';
             accessoryPriceInput.value = accessory.price;
             hideAutocomplete(accessoriesDropdown);
+        }
+
+        function selectCustomer(customerData) {
+            selectedCustomer = customerData;
+            customerNameInput.value = customerData.name;
+            customerIdInput.value = customerData.id;
+            customerPhoneInput.value = customerData.phone || '';
+            customerAddressInput.value = customerData.address || '';
+            hideAutocomplete(customerDropdown);
+        }
+
+        function clearCustomerSelection() {
+            selectedCustomer = null;
+            customerIdInput.value = '';
+            customerNameInput.value = '';
+            customerPhoneInput.value = '';
+            customerAddressInput.value = '';
+            hideAutocomplete(customerDropdown);
+            hideAutocomplete(customerPhoneDropdown);
+        }
+
+        function normalizeProduct(product) {
+            const stock = Number(product.Product_Stock?.quantity_in_stock ?? 0);
+            const defaultPrice = Number(product.Product_Stock?.selling_price ?? product.price ?? 0);
+
+            return {
+                id: product.id,
+                name: product.productName || '',
+                brand: product.brand || '',
+                model: product.model || '',
+                storage: product.capacity || '',
+                color: product.color || '',
+                price: Number.isFinite(defaultPrice) ? defaultPrice : 0,
+                imei: product.IMEI || '',
+                barcode: product.barcode || '',
+                description: product.description || '',
+                stock,
+            };
+        }
+
+        function normalizeCustomer(customerData) {
+            return {
+                type: 'customer',
+                id: customerData.customer_id,
+                name: customerData.name || '',
+                phone: customerData.phone_number || '',
+                address: customerData.address || '',
+            };
+        }
+
+        async function loadInitialData() {
+            try {
+                const [productsResponse, customersResponse] = await Promise.all([
+                    fetch(PRODUCTS_API),
+                    fetch(CUSTOMERS_API),
+                ]);
+
+                const productsResult = await productsResponse.json();
+                const customersResult = await customersResponse.json();
+
+                if (!productsResponse.ok || !productsResult.success) {
+                    throw new Error(productsResult.message || productsResult.error || 'Failed to load products');
+                }
+
+                if (!customersResponse.ok || !customersResult.success) {
+                    throw new Error(customersResult.message || customersResult.error || 'Failed to load customers');
+                }
+
+                products = (productsResult.data || []).map(normalizeProduct);
+                customers = (customersResult.data || []).map(normalizeCustomer);
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Load Error',
+                    html: `Unable to load products/customers.<br><br><small>${error.message}</small>`,
+                });
+            }
         }
 
         // Product search autocomplete
         if (productSearch) {
             productSearch.addEventListener('input', function() {
                 const query = this.value;
+                selectedProduct = null;
                 if (query.length === 0) {
                     hideAutocomplete(productDropdown);
                     return;
@@ -555,10 +656,69 @@ $pageTitle = 'Create Sale';
             });
         }
 
+        if (customerNameInput) {
+            customerNameInput.addEventListener('input', function() {
+                customerIdInput.value = '';
+                selectedCustomer = null;
+
+                const query = this.value;
+                if (query.length === 0) {
+                    hideAutocomplete(customerDropdown);
+                    return;
+                }
+
+                const filtered = filterCustomers(query);
+                showAutocomplete(customerDropdown, filtered, selectCustomer);
+            });
+
+            customerNameInput.addEventListener('focus', function() {
+                if (this.value.length > 0) {
+                    const filtered = filterCustomers(this.value);
+                    showAutocomplete(customerDropdown, filtered, selectCustomer);
+                }
+            });
+
+            customerNameInput.addEventListener('blur', function() {
+                setTimeout(() => hideAutocomplete(customerDropdown), 200);
+            });
+        }
+
+        if (customerPhoneInput) {
+            customerPhoneInput.addEventListener('input', function() {
+                customerIdInput.value = '';
+                selectedCustomer = null;
+
+                const query = this.value;
+                if (query.length === 0) {
+                    hideAutocomplete(customerPhoneDropdown);
+                    return;
+                }
+
+                const filtered = filterCustomersByPhone(query);
+                showAutocomplete(customerPhoneDropdown, filtered, selectCustomer);
+            });
+
+            customerPhoneInput.addEventListener('focus', function() {
+                if (this.value.length > 0) {
+                    const filtered = filterCustomersByPhone(this.value);
+                    showAutocomplete(customerPhoneDropdown, filtered, selectCustomer);
+                }
+            });
+
+            customerPhoneInput.addEventListener('blur', function() {
+                setTimeout(() => hideAutocomplete(customerPhoneDropdown), 200);
+            });
+        }
+
+        if (clearCustomerBtn) {
+            clearCustomerBtn.addEventListener('click', clearCustomerSelection);
+        }
+
         // Accessories search autocomplete
         if (accessoriesSearch) {
             accessoriesSearch.addEventListener('input', function() {
                 const query = this.value;
+                selectedAccessory = null;
                 if (query.length === 0) {
                     hideAutocomplete(accessoriesDropdown);
                     return;
@@ -616,98 +776,118 @@ $pageTitle = 'Create Sale';
                 subtotal += lineTotal;
             });
 
+            const discount = Number(totalDiscountInput?.value || 0);
+            const total = Math.max(0, subtotal - discount);
+
             subtotalValue.textContent = formatLkr(subtotal);
-            totalValue.textContent = formatLkr(subtotal);
+            totalValue.textContent = formatLkr(total);
         }
 
-        function addRow(name, imei, price) {
-            if (!name) {
+        function attachRowEvents(row, container, emptyMessage, trackStock = false) {
+            row.querySelector('[data-remove]').addEventListener('click', function() {
+                row.remove();
+                if (!container.querySelector('tr[data-item]')) {
+                    container.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #7a86ad;">${emptyMessage}</td></tr>`;
+                }
+                updateTotals();
+            });
+
+            row.querySelectorAll('[data-qty], [data-price]').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (input.hasAttribute('data-qty')) {
+                        const quantity = Number(input.value || 1);
+                        if (quantity < 1) {
+                            input.value = '1';
+                        }
+
+                        if (trackStock) {
+                            const max = Number(row.getAttribute('data-stock') || 0);
+                            if (max > 0 && Number(input.value) > max) {
+                                input.value = String(max);
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Stock Limit',
+                                    text: `Only ${max} item(s) available in stock.`,
+                                });
+                            }
+                        }
+                    }
+
+                    updateTotals();
+                });
+            });
+        }
+
+        function addRow(productData, isAccessory = false) {
+            if (!productData || !productData.id) {
                 return;
             }
 
-            const emptyRow = cartBody.querySelector('tr:not([data-item])');
+            if (Number(productData.stock) <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Out of Stock',
+                    text: `${productData.name} is currently out of stock.`,
+                });
+                return;
+            }
+
+            const targetBody = isAccessory ? accessoryCartBody : cartBody;
+            const emptyMessage = isAccessory ? 'No accessories added yet.' : 'No items added yet.';
+            const price = Number(productData.price || 0);
+
+            const existingRow = targetBody.querySelector(`tr[data-product-id="${productData.id}"]`);
+            if (existingRow) {
+                const qtyInput = existingRow.querySelector('[data-qty]');
+                const currentQty = Number(qtyInput.value || 1);
+                const maxStock = Number(existingRow.getAttribute('data-stock') || 0);
+                qtyInput.value = String(Math.min(currentQty + 1, maxStock || currentQty + 1));
+                updateTotals();
+                return;
+            }
+
+            const emptyRow = targetBody.querySelector('tr:not([data-item])');
             if (emptyRow) {
                 emptyRow.remove();
             }
 
             const row = document.createElement('tr');
-            row.setAttribute('data-item', name);
+            row.setAttribute('data-item', productData.name);
+            row.setAttribute('data-product-id', productData.id);
+            row.setAttribute('data-stock', String(productData.stock || 0));
+
+            const secondColumnValue = isAccessory
+                ? (productData.barcode || '')
+                : (productData.imei || '');
+            const secondColumnPlaceholder = isAccessory ? 'Barcode' : 'IMEI';
+            const secondColumnKey = isAccessory ? 'data-barcode' : 'data-imei';
+
             row.innerHTML = `
-                <td>${name}</td>
-                <td><input class="table-input" data-imei type="text" value="${imei || ''}" placeholder="IMEI"></td>
+                <td>${productData.name}</td>
+                <td><input class="table-input" ${secondColumnKey} type="text" value="${secondColumnValue}" placeholder="${secondColumnPlaceholder}"></td>
                 <td><input class="table-input" data-qty type="number" min="1" value="1"></td>
                 <td><input class="table-input" data-price type="number" min="0" step="0.01" value="${price}"></td>
                 <td><input class="table-input" data-total type="number" min="0" step="0.01" value="${price}" readonly></td>
                 <td><button class="button-secondary" type="button" data-remove>Remove</button></td>
             `;
 
-            cartBody.appendChild(row);
-
-            row.querySelector('[data-remove]').addEventListener('click', function() {
-                row.remove();
-                if (!cartBody.querySelector('tr[data-item]')) {
-                    cartBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #7a86ad;">No items added yet.</td></tr>';
-                }
-                updateTotals();
-            });
-
-            row.querySelectorAll('[data-qty], [data-price]').forEach(input => {
-                input.addEventListener('input', updateTotals);
-            });
-
-            updateTotals();
-        }
-
-        function addAccessoryRow(name, barcode, price) {
-            if (!name) {
-                return;
-            }
-
-            const emptyRow = accessoryCartBody.querySelector('tr:not([data-item])');
-            if (emptyRow) {
-                emptyRow.remove();
-            }
-
-            const row = document.createElement('tr');
-            row.setAttribute('data-item', name);
-            row.innerHTML = `
-                <td>${name}</td>
-                <td><input class="table-input" data-barcode type="text" value="${barcode || ''}" placeholder="Barcode"></td>
-                <td><input class="table-input" data-qty type="number" min="1" value="1"></td>
-                <td><input class="table-input" data-price type="number" min="0" step="0.01" value="${price}"></td>
-                <td><input class="table-input" data-total type="number" min="0" step="0.01" value="${price}" readonly></td>
-                <td><button class="button-secondary" type="button" data-remove>Remove</button></td>
-            `;
-
-            accessoryCartBody.appendChild(row);
-
-            row.querySelector('[data-remove]').addEventListener('click', function() {
-                row.remove();
-                if (!accessoryCartBody.querySelector('tr[data-item]')) {
-                    accessoryCartBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #7a86ad;">No accessories added yet.</td></tr>';
-                }
-                updateTotals();
-            });
-
-            row.querySelectorAll('[data-qty], [data-price]').forEach(input => {
-                input.addEventListener('input', updateTotals);
-            });
-
+            targetBody.appendChild(row);
+            attachRowEvents(row, targetBody, emptyMessage, true);
             updateTotals();
         }
 
         if (addDeviceBtn) {
             addDeviceBtn.addEventListener('click', function() {
                 if (!selectedProduct) {
-                    alert('Please select a product first');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Select Product',
+                        text: 'Please select a product first.',
+                    });
                     return;
                 }
 
-                const name = selectedProduct.name;
-                const price = selectedProduct.price;
-                const imei = imeiInput.value.trim();
-
-                addRow(name, imei, price);
+                addRow(selectedProduct);
             });
         }
 
@@ -732,15 +912,15 @@ $pageTitle = 'Create Sale';
         if (addAccessoryBtn) {
             addAccessoryBtn.addEventListener('click', function() {
                 if (!selectedAccessory) {
-                    alert('Please select an accessory first');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Select Accessory',
+                        text: 'Please select an accessory first.',
+                    });
                     return;
                 }
 
-                const name = selectedAccessory.name;
-                const price = selectedAccessory.price;
-                const barcode = accessoryBarcodeInput.value.trim();
-
-                addAccessoryRow(name, barcode, price);
+                addRow(selectedAccessory, true);
             });
         }
 
@@ -754,19 +934,112 @@ $pageTitle = 'Create Sale';
             });
         }
 
-        if (imeiSearch) {
-            imeiSearch.addEventListener('input', function() {
-                const query = this.value.trim();
-                if (query.length < 4) return;
+        if (totalDiscountInput) {
+            totalDiscountInput.addEventListener('input', updateTotals);
+        }
 
-                const last4 = query.slice(-4);
-                const found = products.find(p => p.imei.endsWith(last4));
+        function collectSaleItems() {
+            const rows = [
+                ...cartBody.querySelectorAll('tr[data-product-id]'),
+                ...accessoryCartBody.querySelectorAll('tr[data-product-id]'),
+            ];
 
-                if (found) {
-                    selectProduct(found);
+            return rows.map(row => {
+                const quantity = Number(row.querySelector('[data-qty]')?.value || 0);
+                const unitPrice = Number(row.querySelector('[data-price]')?.value || 0);
+
+                return {
+                    product_id: row.getAttribute('data-product-id'),
+                    quantity,
+                    unit_price: unitPrice,
+                    discount: 0,
+                };
+            }).filter(item => item.product_id && item.quantity > 0 && item.unit_price >= 0);
+        }
+
+        function setSubmittingState(isSubmitting) {
+            if (!submitButton) {
+                return;
+            }
+
+            submitButton.disabled = isSubmitting;
+            submitButton.innerHTML = isSubmitting
+                ? '<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i>Saving Sale...'
+                : 'Complete Sale';
+        }
+
+        if (saleForm) {
+            saleForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const items = collectSaleItems();
+                if (items.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No Items',
+                        text: 'Add at least one item to create a sale.',
+                    });
+                    return;
+                }
+
+                if (!paymentMethodInput?.value) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Payment Method Required',
+                        text: 'Please select a payment method.',
+                    });
+                    return;
+                }
+
+                const payload = {
+                    items,
+                    payment_method: paymentMethodInput.value,
+                    status: saleStatusInput?.value || 'completed',
+                    total_discount: Number(totalDiscountInput?.value || 0),
+                };
+
+                const customerId = customerIdInput?.value?.trim();
+                if (customerId) {
+                    payload.customer_id = customerId;
+                }
+
+                try {
+                    setSubmittingState(true);
+
+                    const response = await fetch(SALES_API, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.error || result.message || 'Failed to create sale');
+                    }
+
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Sale Created',
+                        html: `<strong>Sale ID:</strong> ${result.sale?.sales_id || 'N/A'}`,
+                    });
+
+                    window.location.href = 'index.php';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Create Sale Failed',
+                        html: `<small>${error.message}</small>`,
+                    });
+                } finally {
+                    setSubmittingState(false);
                 }
             });
         }
+
+        loadInitialData();
     </script>
 </body>
 </html>

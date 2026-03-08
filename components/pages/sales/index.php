@@ -56,28 +56,41 @@ $pageSubtitle = 'View sales insights and add new sales.';
             <div class="content-area">
                 <div class="toolbar">
                     <div class="filter-group">
-                        <button class="pill active" type="button">Today</button>
-                        <button class="pill" type="button">This Week</button>
-                        <button class="pill" type="button">This Month</button>
-                        <button class="pill" type="button">Custom</button>
-                        <select aria-label="View type">
+                        <button class="pill active" type="button" data-range="today">Today</button>
+                        <button class="pill" type="button" data-range="week">This Week</button>
+                        <button class="pill" type="button" data-range="month">This Month</button>
+                        <button class="pill" type="button" data-range="custom">Custom</button>
+                        <select aria-label="View type" id="viewType">
                             <option>View by Day</option>
                             <option>View by Date Range</option>
                             <option>View by Month</option>
                             <option>View by Year</option>
                         </select>
-                        <input type="date" aria-label="Start date">
-                        <input type="date" aria-label="End date">
-                        <select aria-label="Month">
+                        <input type="date" id="startDate" aria-label="Start date">
+                        <input type="date" id="endDate" aria-label="End date">
+                        <select aria-label="Month" id="monthSelect">
                             <option>February</option>
                             <option>January</option>
                             <option>March</option>
                             <option>April</option>
                         </select>
-                        <select aria-label="Year">
+                        <select aria-label="Year" id="yearSelect">
                             <option>2026</option>
                             <option>2025</option>
                             <option>2024</option>
+                        </select>
+                        <select id="statusFilter" aria-label="Status filter">
+                            <option value="">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <select id="paymentFilter" aria-label="Payment filter">
+                            <option value="">All Payments</option>
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="mobile">Mobile</option>
+                            <option value="bank_transfer">Bank Transfer</option>
                         </select>
                     </div>
                     <div class="toolbar-actions">
@@ -92,22 +105,22 @@ $pageSubtitle = 'View sales insights and add new sales.';
                 <div class="insight-grid">
                     <div class="metric-card">
                         <h4>Daily Sales Amount</h4>
-                        <div class="metric-value">LKR 128,450</div>
-                        <div class="metric-sub">86 transactions today</div>
+                        <div class="metric-value" id="dailySalesAmount">LKR 0.00</div>
+                        <div class="metric-sub" id="dailySalesSub">0 transactions today</div>
                     </div>
                     <div class="metric-card">
                         <h4>Actual Sales (Cash + Card)</h4>
-                        <div class="metric-value">LKR 92,600</div>
-                        <div class="metric-sub">72% of daily total</div>
+                        <div class="metric-value" id="actualSalesAmount">LKR 0.00</div>
+                        <div class="metric-sub" id="actualSalesSub">0% of daily total</div>
                     </div>
                     <div class="metric-card">
                         <h4>Credit Sales Amount</h4>
-                        <div class="metric-value">LKR 35,850</div>
+                        <div class="metric-value" id="creditSalesAmount">LKR 0.00</div>
                         <div class="metric-sub">Pending collection</div>
                     </div>
                     <div class="metric-card">
                         <h4>Daily Balance After Credit</h4>
-                        <div class="metric-value">LKR 92,600</div>
+                        <div class="metric-value" id="dailyBalanceAmount">LKR 0.00</div>
                         <div class="metric-sub">Actual cash received</div>
                     </div>
                 </div>
@@ -119,22 +132,22 @@ $pageSubtitle = 'View sales insights and add new sales.';
                     <div class="insight-grid">
                         <div class="metric-card">
                             <h4>This Week</h4>
-                            <div class="metric-value">LKR 612,300</div>
-                            <div class="metric-sub">Average LKR 87,470 per day</div>
+                            <div class="metric-value" id="weekSalesAmount">LKR 0.00</div>
+                            <div class="metric-sub" id="weekSalesSub">Average LKR 0.00 per day</div>
                         </div>
                         <div class="metric-card">
                             <h4>This Month</h4>
-                            <div class="metric-value">LKR 2,485,900</div>
-                            <div class="metric-sub">+6% vs last month</div>
+                            <div class="metric-value" id="monthSalesAmount">LKR 0.00</div>
+                            <div class="metric-sub" id="monthSalesSub">Live monthly total</div>
                         </div>
                         <div class="metric-card">
                             <h4>Credit Collected (Month)</h4>
-                            <div class="metric-value">LKR 410,200</div>
+                            <div class="metric-value" id="creditCollectedAmount">LKR 0.00</div>
                             <div class="metric-sub">Collections to date</div>
                         </div>
                         <div class="metric-card">
                             <h4>Outstanding Credit</h4>
-                            <div class="metric-value">LKR 188,450</div>
+                            <div class="metric-value" id="outstandingCreditAmount">LKR 0.00</div>
                             <div class="metric-sub">Requires follow-up</div>
                         </div>
                     </div>
@@ -156,30 +169,9 @@ $pageSubtitle = 'View sales insights and add new sales.';
                                 <th>Balance</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="salesByDayBody">
                             <tr>
-                                <td>2026-02-23</td>
-                                <td>LKR 128,450</td>
-                                <td>86</td>
-                                <td>LKR 92,600</td>
-                                <td>LKR 35,850</td>
-                                <td>LKR 92,600</td>
-                            </tr>
-                            <tr>
-                                <td>2026-02-22</td>
-                                <td>LKR 118,120</td>
-                                <td>79</td>
-                                <td>LKR 90,300</td>
-                                <td>LKR 27,820</td>
-                                <td>LKR 90,300</td>
-                            </tr>
-                            <tr>
-                                <td>2026-02-21</td>
-                                <td>LKR 101,400</td>
-                                <td>73</td>
-                                <td>LKR 78,900</td>
-                                <td>LKR 22,500</td>
-                                <td>LKR 78,900</td>
+                                <td colspan="6" style="text-align: center; color: #7a86ad;">Loading sales...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -218,18 +210,38 @@ $pageSubtitle = 'View sales insights and add new sales.';
             }
         });
 
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
         const searchOverlay = document.getElementById('searchOverlay');
         const searchModalInput = document.getElementById('globalSearchModal');
         const searchTrigger = document.getElementById('searchTrigger');
         const searchClose = document.getElementById('searchClose');
+
+        const API_BASE_URL = 'http://localhost:3000/api';
+        const SALES_API = `${API_BASE_URL}/sales`;
+        const SALES_SUMMARY_API = `${SALES_API}/summary`;
+
+        const rangeButtons = document.querySelectorAll('.pill[data-range]');
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const statusFilter = document.getElementById('statusFilter');
+        const paymentFilter = document.getElementById('paymentFilter');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const salesByDayBody = document.getElementById('salesByDayBody');
+
+        const dailySalesAmount = document.getElementById('dailySalesAmount');
+        const dailySalesSub = document.getElementById('dailySalesSub');
+        const actualSalesAmount = document.getElementById('actualSalesAmount');
+        const actualSalesSub = document.getElementById('actualSalesSub');
+        const creditSalesAmount = document.getElementById('creditSalesAmount');
+        const dailyBalanceAmount = document.getElementById('dailyBalanceAmount');
+        const weekSalesAmount = document.getElementById('weekSalesAmount');
+        const weekSalesSub = document.getElementById('weekSalesSub');
+        const monthSalesAmount = document.getElementById('monthSalesAmount');
+        const monthSalesSub = document.getElementById('monthSalesSub');
+        const creditCollectedAmount = document.getElementById('creditCollectedAmount');
+        const outstandingCreditAmount = document.getElementById('outstandingCreditAmount');
+
+        let activeRange = 'today';
 
         function openSearchModal() {
             if (!searchOverlay || !searchModalInput) {
@@ -281,6 +293,255 @@ $pageSubtitle = 'View sales insights and add new sales.';
                 closeSearchModal();
             }
         });
+
+        function formatLkr(amount) {
+            const value = Number(amount || 0);
+            return `LKR ${value.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })}`;
+        }
+
+        function toDateOnly(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function parseSaleDate(saleDate) {
+            return new Date(saleDate);
+        }
+
+        function setActiveRange(range) {
+            activeRange = range;
+            rangeButtons.forEach(button => {
+                button.classList.toggle('active', button.getAttribute('data-range') === range);
+            });
+        }
+
+        function getDateRange() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            if (activeRange === 'today') {
+                const date = toDateOnly(today);
+                return { start: date, end: date };
+            }
+
+            if (activeRange === 'week') {
+                const start = new Date(today);
+                start.setDate(today.getDate() - 6);
+                return { start: toDateOnly(start), end: toDateOnly(today) };
+            }
+
+            if (activeRange === 'month') {
+                const start = new Date(now.getFullYear(), now.getMonth(), 1);
+                const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                return { start: toDateOnly(start), end: toDateOnly(end) };
+            }
+
+            if (startDateInput.value || endDateInput.value) {
+                return {
+                    start: startDateInput.value || undefined,
+                    end: endDateInput.value || undefined,
+                };
+            }
+
+            return {};
+        }
+
+        function renderSalesByDay(sales) {
+            if (!sales || sales.length === 0) {
+                salesByDayBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #7a86ad;">No sales found for selected filters.</td></tr>';
+                return;
+            }
+
+            const groupedByDay = new Map();
+
+            sales.forEach(sale => {
+                const dateKey = toDateOnly(parseSaleDate(sale.sales_date));
+                const total = Number(sale.total_amount || 0);
+                const isActual = ['cash', 'card'].includes((sale.payment_method || '').toLowerCase());
+
+                if (!groupedByDay.has(dateKey)) {
+                    groupedByDay.set(dateKey, {
+                        date: dateKey,
+                        total: 0,
+                        actual: 0,
+                        transactions: 0,
+                    });
+                }
+
+                const day = groupedByDay.get(dateKey);
+                day.total += total;
+                day.transactions += 1;
+                if (isActual) {
+                    day.actual += total;
+                }
+            });
+
+            const rows = Array.from(groupedByDay.values()).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 20);
+
+            salesByDayBody.innerHTML = rows.map(day => {
+                const credit = day.total - day.actual;
+                return `
+                    <tr>
+                        <td>${day.date}</td>
+                        <td>${formatLkr(day.total)}</td>
+                        <td>${day.transactions}</td>
+                        <td>${formatLkr(day.actual)}</td>
+                        <td>${formatLkr(credit)}</td>
+                        <td>${formatLkr(day.actual)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateMetricCards(sales, summary) {
+            const todayKey = toDateOnly(new Date());
+            const now = new Date();
+
+            const todaySales = sales.filter(sale => toDateOnly(parseSaleDate(sale.sales_date)) === todayKey);
+            const todayTotal = todaySales.reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
+            const todayActual = todaySales
+                .filter(sale => ['cash', 'card'].includes((sale.payment_method || '').toLowerCase()))
+                .reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
+            const todayCredit = Math.max(0, todayTotal - todayActual);
+
+            dailySalesAmount.textContent = formatLkr(todayTotal);
+            dailySalesSub.textContent = `${todaySales.length} transactions today`;
+            actualSalesAmount.textContent = formatLkr(todayActual);
+            actualSalesSub.textContent = `${todayTotal > 0 ? ((todayActual / todayTotal) * 100).toFixed(1) : '0.0'}% of daily total`;
+            creditSalesAmount.textContent = formatLkr(todayCredit);
+            dailyBalanceAmount.textContent = formatLkr(todayActual);
+
+            const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
+            const weekSales = sales.filter(sale => parseSaleDate(sale.sales_date) >= weekStart);
+            const weekTotal = weekSales.reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
+            const weekAverage = weekTotal / 7;
+            weekSalesAmount.textContent = formatLkr(weekTotal);
+            weekSalesSub.textContent = `Average ${formatLkr(weekAverage)} per day`;
+
+            const monthSales = sales.filter(sale => {
+                const date = parseSaleDate(sale.sales_date);
+                return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+            });
+
+            const monthTotal = monthSales.reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
+            const monthActual = monthSales
+                .filter(sale => ['cash', 'card'].includes((sale.payment_method || '').toLowerCase()))
+                .reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
+            const monthCredit = Math.max(0, monthTotal - monthActual);
+
+            monthSalesAmount.textContent = formatLkr(monthTotal);
+            monthSalesSub.textContent = `Selected range revenue: ${formatLkr(summary.totalRevenue || 0)}`;
+            creditCollectedAmount.textContent = formatLkr(monthActual);
+            outstandingCreditAmount.textContent = formatLkr(monthCredit);
+        }
+
+        function buildQueryParams() {
+            const params = new URLSearchParams();
+            params.set('page', '1');
+            params.set('limit', '200');
+
+            const dateRange = getDateRange();
+            if (dateRange.start) {
+                params.set('start_date', dateRange.start);
+            }
+            if (dateRange.end) {
+                params.set('end_date', dateRange.end);
+            }
+            if (statusFilter.value) {
+                params.set('status', statusFilter.value);
+            }
+            if (paymentFilter.value) {
+                params.set('payment_method', paymentFilter.value);
+            }
+
+            return params;
+        }
+
+        async function loadSalesDashboard() {
+            try {
+                const params = buildQueryParams();
+                const [salesResponse, summaryResponse] = await Promise.all([
+                    fetch(`${SALES_API}?${params.toString()}`),
+                    fetch(`${SALES_SUMMARY_API}?${params.toString()}`),
+                ]);
+
+                const salesResult = await salesResponse.json();
+                const summaryResult = await summaryResponse.json();
+
+                if (!salesResponse.ok) {
+                    throw new Error(salesResult.error || salesResult.message || 'Failed to load sales list');
+                }
+
+                if (!summaryResponse.ok) {
+                    throw new Error(summaryResult.error || summaryResult.message || 'Failed to load sales summary');
+                }
+
+                const salesRecords = salesResult.sales || [];
+                const summary = summaryResult.summary || {};
+
+                renderSalesByDay(salesRecords);
+                updateMetricCards(salesRecords, summary);
+            } catch (error) {
+                salesByDayBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #d32f2f;">${error.message}</td></tr>`;
+            }
+        }
+
+        rangeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                setActiveRange(button.getAttribute('data-range'));
+                loadSalesDashboard();
+            });
+        });
+
+        [startDateInput, endDateInput, statusFilter, paymentFilter].forEach(element => {
+            element.addEventListener('change', function() {
+                setActiveRange('custom');
+                loadSalesDashboard();
+            });
+        });
+
+        if (monthSelect && yearSelect) {
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            const now = new Date();
+            monthSelect.innerHTML = monthNames.map(name => `<option value="${name}">${name}</option>`).join('');
+            yearSelect.innerHTML = [now.getFullYear(), now.getFullYear() - 1, now.getFullYear() - 2]
+                .map(year => `<option value="${year}">${year}</option>`)
+                .join('');
+            monthSelect.value = monthNames[now.getMonth()];
+            yearSelect.value = String(now.getFullYear());
+
+            const setCustomRangeFromMonth = function() {
+                const selectedMonth = monthNames.indexOf(monthSelect.value);
+                const selectedYear = Number(yearSelect.value);
+                if (selectedMonth < 0 || Number.isNaN(selectedYear)) {
+                    return;
+                }
+
+                const start = new Date(selectedYear, selectedMonth, 1);
+                const end = new Date(selectedYear, selectedMonth + 1, 0);
+                startDateInput.value = toDateOnly(start);
+                endDateInput.value = toDateOnly(end);
+                setActiveRange('custom');
+                loadSalesDashboard();
+            };
+
+            monthSelect.addEventListener('change', setCustomRangeFromMonth);
+            yearSelect.addEventListener('change', setCustomRangeFromMonth);
+        }
+
+        const today = toDateOnly(new Date());
+        startDateInput.value = today;
+        endDateInput.value = today;
+        loadSalesDashboard();
     </script>
 </body>
 </html>

@@ -186,6 +186,11 @@ $pageTitle = 'Add Product';
                         </div>
                         <div class="form-grid">
                             <div class="form-field">
+                                <label for="quantity_in_stock">Quantity in Stock</label>
+                                <input type="number" id="quantity_in_stock" name="quantity_in_stock" placeholder="1" min="0" value="1">
+                                <div class="form-hint">Initial available quantity for this product</div>
+                            </div>
+                            <div class="form-field">
                                 <label for="minimum_stock_level">Minimum Stock Level</label>
                                 <input type="number" id="minimum_stock_level" name="minimum_stock_level" placeholder="5" min="0" value="5">
                                 <div class="form-hint">Alert when stock is below this level</div>
@@ -477,6 +482,7 @@ $pageTitle = 'Add Product';
                         profit_margin: null,  // Will be calculated by API, but include it
                         supplier: document.getElementById('supplier')?.value?.trim() || null,
                         minimum_stock_level: document.getElementById('minimum_stock_level')?.value ? parseInt(document.getElementById('minimum_stock_level').value) : null,
+                        quantity_in_stock: document.getElementById('quantity_in_stock')?.value ? parseInt(document.getElementById('quantity_in_stock').value, 10) : null,
                         storage_location: document.getElementById('storage_location')?.value?.trim() || null,
                         date_added: document.getElementById('date_added')?.value || null,
                         status: document.getElementById('status')?.value || 'active'
