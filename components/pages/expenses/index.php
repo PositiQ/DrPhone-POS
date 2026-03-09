@@ -400,3 +400,497 @@ $pageSubtitle = 'Manage shop expenses and track spending.';
     </script>
 </body>
 </html>
+            font-size: 18px;
+            color: #1a237e;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <?php include('../../UI/sidebar.php'); ?>
+
+    <div class="main-content">
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="header-left">
+                <i class="fas fa-bars menu-toggle" id="menuToggle" onclick="toggleSidebar()"></i>
+                <h1 class="page-title">Expenses</h1>
+            </div>
+
+            <div class="header-center">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." readonly>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="header-icon">
+                    <i class="far fa-bell"></i>
+                    <span class="badge">5</span>
+                </div>
+
+                <div class="header-icon">
+                    <i class="far fa-envelope"></i>
+                    <span class="badge">3</span>
+                </div>
+
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=1a237e&color=ffd700&bold=true" alt="User">
+                    <div class="user-info">
+                        <h4>Admin User</h4>
+                        <p>Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Page Header -->
+            <div style="margin-bottom: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h2 style="margin: 0; font-size: 24px; color: #1a237e; font-weight: 700;">Expenses</h2>
+                    <button class="button-primary" id="addExpenseBtn" style="cursor: pointer;">
+                        <i class="fas fa-plus"></i> Add Expense
+                    </button>
+                </div>
+                <p style="margin: 0; font-size: 13px; color: #7a86ad;">Track and manage business expenses</p>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="cards-row">
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label">Total Expenses</div>
+                        <div class="metric-value" id="totalExpenses">LKR 0.00</div>
+                        <div class="metric-change">All approved expenses</div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label">Pending Expenses</div>
+                        <div class="metric-value" id="pendingCount">0</div>
+                        <div class="metric-change">Awaiting approval</div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label">Monthly Average</div>
+                        <div class="metric-value" id="monthlyAvg">LKR 0.00</div>
+                        <div class="metric-change">Per expense</div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <!-- Filter Section -->
+            <div class="filter-card">
+                <div style="margin-bottom: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">From Date</label>
+                            <input type="date" id="filterStartDate" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">To Date</label>
+                            <input type="date" id="filterEndDate" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">Category</label>
+                            <select id="filterCategory" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                                <option value="">All Categories</option>
+                                <option value="rent">Rent</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="salary">Salary</option>
+                                <option value="supplies">Supplies</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">Status</label>
+                            <select id="filterStatus" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                                <option value="">All</option>
+                                <option value="approved">Approved</option>
+                                <option value="pending">Pending</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="button-primary" onclick="filterExpenses()" style="flex: 1; cursor: pointer;">
+                            <i class="fas fa-search"></i> Filter
+                        </button>
+                        <button class="button-secondary" onclick="resetFilters()" style="flex: 1; cursor: pointer;">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <!-- Expenses Section -->
+            <div class="recent-orders">
+                <div class="section-header">
+                    <h3>All Expenses</h3>
+                    <span id="expenseCount" style="font-size: 13px; color: #7a86ad;"></span>
+                </div>
+
+                <div id="expensesContainer">
+                    <div style="text-align: center; padding: 40px; color: #999;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading expenses...
+                    </div>
+                </div>
+
+                <div id="paginationContainer" style="display: flex; justify-content: center; gap: 5px; margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div id="addExpenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Expense</h2>
+                <button class="close-btn" onclick="closeAddExpenseModal()">×</button>
+            </div>
+
+            <form id="addExpenseForm" onsubmit="saveExpense(event)">
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">Category</label>
+                    <select id="expCategory" required style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                        <option value="">Select Category</option>
+                        <option value="rent">Rent</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="salary">Salary</option>
+                        <option value="supplies">Supplies</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">Amount (LKR)</label>
+                    <input type="number" id="expAmount" step="0.01" min="0" required placeholder="0.00" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">Date</label>
+                    <input type="date" id="expDate" required style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">Description</label>
+                    <input type="text" id="expDescription" placeholder="Enter description" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 12px; font-weight: 600; color: #7a86ad; text-transform: uppercase; margin-bottom: 6px; display: block;">Payment Method</label>
+                    <select id="expPaymentMethod" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;">
+                        <option value="cash">Cash</option>
+                        <option value="card">Card</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="check">Check</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="button-primary" style="flex: 1; cursor: pointer;">
+                        <i class="fas fa-save"></i> Save Expense
+                    </button>
+                    <button type="button" class="button-secondary" style="flex: 1; cursor: pointer;" onclick="closeAddExpenseModal()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+        const EXPENSE_API = `${API_BASE_URL}/expenses`;
+        let currentPage = 1;
+        let totalPages = 1;
+
+        // Format currency
+        function formatLkr(value) {
+            return `LKR ${Number(value || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        // Format date
+        function formatDate(dateValue) {
+            const date = new Date(dateValue);
+            if (Number.isNaN(date.getTime())) {
+                return '-';
+            }
+            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
+        }
+
+        // Get category color
+        function getCategoryColor(category) {
+            const colors = {
+                'rent': '#3f51b5',
+                'utilities': '#ff9800',
+                'salary': '#d32f2f',
+                'supplies': '#2e7d32',
+                'maintenance': '#9c27b0',
+                'other': '#795548',
+            };
+            return colors[category] || '#999';
+        }
+
+        // Load summary
+        async function loadSummary() {
+            try {
+                const response = await fetch(`${EXPENSE_API}/summary`);
+                const result = await response.json();
+
+                if (!result.success) return;
+
+                const summaryData = result.data;
+                let totalAmount = 0;
+                let pendingCount = 0;
+
+                summaryData.forEach(item => {
+                    if (item.status === 'approved') {
+                        totalAmount += parseFloat(item.total || 0);
+                    }
+                    if (item.status === 'pending') {
+                        pendingCount += item.count;
+                    }
+                });
+
+                document.getElementById('totalExpenses').textContent = formatLkr(totalAmount);
+                document.getElementById('pendingCount').textContent = pendingCount;
+                document.getElementById('monthlyAvg').textContent = formatLkr(summaryData.length > 0 ? totalAmount / summaryData.length : 0);
+            } catch (error) {
+                console.error('Error loading summary:', error);
+            }
+        }
+
+        // Load expenses
+        async function loadExpenses(page = 1) {
+            try {
+                const startDate = document.getElementById('filterStartDate').value;
+                const endDate = document.getElementById('filterEndDate').value;
+                const category = document.getElementById('filterCategory').value;
+                const status = document.getElementById('filterStatus').value;
+
+                let url = `${EXPENSE_API}?page=${page}&limit=20`;
+                if (startDate) url += `&startDate=${startDate}`;
+                if (endDate) url += `&endDate=${endDate}`;
+                if (category) url += `&category=${category}`;
+                if (status) url += `&status=${status}`;
+
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to load expenses');
+                }
+
+                const expenses = result.data;
+                const pagination = result.pagination;
+                currentPage = pagination.page;
+                totalPages = pagination.pages;
+
+                const container = document.getElementById('expensesContainer');
+
+                if (!expenses.length) {
+                    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #999; background: #f9f9f9; border-radius: 6px; border: 1px dashed #e0e0e0;"><i class="fas fa-inbox"></i> No expenses found</div>';
+                } else {
+                    const rows = expenses.map(exp => {
+                        const categoryColor = getCategoryColor(exp.category);
+                        const categoryCode = exp.category.charAt(0).toUpperCase();
+                        let statusClass = 'status-pending';
+                        if (exp.status === 'approved') statusClass = 'status-paid';
+                        else if (exp.status === 'rejected') statusClass = 'status-processing';
+
+                        return `
+                            <tr>
+                                <td>${formatDate(exp.expense_date)}</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: ${categoryColor}; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px;">${categoryCode}</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: #1a237e;">${exp.category.toUpperCase()}</div>
+                                            <div style="font-size: 12px; color: #999;">${exp.description || '-'}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${exp.payment_method.replace(/_/g, ' ').toUpperCase()}</td>
+                                <td style="color: #d32f2f; font-weight: 600;">-${formatLkr(exp.amount)}</td>
+                                <td><span class="status-badge ${statusClass}">${exp.status.toUpperCase()}</span></td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                    container.innerHTML = `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Payment Method</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                    `;
+                }
+
+                document.getElementById('expenseCount').textContent = `${pagination.total} expenses found`;
+                updatePagination();
+            } catch (error) {
+                console.error('Error loading expenses:', error);
+                document.getElementById('expensesContainer').innerHTML = `<div style="text-align: center; padding: 40px; color: #d32f2f; background: #ffebee; border-radius: 6px;"><i class="fas fa-exclamation-circle"></i> ${error.message}</div>`;
+            }
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const container = document.getElementById('paginationContainer');
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            if (currentPage > 1) {
+                html += `<button style="padding: 6px 12px; border: 1px solid #e0e0e0; background: white; cursor: pointer; border-radius: 4px; font-size: 12px;" onclick="loadExpenses(${currentPage - 1})"><i class="fas fa-chevron-left"></i></button>`;
+            }
+
+            for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+                const activeStyle = i === currentPage ? 'background: #3f51b5; color: white; border-color: #3f51b5;' : '';
+                html += `<button style="padding: 6px 12px; border: 1px solid #e0e0e0; background: white; cursor: pointer; border-radius: 4px; font-size: 12px; ${activeStyle}" onclick="loadExpenses(${i})">${i}</button>`;
+            }
+
+            if (currentPage < totalPages) {
+                html += `<button style="padding: 6px 12px; border: 1px solid #e0e0e0; background: white; cursor: pointer; border-radius: 4px; font-size: 12px;" onclick="loadExpenses(${currentPage + 1})"><i class="fas fa-chevron-right"></i></button>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Filter expenses
+        function filterExpenses() {
+            loadExpenses(1);
+        }
+
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('filterStartDate').value = '';
+            document.getElementById('filterEndDate').value = '';
+            document.getElementById('filterCategory').value = '';
+            document.getElementById('filterStatus').value = '';
+            loadExpenses(1);
+        }
+
+        // Open add expense modal
+        document.getElementById('addExpenseBtn')?.addEventListener('click', function() {
+            document.getElementById('expDate').valueAsDate = new Date();
+            document.getElementById('addExpenseModal').classList.add('active');
+        });
+
+        // Close modal
+        function closeAddExpenseModal() {
+            document.getElementById('addExpenseModal').classList.remove('active');
+            document.getElementById('addExpenseForm').reset();
+        }
+
+        // Save expense
+        async function saveExpense(event) {
+            event.preventDefault();
+
+            try {
+                const payload = {
+                    category: document.getElementById('expCategory').value,
+                    amount: parseFloat(document.getElementById('expAmount').value),
+                    expense_date: document.getElementById('expDate').value,
+                    description: document.getElementById('expDescription').value,
+                    payment_method: document.getElementById('expPaymentMethod').value,
+                };
+
+                const response = await fetch(EXPENSE_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to save expense');
+                }
+
+                alert('Expense saved successfully!');
+                closeAddExpenseModal();
+                loadSummary();
+                loadExpenses(1);
+            } catch (error) {
+                console.error('Error saving expense:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('addExpenseModal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeAddExpenseModal();
+            }
+        });
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('active');
+            }
+        }
+
+        // Load page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSummary();
+            loadExpenses(1);
+        });
+    </script>
+</body>
+</html>
