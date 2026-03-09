@@ -79,7 +79,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         </select>
                     </div>
                     <div class="toolbar-actions">
-                        <button class="button-secondary" type="button" onclick="window.location.href='stock-transfer.php'">
+                        <button class="button-secondary" type="button" onclick="openTransferDialog()">
                             <i class="fas fa-exchange-alt"></i>
                             Transfer Stock
                         </button>
@@ -159,7 +159,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                                 <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock">
+                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913547821', 'iPhone 14 Pro', '256GB · Space Black')">
                                             <i class="fas fa-exchange-alt"></i>
                                         </button>
                                         <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
@@ -215,7 +215,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                                 <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock">
+                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913547233', 'Google Pixel 7', '128GB · Snow')">
                                             <i class="fas fa-exchange-alt"></i>
                                         </button>
                                         <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
@@ -299,7 +299,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                                 <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock">
+                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913549876', 'OnePlus 11', '256GB · Eternal Green')">
                                             <i class="fas fa-exchange-alt"></i>
                                         </button>
                                         <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
@@ -355,7 +355,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                                 <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
                                 <td>
                                     <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock">
+                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913549456', 'Vivo V27 Pro', '256GB · Magic Blue')">
                                             <i class="fas fa-exchange-alt"></i>
                                         </button>
                                         <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
@@ -367,6 +367,83 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Transfer Dialog -->
+    <div class="search-overlay" id="transferDialog" role="dialog" aria-modal="true" aria-label="Stock Transfer">
+        <div class="search-dialog" role="document" style="max-width: 550px; padding: 0;">
+            <div class="search-dialog-header" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; padding: 20px; border-radius: 12px 12px 0 0;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-exchange-alt" style="font-size: 20px;"></i>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Transfer Stock</h3>
+                </div>
+                <button class="search-close" type="button" onclick="closeTransferDialog()" aria-label="Close dialog" style="color: white;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div style="padding: 24px;">
+                <form id="transferForm" onsubmit="handleTransferSubmit(event)">
+                    <!-- Transfer Location -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                            <i class="fas fa-map-marker-alt" style="margin-right: 6px; color: #7a86ad;"></i>
+                            Transfer Location
+                        </label>
+                        <select id="transferLocation" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                            <option value="">Select destination shop...</option>
+                            <option value="main">Main Shop</option>
+                            <option value="colombo">Colombo Branch</option>
+                            <option value="kandy">Kandy Branch</option>
+                            <option value="galle">Galle Branch</option>
+                        </select>
+                    </div>
+
+                    <!-- Transfer Item with Search -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                            <i class="fas fa-mobile-alt" style="margin-right: 6px; color: #7a86ad;"></i>
+                            Transfer Item
+                        </label>
+                        <div style="position: relative;">
+                            <input type="text" id="productSearch" placeholder="Search by product name, IMEI last 4 digits, or full IMEI..." autocomplete="off" style="width: 100%; padding: 12px 40px 12px 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'; showProductDropdown()" oninput="filterProducts()">
+                            <i class="fas fa-search" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #7a86ad; pointer-events: none;"></i>
+                            <input type="hidden" id="selectedProductId" required>
+                        </div>
+                        <div id="productDropdown" style="display: none; position: absolute; z-index: 1000; background: white; border: 2px solid #e0e7ff; border-radius: 8px; margin-top: 4px; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: calc(100% - 48px);">
+                            <!-- Product options will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Current Stock Info -->
+                    <div id="stockInfo" style="display: none; margin-bottom: 20px; padding: 12px; background: #f4f7fc; border-radius: 8px; border-left: 4px solid #2196f3;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 13px; color: #7a86ad;">Current Stock</span>
+                            <span id="currentStock" style="font-size: 16px; font-weight: 700; color: #1a237e;">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Quantity -->
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                            <i class="fas fa-boxes" style="margin-right: 6px; color: #7a86ad;"></i>
+                            Transfer Quantity
+                        </label>
+                        <input type="number" id="transferQuantity" min="1" required placeholder="Enter quantity" style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button type="button" onclick="closeTransferDialog()" style="padding: 12px 24px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
+                            Cancel
+                        </button>
+                        <button type="submit" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            <i class="fas fa-check" style="margin-right: 6px;"></i>
+                            Transfer Stock
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -385,6 +462,18 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
     </div>
 
     <script>
+        // Sample product data with stock information
+        const productsData = [
+            { id: 'P001', name: 'iPhone 14 Pro', variant: '256GB · Space Black', imei: '352913547821', stock: 5, price: 'LKR 289,000' },
+            { id: 'P002', name: 'Samsung S23 Ultra', variant: '512GB · Phantom Black', imei: '352913547945', stock: 3, price: 'LKR 245,000' },
+            { id: 'P003', name: 'Google Pixel 7', variant: '128GB · Snow', imei: '352913547233', stock: 8, price: 'LKR 185,000' },
+            { id: 'P004', name: 'iPhone 13', variant: '128GB · Midnight', imei: '352913548765', stock: 12, price: 'LKR 215,000' },
+            { id: 'P005', name: 'Xiaomi 13', variant: '256GB · Alpine Green', imei: '352913547108', stock: 15, price: 'LKR 165,000' },
+            { id: 'P006', name: 'OnePlus 11', variant: '256GB · Eternal Green', imei: '352913549876', stock: 6, price: 'LKR 198,000' },
+            { id: 'P007', name: 'Samsung A54', variant: '256GB · Awesome Violet', imei: '352913549123', stock: 20, price: 'LKR 125,000' },
+            { id: 'P008', name: 'Vivo V27 Pro', variant: '256GB · Magic Blue', imei: '352913549456', stock: 10, price: 'LKR 145,000' }
+        ];
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
@@ -553,6 +642,169 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 pills.forEach(p => p.classList.remove('active'));
                 this.classList.add('active');
             });
+        });
+
+        // Stock Transfer Dialog Functions
+        function openTransferDialog(imei = '', productName = '', variant = '') {
+            const dialog = document.getElementById('transferDialog');
+            const productSearch = document.getElementById('productSearch');
+            const selectedProductId = document.getElementById('selectedProductId');
+            
+            dialog.classList.add('active');
+            
+            // If product details are provided, pre-fill the search
+            if (imei && productName) {
+                const product = productsData.find(p => p.imei === imei);
+                if (product) {
+                    productSearch.value = `${product.name} - ${product.variant} (IMEI: ${product.imei})`;
+                    selectedProductId.value = product.id;
+                    updateStockInfo(product);
+                }
+            }
+            
+            // Populate product dropdown initially
+            populateProductDropdown(productsData);
+        }
+
+        function closeTransferDialog() {
+            const dialog = document.getElementById('transferDialog');
+            const form = document.getElementById('transferForm');
+            const productDropdown = document.getElementById('productDropdown');
+            
+            dialog.classList.remove('active');
+            form.reset();
+            document.getElementById('selectedProductId').value = '';
+            document.getElementById('stockInfo').style.display = 'none';
+            productDropdown.style.display = 'none';
+        }
+
+        function showProductDropdown() {
+            const dropdown = document.getElementById('productDropdown');
+            dropdown.style.display = 'block';
+            populateProductDropdown(productsData);
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('productSearch').value.toLowerCase();
+            
+            if (searchTerm.length === 0) {
+                populateProductDropdown(productsData);
+                return;
+            }
+            
+            const filtered = productsData.filter(product => {
+                const last4Digits = product.imei.slice(-4);
+                return product.name.toLowerCase().includes(searchTerm) ||
+                       product.variant.toLowerCase().includes(searchTerm) ||
+                       product.imei.includes(searchTerm) ||
+                       last4Digits.includes(searchTerm);
+            });
+            
+            populateProductDropdown(filtered);
+        }
+
+        function populateProductDropdown(products) {
+            const dropdown = document.getElementById('productDropdown');
+            
+            if (products.length === 0) {
+                dropdown.innerHTML = '<div style="padding: 16px; text-align: center; color: #7a86ad; font-size: 14px;"><i class="fas fa-inbox" style="margin-right: 8px;"></i>No products found</div>';
+                return;
+            }
+            
+            dropdown.innerHTML = products.map(product => `
+                <div class="product-option" onclick="selectProduct('${product.id}')" style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f4f7fc; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <div style="font-weight: 600; color: #1a237e; margin-bottom: 4px;">${product.name}</div>
+                            <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">${product.variant}</div>
+                            <div style="font-size: 11px; color: #7a86ad;">IMEI: <code style="background: #f4f7fc; padding: 2px 6px; border-radius: 4px; font-weight: 600;">${product.imei}</code></div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">Stock</div>
+                            <div style="font-weight: 700; color: ${product.stock > 5 ? '#0d6832' : '#b45f06'}; font-size: 16px;">${product.stock}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectProduct(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+            
+            const productSearch = document.getElementById('productSearch');
+            const selectedProductId = document.getElementById('selectedProductId');
+            const productDropdown = document.getElementById('productDropdown');
+            const transferQuantity = document.getElementById('transferQuantity');
+            
+            productSearch.value = `${product.name} - ${product.variant} (IMEI: ${product.imei})`;
+            selectedProductId.value = product.id;
+            productDropdown.style.display = 'none';
+            
+            // Update stock info and set default quantity
+            updateStockInfo(product);
+            transferQuantity.value = product.stock;
+            transferQuantity.max = product.stock;
+        }
+
+        function updateStockInfo(product) {
+            const stockInfo = document.getElementById('stockInfo');
+            const currentStock = document.getElementById('currentStock');
+            
+            currentStock.textContent = product.stock;
+            stockInfo.style.display = 'block';
+        }
+
+        function handleTransferSubmit(event) {
+            event.preventDefault();
+            
+            const location = document.getElementById('transferLocation').value;
+            const productId = document.getElementById('selectedProductId').value;
+            const quantity = document.getElementById('transferQuantity').value;
+            
+            const product = productsData.find(p => p.id === productId);
+            const locationText = document.getElementById('transferLocation').selectedOptions[0].text;
+            
+            // Validate quantity
+            if (parseInt(quantity) > product.stock) {
+                alert('Transfer quantity cannot exceed available stock!');
+                return;
+            }
+            
+            // Here you would typically make an API call to process the transfer
+            console.log('Transfer Details:', {
+                location,
+                locationText,
+                product,
+                quantity
+            });
+            
+            alert(`Stock transfer initiated!\n\nProduct: ${product.name}\nQuantity: ${quantity}\nDestination: ${locationText}\n\nTransfer will be processed shortly.`);
+            
+            closeTransferDialog();
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const productSearch = document.getElementById('productSearch');
+            const productDropdown = document.getElementById('productDropdown');
+            const transferDialog = document.getElementById('transferDialog');
+            
+            if (transferDialog && transferDialog.classList.contains('active')) {
+                if (!productSearch.contains(event.target) && !productDropdown.contains(event.target)) {
+                    productDropdown.style.display = 'none';
+                }
+            }
+        });
+
+        // Close dialog on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const transferDialog = document.getElementById('transferDialog');
+                if (transferDialog && transferDialog.classList.contains('active')) {
+                    closeTransferDialog();
+                }
+            }
         });
     </script>
 </body>
