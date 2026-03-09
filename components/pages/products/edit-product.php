@@ -79,16 +79,23 @@ $pageTitle = 'Edit Product';
                                 <input type="text" id="productName" name="productName" required>
                             </div>
                             <div class="form-field">
-                                <label for="brand">Brand <span style="color: #f44336;">*</span></label>
-                                <input type="text" id="brand" name="brand" required>
+                                <label for="product_type">Product Type <span style="color: #f44336;">*</span></label>
+                                <select id="product_type" name="product_type" required>
+                                    <option value="phone">Phone</option>
+                                    <option value="accessory">Accessory</option>
+                                </select>
                             </div>
                             <div class="form-field">
-                                <label for="price">Price (LKR) <span style="color: #f44336;">*</span></label>
-                                <input type="number" id="price" name="price" step="0.01" required>
+                                <label for="brand">Brand <span style="color: #f44336;">*</span></label>
+                                <input type="text" id="brand" name="brand" required>
                             </div>
                         </div>
 
                         <div class="form-grid">
+                            <div class="form-field">
+                                <label for="price">Price (LKR) <span style="color: #f44336;">*</span></label>
+                                <input type="number" id="price" name="price" step="0.01" required>
+                            </div>
                             <div class="form-field">
                                 <label for="model">Model</label>
                                 <input type="text" id="model" name="model">
@@ -97,6 +104,9 @@ $pageTitle = 'Edit Product';
                                 <label for="color">Color</label>
                                 <input type="text" id="color" name="color">
                             </div>
+                        </div>
+
+                        <div class="form-grid" id="phoneSpecificFields">
                             <div class="form-field">
                                 <label for="capacity">Capacity</label>
                                 <input type="text" id="capacity" name="capacity">
@@ -105,17 +115,17 @@ $pageTitle = 'Edit Product';
                                 <label for="condition">Condition</label>
                                 <input type="text" id="condition" name="condition">
                             </div>
-                        </div>
-
-                        <div class="form-grid">
                             <div class="form-field">
                                 <label for="warrenty">Warranty</label>
                                 <input type="text" id="warrenty" name="warrenty">
                             </div>
                             <div class="form-field">
-                                <label for="IMEI">IMEI</label>
+                                <label for="IMEI">IMEI <span id="imeiRequired"></span></label>
                                 <input type="text" id="IMEI" name="IMEI">
                             </div>
+                        </div>
+
+                        <div class="form-grid">
                             <div class="form-field">
                                 <label for="barcode">Barcode</label>
                                 <input type="text" id="barcode" name="barcode">
@@ -132,6 +142,84 @@ $pageTitle = 'Edit Product';
                                 <textarea id="description" name="description" rows="4"></textarea>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Pricing & SKU</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="sku">SKU (Stock Keeping Unit) <span style="color: #f44336;">*</span></label>
+                                <input type="text" id="sku" name="sku" placeholder="e.g., SKU-IP14P-256" required>
+                                <div class="form-hint">Unique product identifier</div>
+                            </div>
+                            <div class="form-field">
+                                <label for="cost_price">Cost Price (LKR) <span style="color: #f44336;">*</span></label>
+                                <input type="number" id="cost_price" name="cost_price" placeholder="0.00" step="0.01" required>
+                                <div class="form-hint">Purchase/wholesale price</div>
+                            </div>
+                            <div class="form-field">
+                                <label for="selling_price">Selling Price (LKR) <span style="color: #f44336;">*</span></label>
+                                <input type="number" id="selling_price" name="selling_price" placeholder="0.00" step="0.01" required>
+                                <div class="form-hint">Retail price for customers</div>
+                            </div>
+                            <div class="form-field">
+                                <label for="profit_margin">Profit Margin</label>
+                                <input type="text" id="profit_margin" name="profit_margin" placeholder="Auto-calculated" readonly>
+                                <div class="form-hint">Calculated automatically</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Stock Management</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="quantity_in_stock">Quantity in Stock</label>
+                                <input type="number" id="quantity_in_stock" name="quantity_in_stock" placeholder="1" min="0">
+                                <div class="form-hint">Available quantity for this product</div>
+                            </div>
+                            <div class="form-field">
+                                <label for="minimum_stock_level">Minimum Stock Level</label>
+                                <input type="number" id="minimum_stock_level" name="minimum_stock_level" placeholder="5" min="0">
+                                <div class="form-hint">Alert when stock is below this level</div>
+                            </div>
+                            <div class="form-field">
+                                <label for="supplier">Supplier</label>
+                                <input type="text" id="supplier" name="supplier" placeholder="Supplier name">
+                            </div>
+                            <div class="form-field">
+                                <label for="storage_location">Storage Location</label>
+                                <input type="text" id="storage_location" name="storage_location" placeholder="e.g., Shelf A1">
+                            </div>
+                            <div class="form-field">
+                                <label for="date_added">Date Added</label>
+                                <input type="date" id="date_added" name="date_added">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Additional Settings</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="status">Stock Status</label>
+                                <select id="status" name="status">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="discontinued">Discontinued</option>
+                                    <option value="in_stock">In Stock</option>
+                                    <option value="sold">Sold</option>
+                                </select>
+                                <div class="form-hint">Current stock status</div>
+                            </div>
+                        </div>
+                    </div>
                     </div>
 
                     <div class="form-actions">
@@ -240,9 +328,58 @@ $pageTitle = 'Edit Product';
                 : '<i class="fas fa-save"></i> Save Changes';
         }
 
+        // Handle product type change
+        const productTypeSelect = document.getElementById('product_type');
+        const phoneSpecificFields = document.getElementById('phoneSpecificFields');
+        const imeiRequired = document.getElementById('imeiRequired');
+        const imeiInput = document.getElementById('IMEI');
+
+        function togglePhoneFields() {
+            const isPhone = productTypeSelect.value === 'phone';
+            
+            if (isPhone) {
+                phoneSpecificFields.style.display = 'grid';
+                imeiRequired.textContent = '*';
+                imeiInput.required = true;
+            } else {
+                phoneSpecificFields.style.display = 'none';
+                imeiRequired.textContent = '';
+                imeiInput.required = false;
+                imeiInput.value = '';
+            }
+        }
+
+        if (productTypeSelect) {
+            productTypeSelect.addEventListener('change', togglePhoneFields);
+        }
+
+        // Calculate profit margin
+        const costPrice = document.getElementById('cost_price');
+        const sellingPrice = document.getElementById('selling_price');
+        const profitMargin = document.getElementById('profit_margin');
+
+        function updateProfitMargin() {
+            const cost = parseFloat(costPrice.value) || 0;
+            const selling = parseFloat(sellingPrice.value) || 0;
+            
+            if (cost > 0 && selling > 0) {
+                const profit = selling - cost;
+                const margin = ((profit / selling) * 100).toFixed(2);
+                profitMargin.value = `${margin}% (LKR ${profit.toFixed(2)})`;
+            } else {
+                profitMargin.value = '';
+            }
+        }
+
+        if (costPrice && sellingPrice && profitMargin) {
+            costPrice.addEventListener('input', updateProfitMargin);
+            sellingPrice.addEventListener('input', updateProfitMargin);
+        }
+
         function fillForm(product) {
             document.getElementById('productId').value = product.id || '';
             document.getElementById('productName').value = product.productName || '';
+            document.getElementById('product_type').value = product.product_type || 'phone';
             document.getElementById('brand').value = product.brand || '';
             document.getElementById('price').value = product.price || '';
             document.getElementById('model').value = product.model || '';
@@ -254,6 +391,25 @@ $pageTitle = 'Edit Product';
             document.getElementById('barcode').value = product.barcode || '';
             document.getElementById('serialNumber').value = product.serialNumber || '';
             document.getElementById('description').value = product.description || '';
+            
+            // Fill stock/pricing fields
+            const stock = product.Product_Stock || {};
+            document.getElementById('sku').value = stock.sku || '';
+            document.getElementById('cost_price').value = stock.cost_price || '';
+            document.getElementById('selling_price').value = stock.selling_price || '';
+            document.getElementById('profit_margin').value = stock.profit_margin ? `${stock.profit_margin}%` : '';
+            document.getElementById('quantity_in_stock').value = stock.quantity_in_stock || '';
+            document.getElementById('minimum_stock_level').value = stock.minimum_stock_level || '';
+            document.getElementById('supplier').value = stock.supplier || '';
+            document.getElementById('storage_location').value = stock.storage_location || '';
+            document.getElementById('date_added').value = stock.date_added || '';
+            document.getElementById('status').value = stock.status || 'active';
+            
+            // Trigger the toggle to show/hide phone fields
+            togglePhoneFields();
+            
+            // Calculate profit margin on load
+            updateProfitMargin();
         }
 
         async function loadProduct() {
@@ -290,9 +446,11 @@ $pageTitle = 'Edit Product';
             event.preventDefault();
 
             const payload = {
+                // Product fields
                 productName: document.getElementById('productName').value.trim(),
                 brand: document.getElementById('brand').value.trim(),
                 price: parseFloat(document.getElementById('price').value),
+                product_type: document.getElementById('product_type').value,
                 model: document.getElementById('model').value.trim() || null,
                 color: document.getElementById('color').value.trim() || null,
                 capacity: document.getElementById('capacity').value.trim() || null,
@@ -301,7 +459,18 @@ $pageTitle = 'Edit Product';
                 IMEI: document.getElementById('IMEI').value.trim() || null,
                 barcode: document.getElementById('barcode').value.trim() || null,
                 serialNumber: document.getElementById('serialNumber').value.trim() || null,
-                description: document.getElementById('description').value.trim() || null
+                description: document.getElementById('description').value.trim() || null,
+                
+                // Stock/Pricing fields
+                sku: document.getElementById('sku').value.trim() || null,
+                cost_price: document.getElementById('cost_price').value ? parseFloat(document.getElementById('cost_price').value) : null,
+                selling_price: document.getElementById('selling_price').value ? parseFloat(document.getElementById('selling_price').value) : null,
+                quantity_in_stock: document.getElementById('quantity_in_stock').value ? parseInt(document.getElementById('quantity_in_stock').value) : null,
+                minimum_stock_level: document.getElementById('minimum_stock_level').value ? parseInt(document.getElementById('minimum_stock_level').value) : null,
+                supplier: document.getElementById('supplier').value.trim() || null,
+                storage_location: document.getElementById('storage_location').value.trim() || null,
+                date_added: document.getElementById('date_added').value || null,
+                status: document.getElementById('status').value
             };
 
             if (!payload.productName || !payload.brand || Number.isNaN(payload.price)) {

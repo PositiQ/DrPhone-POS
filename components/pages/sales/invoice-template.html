@@ -1,0 +1,74 @@
+<div class="invoice-container">
+    <div class="invoice-header">
+        <div class="shop-info">
+            <h1>PositiQ POS</h1>
+            <p>Mobile Phone & Accessories</p>
+            <p>Tel: +94 (0) 123 456 7890</p>
+            <p>Email: info@positiq.lk</p>
+        </div>
+        <div class="invoice-title">
+            <h2>INVOICE</h2>
+            <p>Invoice #: <strong id="tpl-invoice-number">-</strong></p>
+            <p>Date: <strong id="tpl-invoice-date">-</strong></p>
+        </div>
+    </div>
+
+    <div class="invoice-details">
+        <div class="detail-section">
+            <h3>Bill To</h3>
+            <p id="tpl-customer-name">-</p>
+            <p id="tpl-customer-phone">-</p>
+            <p id="tpl-customer-address">-</p>
+        </div>
+        <div class="detail-section">
+            <h3>Payment Details</h3>
+            <p><strong>Payment Method:</strong> <span id="tpl-payment-method">-</span></p>
+            <p><strong>Status:</strong></p>
+            <div style="margin-top: 8px;" id="tpl-status-badge">-</div>
+        </div>
+    </div>
+
+    <div class="items-section">
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th style="text-align: right;">Qty</th>
+                    <th style="text-align: right;">Unit Price</th>
+                    <th style="text-align: right;">Discount</th>
+                    <th style="text-align: right;">Total</th>
+                </tr>
+            </thead>
+            <tbody id="tpl-items-body">
+                <tr><td colspan="5" style="text-align:center; color:#7a86ad;">No items</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="summary-section">
+        <div class="summary-box">
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="tpl-subtotal">LKR 0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Discount:</span>
+                <span id="tpl-discount">-LKR 0.00</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total Amount:</span>
+                <span id="tpl-total">LKR 0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="payment-status">
+        <p><strong>Thank you for your purchase!</strong></p>
+        <p>Please keep this invoice for your records.</p>
+        <p style="margin-top: 16px; font-size: 11px; color: #999;">This is a computer-generated invoice. No signature is required.</p>
+    </div>
+
+    <div class="footer-section">
+        <p id="tpl-footer">PositiQ POS System</p>
+    </div>
+</div>

@@ -1020,13 +1020,20 @@ $pageTitle = 'Create Sale';
                         throw new Error(result.error || result.message || 'Failed to create sale');
                     }
 
+                    const saleId = result.sale?.sales_id || result.data?.sales_id;
+                    const invoiceNo = result.sale?.id || result.data?.id;
+
                     await Swal.fire({
                         icon: 'success',
-                        title: 'Sale Created',
-                        html: `<strong>Sale ID:</strong> ${result.sale?.sales_id || 'N/A'}`,
+                        title: 'Sale Created Successfully',
+                        html: `<strong>Invoice #:</strong> ${saleId || 'N/A'}<br><small>Redirecting to print invoice...</small>`,
+                        timer: 2000,
+                        timerProgressBar: true,
                     });
 
-                    window.location.href = 'index.php';
+                    // Redirect to print invoice page
+                    window.location.href = `print-invoice.php?id=${encodeURIComponent(saleId || '')}`;
+
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',

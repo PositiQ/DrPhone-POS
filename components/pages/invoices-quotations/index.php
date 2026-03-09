@@ -559,8 +559,8 @@ $pageSubtitle = 'View, manage, and re-print invoices from sales records.';
             }
 
             if (action === 'print') {
-                openInvoiceDetails(invoiceId);
-                setTimeout(() => window.print(), 200);
+                // Redirect to print invoice page
+                window.location.href = `../sales/print-invoice.php?id=${encodeURIComponent(invoiceId)}`;
             }
         });
 

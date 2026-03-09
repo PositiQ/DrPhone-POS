@@ -27,7 +27,6 @@ $basePath = $basePath ?? './';
         <a class="nav-item<?php echo $activePage === 'inventory' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>inventory/index.php">
             <i class="fas fa-boxes"></i>
             <span>Inventory</span>
-            <span class="badge">4</span>
         </a>
 
         <a class="nav-item<?php echo $activePage === 'products' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>products/index.php">
@@ -42,7 +41,7 @@ $basePath = $basePath ?? './';
 
         <a class="nav-item<?php echo $activePage === 'invoices-quotations' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>invoices-quotations/index.php">
             <i class="fas fa-file-invoice"></i>
-            <span>Invoices & Quotations</span>
+            <span>Invoices</span>
         </a>
 
         <a class="nav-item<?php echo $activePage === 'vault-balance' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>vault-balance/index.php">
@@ -68,7 +67,6 @@ $basePath = $basePath ?? './';
         <a class="nav-item<?php echo $activePage === 'returns-repairs' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>returns-repairs/index.php">
             <i class="fas fa-tools"></i>
             <span>Returns & Repairs</span>
-            <span class="badge">3</span>
         </a>
 
         <div class="nav-divider"></div>

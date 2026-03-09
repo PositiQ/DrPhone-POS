@@ -274,6 +274,8 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
       
       // Get actual status from API
       const apiStatus = stock.status || 'N/A';
+      const productType = product.product_type || 'phone';
+      const productTypeLabel = productType === 'phone' ? 'Phone' : 'Accessory';
       
       return `
         <tr data-status="${stockStatus}">
@@ -285,7 +287,7 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
               </div>
             </div>
           </td>
-          <td>Smartphone</td>
+          <td>${productTypeLabel}</td>
           <td>${product.brand || 'N/A'}</td>
           <td><code>${stock.sku || 'N/A'}</code></td>
           <td>LKR ${(stock.cost_price || 0).toLocaleString()}</td>

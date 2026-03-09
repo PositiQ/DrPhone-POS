@@ -80,15 +80,12 @@ $pageTitle = 'Add Product';
                                 <input type="text" id="productName" name="productName" placeholder="e.g., iPhone 14 Pro" required>
                             </div>
                             <div class="form-field">
-                                <label for="category">Category</label>
-                                <select id="category" name="category">
-                                    <option value="">Select Category</option>
-                                    <option>Smartphone</option>
-                                    <option>Accessory</option>
-                                    <option>Tablet</option>
-                                    <option>Smartwatch</option>
-                                    <option>Other</option>
+                                <label for="product_type">Product Type <span style="color: #f44336;">*</span></label>
+                                <select id="product_type" name="product_type" required>
+                                    <option value="phone">Phone</option>
+                                    <option value="accessory">Accessory</option>
                                 </select>
+                                <div class="form-hint">Select product type to show relevant fields</div>
                             </div>
                             <div class="form-field">
                                 <label for="brand">Brand <span style="color: #f44336;">*</span></label>
@@ -100,7 +97,7 @@ $pageTitle = 'Add Product';
                             </div>
                         </div>
 
-                        <div class="form-grid">
+                        <div class="form-grid" id="phoneSpecificFields">
                             <div class="form-field">
                                 <label for="capacity">Storage/Capacity</label>
                                 <input type="text" id="capacity" name="capacity" placeholder="e.g., 256GB">
@@ -137,8 +134,8 @@ $pageTitle = 'Add Product';
                                 <input type="text" id="sku" name="sku" placeholder="e.g., SKU-IP14P-256" required>
                                 <div class="form-hint">Unique product identifier</div>
                             </div>
-                            <div class="form-field">
-                                <label for="IMEI">IMEI Number</label>
+                            <div class="form-field" id="imeiField">
+                                <label for="IMEI">IMEI Number <span id="imeiRequired" style="color: #f44336;"></span></label>
                                 <input type="text" id="IMEI" name="IMEI" placeholder="15 digits for phones" maxlength="15">
                             </div>
                             <div class="form-field">
@@ -369,6 +366,35 @@ $pageTitle = 'Add Product';
             }
         }
 
+        // Handle product type change
+        const productTypeSelect = document.getElementById('product_type');
+        const phoneSpecificFields = document.getElementById('phoneSpecificFields');
+        const imeiField = document.getElementById('imeiField');
+        const imeiInput = document.getElementById('IMEI');
+        const imeiRequired = document.getElementById('imeiRequired');
+
+        function togglePhoneFields() {
+            const isPhone = productTypeSelect.value === 'phone';
+            
+            if (isPhone) {
+                phoneSpecificFields.style.display = 'grid';
+                imeiField.style.display = 'block';
+                imeiRequired.textContent = '*';
+                imeiInput.required = true;
+            } else {
+                phoneSpecificFields.style.display = 'none';
+                imeiField.style.display = 'none';
+                imeiRequired.textContent = '';
+                imeiInput.required = false;
+                imeiInput.value = '';
+            }
+        }
+
+        if (productTypeSelect) {
+            productTypeSelect.addEventListener('change', togglePhoneFields);
+            togglePhoneFields(); // Initialize on page load
+        }
+
         // Calculate profit margin
         const costPrice = document.getElementById('cost_price');
         const sellingPrice = document.getElementById('selling_price');
@@ -421,6 +447,7 @@ $pageTitle = 'Add Product';
                 const costPriceInput = document.getElementById('cost_price');
                 const sellingPriceInput = document.getElementById('selling_price');
                 const skuInput = document.getElementById('sku');
+                const productType = document.getElementById('product_type').value;
                 
                 const errors = [];
                 
@@ -438,6 +465,11 @@ $pageTitle = 'Add Product';
                 }
                 if (!skuInput.value || skuInput.value.trim() === '') {
                     errors.push('SKU is required');
+                }
+                
+                // Validate IMEI for phones only
+                if (productType === 'phone' && (!document.getElementById('IMEI').value || document.getElementById('IMEI').value.trim() === '')) {
+                    errors.push('IMEI is required for phone products');
                 }
                 
                 if (errors.length > 0) {
@@ -461,6 +493,7 @@ $pageTitle = 'Add Product';
                         productName: productNameInput.value.trim(),
                         price: parseFloat(sellingPriceInput.value),
                         brand: brandInput.value.trim(),
+                        product_type: productType,
                         
                         // Product fields (optional)
                         description: document.getElementById('description')?.value?.trim() || null,
@@ -499,6 +532,7 @@ $pageTitle = 'Add Product';
                     productData.productName = productNameInput.value.trim();
                     productData.price = parseFloat(sellingPriceInput.value);
                     productData.brand = brandInput.value.trim();
+                    productData.product_type = productType;
                     productData.sku = skuInput.value.trim();
                     productData.cost_price = parseFloat(costPriceInput.value);
                     productData.selling_price = parseFloat(sellingPriceInput.value);
