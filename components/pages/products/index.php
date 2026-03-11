@@ -70,16 +70,8 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                         <input type="text" id="searchProducts" placeholder="Search products..." style="min-width: 280px;">
                         <select aria-label="Category">
                             <option>All Categories</option>
-                            <option>Smartphones</option>
-                            <option>Accessories</option>
-                            <option>Tablets</option>
-                        </select>
-                        <select aria-label="Brand">
-                            <option>All Brands</option>
-                            <option>Apple</option>
-                            <option>Samsung</option>
-                            <option>Google</option>
-                            <option>Xiaomi</option>
+                            <option>Phone</option>
+                            <option>Accessory</option>
                         </select>
                     </div>
                     <div class="toolbar-actions">
