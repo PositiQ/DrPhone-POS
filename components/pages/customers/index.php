@@ -238,17 +238,31 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
         }
 
         function calculateSummary(customer) {
-            const sales = customer.customer_sales || [];
-            const totalPurchases = sales.reduce((sum, sale) => sum + parseFloat(sale.total_sales_amount || 0), 0);
-            const totalPaid = sales.reduce((sum, sale) => sum + parseFloat(sale.paid_amount || 0), 0);
-            const due = Math.max(totalPurchases - totalPaid, 0);
-            const lastPurchase = sales.length > 0
-                ? sales.map(s => s.last_sales_date).sort().reverse()[0]
+            const customerSales = Array.isArray(customer.customer_sales) ? customer.customer_sales : [];
+            const salesHistory = Array.isArray(customer.sales) ? customer.sales : [];
+
+            // Prefer sales table values for purchase timeline; ignore cancelled sales.
+            const validSales = salesHistory.filter(sale => String(sale.status || '').toLowerCase() !== 'cancelled');
+            const totalPurchases = validSales.reduce((sum, sale) => sum + parseFloat(sale.total_amount || 0), 0);
+
+            const due = customerSales.reduce((sum, sale) => {
+                if (sale.is_due_available && ['pending', 'overdue'].includes(String(sale.payment_status || '').toLowerCase())) {
+                    return sum + (parseFloat(sale.total_sales_amount || 0) - parseFloat(sale.paid_amount || 0));
+                }
+                return sum;
+            }, 0);
+
+            const lastPurchase = validSales.length > 0
+                ? validSales
+                    .map(sale => sale.sales_date)
+                    .filter(Boolean)
+                    .sort()
+                    .reverse()[0]
                 : null;
 
             return {
                 totalPurchases,
-                due,
+                due: Math.max(due, 0),
                 lastPurchase
             };
         }
@@ -428,7 +442,8 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
                     <div class="app-dialog-section">
                         <div class="app-dialog-section-title">FINANCIAL</div>
                         <div class="app-dialog-row"><strong>Total Purchases:</strong> LKR ${summary.totalPurchases.toLocaleString()}</div>
-                        <div class="app-dialog-row"><strong>Outstanding Due:</strong> LKR ${summary.due.toLocaleString()}</div>
+                        <div class="app-dialog-row"><strong>Credit Balance:</strong> LKR ${summary.due.toLocaleString()}</div>
+                        <div class="app-dialog-row"><strong>Last Purchase:</strong> ${summary.lastPurchase ? new Date(summary.lastPurchase).toISOString().slice(0, 10) : 'N/A'}</div>
                         <div class="app-dialog-row"><strong>Credit Limit:</strong> LKR ${parseFloat(customer.credit_limit || 0).toLocaleString()}</div>
                         <div class="app-dialog-row"><strong>Credit Days:</strong> ${customer.credit_days || 0}</div>
                     </div>
