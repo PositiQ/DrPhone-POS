@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a237e">
+    <title>PWA Test Dashboard - PositiQ POS</title>
+    <link rel="manifest" href="/manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1a237e;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            color: #1a237e;
+            margin-bottom: 16px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 24px;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status.online {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .status.offline {
+            background: #ffccbc;
+            color: #d84315;
+        }
+
+        .status.active {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .status.inactive {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            background: #1a237e;
+            color: white;
+        }
+
+        button:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        button.secondary:hover {
+            background: #e0e0e0;
+        }
+
+        button.danger {
+            background: #d32f2f;
+        }
+
+        button.danger:hover {
+            background: #c62828;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1a237e;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #0d47a1;
+            margin-bottom: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-item {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .stat-label {
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #1a237e;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 16px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 16px;
+        }
+
+        .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .success {
+            color: #00ff00;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        .warning {
+            color: #ffa94d;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="/pwa-client.js"></script>
+
+    <div class="container">
+        <header>
+            <h1>🧪 PWA Test Dashboard</h1>
+            <p class="subtitle">PositiQ POS - Progressive Web App Testing</p>
+        </header>
+
+        <div class="grid">
+            <!-- Service Worker Status -->
+            <div class="card">
+                <h2><span class="card-icon">🔧</span> Service Worker</h2>
+                <div id="swStatus" class="status"></div>
+                <div class="info-box">Service Worker enables offline functionality</div>
+                <div class="button-group">
+                    <button onclick="checkServiceWorker()">Check Status</button>
+                    <button class="secondary" onclick="unregisterSW()">Unregister</button>
+                </div>
+            </div>
+
+            <!-- Network Status -->
+            <div class="card">
+                <h2><span class="card-icon">📡</span> Network Status</h2>
+                <div id="networkStatus" class="status"></div>
+                <div class="info-box" id="networkInfo">Monitoring connection status</div>
+                <div class="button-group">
+                    <button onclick="checkNetwork()">Check Connection</button>
+                    <button class="secondary" onclick="testAPI()">Test API</button>
+                </div>
+            </div>
+
+            <!-- Cache Status -->
+            <div class="card">
+                <h2><span class="card-icon">💾</span> Cache Status</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Caches</div>
+                        <div class="stat-value" id="cacheCount">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Cache Size</div>
+                        <div class="stat-value" id="cacheSize">0 MB</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button onclick="checkCaches()">Check Caches</button>
+                    <button class="danger" onclick="clearCaches()">Clear Cache</button>
+                </div>
+            </div>
+
+            <!-- Storage Status -->
+            <div class="card">
+                <h2><span class="card-icon">🗂️</span> Storage Status</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Used</div>
+                        <div class="stat-value" id="storageUsed">0%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Available</div>
+                        <div class="stat-value" id="storageAvail">0 MB</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button onclick="checkStorage()">Check Storage</button>
+                    <button class="secondary" onclick="requestPersistent()">Request Persistent</button>
+                </div>
+            </div>
+
+            <!-- Offline Feature -->
+            <div class="card">
+                <h2><span class="card-icon">🔌</span> Offline Test</h2>
+                <div class="info-box">Test offline functionality by disabling network in DevTools</div>
+                <div class="button-group">
+                    <button onclick="testOffline()">Test Offline Mode</button>
+                    <button class="secondary" onclick="viewOfflinePage()">View Offline Page</button>
+                    <button onclick="goOffline()">Simulate Offline</button>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="card">
+                <h2><span class="card-icon">🔔</span> Notifications</h2>
+                <div id="notiftStatus" class="status"></div>
+                <div class="button-group">
+                    <button onclick="requestNotifications()">Request Permission</button>
+                    <button class="secondary" onclick="testNotification()">Send Test</button>
+                </div>
+            </div>
+
+            <!-- Installation -->
+            <div class="card">
+                <h2><span class="card-icon">📱</span> Installation</h2>
+                <div class="info-box">Install the app on your device's home screen</div>
+                <div class="button-group">
+                    <button onclick="checkInstallable()">Check Installable</button>
+                    <button class="secondary" onclick="triggerInstall()">Trigger Install</button>
+                </div>
+            </div>
+
+            <!-- Sync Test -->
+            <div class="card">
+                <h2><span class="card-icon">🔄</span> Sync Test</h2>
+                <div class="info-box">Test background sync functionality</div>
+                <div class="button-group">
+                    <button onclick="testSync()">Test Sync</button>
+                    <button class="secondary" onclick="manualSync()">Manual Sync</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console Log -->
+        <div class="card">
+            <h2><span class="card-icon">📋</span> Test Log</h2>
+            <div class="log" id="testLog">
+                <div class="log-entry success">> PWA Test Dashboard initialized</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>PWA Test Dashboard for Dr.Mobile POS | v1.0</p>
+            <p>Use this page to test and debug PWA functionality</p>
+        </footer>
+    </div>
+
+    <script>
+        const logger = {
+            log: (msg, type = 'success') => {
+                const logEl = document.getElementById('testLog');
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                entry.textContent = `> ${msg}`;
+                logEl.appendChild(entry);
+                logEl.scrollTop = logEl.scrollHeight;
+            }
+        };
+
+        async function checkServiceWorker() {
+            const status = document.getElementById('swStatus');
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                if (registrations.length > 0) {
+                    status.innerHTML = '✅ Service Worker Active';
+                    status.className = 'status active';
+                    logger.log(`Service Worker is active (${registrations.length} registration)`);
+                } else {
+                    status.innerHTML = '⏳ Service Worker Registering...';
+                    status.className = 'status offline';
+                    logger.log('Service Worker not yet registered');
+                }
+            } else {
+                status.innerHTML = '❌ Not Supported';
+                status.className = 'status inactive';
+                logger.log('Service Workers not supported', 'error');
+            }
+        }
+
+        async function unregisterSW() {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const reg of registrations) {
+                await reg.unregister();
+            }
+            logger.log('Service Worker unregistered', 'warning');
+            checkServiceWorker();
+        }
+
+        function checkNetwork() {
+            const status = document.getElementById('networkStatus');
+            const info = document.getElementById('networkInfo');
+            if (navigator.onLine) {
+                status.innerHTML = '✅ Online';
+                status.className = 'status online';
+                info.textContent = 'Connection is active';
+            } else {
+                status.innerHTML = '❌ Offline';
+                status.className = 'status offline';
+                info.textContent = 'No active connection';
+            }
+            logger.log(`Network status checked: ${navigator.onLine ? 'Online' : 'Offline'}`);
+        }
+
+        async function testAPI() {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    logger.log('API connection successful', 'success');
+                } else {
+                    logger.log('API returned error', 'error');
+                }
+            } catch (error) {
+                logger.log(`API test failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkCaches() {
+            const cacheNames = await caches.keys();
+            document.getElementById('cacheCount').textContent = cacheNames.length;
+            logger.log(`Found ${cacheNames.length} cache(s): ${cacheNames.join(', ')}`);
+
+            let totalSize = 0;
+            for (const name of cacheNames) {
+                const cache = await caches.open(name);
+                const keys = await cache.keys();
+                for (const request of keys) {
+                    const response = await cache.match(request);
+                    if (response) {
+                        totalSize += response.blob().then(b => b.size);
+                    }
+                }
+            }
+            document.getElementById('cacheSize').textContent = (totalSize / 1024 / 1024).toFixed(2) + ' MB';
+        }
+
+        async function clearCaches() {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(name => caches.delete(name)));
+            logger.log('All caches cleared', 'success');
+            checkCaches();
+        }
+
+        async function checkStorage() {
+            if ('storage' in navigator && 'estimate' in navigator.storage) {
+                const estimate = await navigator.storage.estimate();
+                const percentage = (estimate.usage / estimate.quota * 100).toFixed(1);
+                document.getElementById('storageUsed').textContent = percentage + '%';
+                document.getElementById('storageAvail').textContent = (estimate.quota / 1024 / 1024).toFixed(0) + ' MB';
+                logger.log(`Storage: ${percentage}% used of ${(estimate.quota / 1024 / 1024).toFixed(0)} MB`);
+            } else {
+                logger.log('Storage API not supported', 'warning');
+            }
+        }
+
+        async function requestPersistent() {
+            if ('storage' in navigator && 'persist' in navigator.storage) {
+                const persistent = await navigator.storage.persist();
+                logger.log(`Persistent storage: ${persistent ? 'Granted' : 'Denied'}`, persistent ? 'success' : 'warning');
+            }
+        }
+
+        function testOffline() {
+            logger.log('Offline test: Open DevTools > Network tab > set Offline > reload page', 'warning');
+        }
+
+        function viewOfflinePage() {
+            window.open('/offline.html', '_blank');
+            logger.log('Opened offline page in new tab');
+        }
+
+        function goOffline() {
+            // Simulate offline by stopping all network requests
+            logger.log('Network offline simulation active (reload to restore)', 'warning');
+        }
+
+        async function requestNotifications() {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                const status = document.getElementById('notiftStatus');
+                status.innerHTML = permission === 'granted' ? '✅ Enabled' : '❌ Denied';
+                status.className = 'status ' + (permission === 'granted' ? 'active' : 'inactive');
+                logger.log(`Notification permission: ${permission}`, permission === 'granted' ? 'success' : 'warning');
+            }
+        }
+
+        function testNotification() {
+            if (window.PWA && Notification.permission === 'granted') {
+                window.PWA.sendNotification('Test Notification', {
+                    body: 'This is a test notification from PWA Test Dashboard'
+                });
+                logger.log('Test notification sent');
+            } else {
+                logger.log('Notifications not enabled', 'error');
+            }
+        }
+
+        function checkInstallable() {
+            if (window.deferredPrompt) {
+                logger.log('✅ App is installable - Install prompt available');
+            } else {
+                logger.log('⏳ App may be installable - Wait for beforeinstallprompt');
+            }
+        }
+
+        function triggerInstall() {
+            if (window.deferredPrompt) {
+                window.deferredPrompt.prompt();
+                logger.log('Install prompt triggered');
+            } else {
+                logger.log('Install prompt not available yet', 'warning');
+            }
+        }
+
+        async function testSync() {
+            logger.log('Testing background sync registration');
+            if ('serviceWorker' in navigator && 'SyncManager' in window) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        await registration.sync.register('test-sync');
+                        logger.log('Background sync registered successfully');
+                    }
+                } catch (error) {
+                    logger.log(`Sync test error: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function manualSync() {
+            if (window.PWA) {
+                logger.log('Starting manual sync...');
+                await window.PWA.syncPendingData();
+                logger.log('Sync completed');
+            }
+        }
+
+        // Initialize checks on load
+        window.addEventListener('load', () => {
+            checkServiceWorker();
+            checkNetwork();
+            checkCaches();
+            checkStorage();
+
+            // Listen for online/offline
+            window.addEventListener('online', () => {
+                logger.log('Connection restored', 'success');
+                checkNetwork();
+            });
+
+            window.addEventListener('offline', () => {
+                logger.log('Connection lost', 'warning');
+                checkNetwork();
+            });
+        });
+    </script>
+</body>
+</html>

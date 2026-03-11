@@ -8,7 +8,17 @@ $basePath = './';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a237e">
+    <meta name="description" content="Dr.Mobile POS System - Dashboard">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Dashboard</title>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -17,6 +27,8 @@ $basePath = './';
 </head>
 
 <body>
+    <!-- PWA Client Library -->
+    <script src="/pwa-client.js"></script>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <?php include __DIR__ . '/../UI/sidebar.php'; ?>
