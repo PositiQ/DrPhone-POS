@@ -134,7 +134,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         <div class="filter-group" style="gap: 8px;">
                             <button class="pill active" type="button" data-location="all">All Locations</button>
                             <button class="pill" type="button" data-location="main">Main Shop</button>
-                            <button class="pill" type="button" data-location="branches">Branches</button>
+                            <button class="pill" type="button" data-location="branches">Shops</button>
                             <button class="pill" type="button" data-location="pending">Pending</button>
                         </div>
                     </div>

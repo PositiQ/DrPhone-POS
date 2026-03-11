@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Invoice #1170</title>
+
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f3f3f3;
+}
+
+.invoice{
+    width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+}
+
+/* HEADER */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.company h1{
+    margin:0;
+}
+
+.company p{
+    margin:3px 0;
+    color:#555;
+}
+
+.divider{
+    border-bottom:3px solid #333;
+    margin:20px 0;
+}
+
+/* INVOICE INFO */
+
+.invoice-info{
+    display:flex;
+    justify-content:space-between;
+}
+
+.invoice-left h2{
+    margin-bottom:10px;
+}
+
+.invoice-left p{
+    margin:3px 0;
+}
+
+.invoice-right{
+    text-align:right;
+}
+
+.invoice-right p{
+    margin:4px 0;
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+thead{
+    background:#e9e9e9;
+}
+
+th, td{
+    padding:10px;
+    border:1px solid #ccc;
+}
+
+th{
+    text-align:left;
+}
+
+td.num{
+    text-align:right;
+}
+
+.description small{
+    color:#666;
+}
+
+/* SUMMARY */
+
+.summary{
+    display:flex;
+    justify-content:space-between;
+    margin-top:20px;
+}
+
+.summary-left p{
+    margin:6px 0;
+}
+
+.summary-right{
+    width:300px;
+}
+
+.summary-right div{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.summary-right .net{
+    font-weight:bold;
+    font-size:18px;
+    border-top:2px solid black;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    margin-top:40px;
+    color:#666;
+    font-size:14px;
+}
+
+@media print{
+    body{
+        background:white;
+    }
+    .invoice{
+        box-shadow:none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="invoice">
+
+<div class="header">
+    <div class="company">
+        <h1>AJ Mobile</h1>
+        <p>No.12, 1st Floor, Bus Stand Complex, Kurunegala</p>
+        <p>Tel: 071 666 0990 | Email: Ajholdings101@gmail.com</p>
+    </div>
+
+    <div>
+        <img src="qr.png" width="90">
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="invoice-info">
+
+<div class="invoice-left">
+    <h2>Invoice No. #1170</h2>
+    <p><strong>Customer:</strong> DOCTOR MOBILE (SURESH)</p>
+    <p>Tel: 0704551614</p>
+    <p>A/C: 1-2-5-14883</p>
+</div>
+
+<div class="invoice-right">
+    <p>Date: 2026-02-26 04:07:43 PM</p>
+    <p>Salesman: 39</p>
+    <p>Cashier: cashier</p>
+    <p><strong>Customer O/S LKR: 403,000.00</strong></p>
+</div>
+
+</div>
+
+
+<table>
+
+<thead>
+<tr>
+<th>Description</th>
+<th>Unit Price</th>
+<th>Qty</th>
+<th>Discount</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td class="description">
+IPHONE 13 MINI 128GB<br>
+<small>IMEI 354628824968804 | White</small>
+</td>
+<td class="num">66,000.00</td>
+<td class="num">1</td>
+<td class="num">0.00</td>
+<td class="num">66,000.00</td>
+</tr>
+
+<tr>
+<td class="description">
+IPHONE 13 MINI 128GB<br>
+<small>IMEI 350971744860071 | Black</small>
+</td>
+<td class="num">67,000.00</td>
+<td class="num">1</td>
+<td class="num">0.00</td>
+<td class="num">67,000.00</td>
+</tr>
+
+<tr>
+<td class="description">
+IPHONE 13 MINI 128GB<br>
+<small>IMEI 353131402109900 | Black</small>
+</td>
+<td class="num">66,000.00</td>
+<td class="num">1</td>
+<td class="num">0.00</td>
+<td class="num">66,000.00</td>
+</tr>
+
+<tr>
+<td class="description">
+IPHONE 13 MINI 128GB<br>
+<small>IMEI 359155243887493 | White</small>
+</td>
+<td class="num">64,000.00</td>
+<td class="num">1</td>
+<td class="num">0.00</td>
+<td class="num">64,000.00</td>
+</tr>
+
+<tr>
+<td class="description">
+IPHONE 13 MINI 128GB<br>
+<small>IMEI 358082907077768 | Pink</small>
+</td>
+<td class="num">64,000.00</td>
+<td class="num">1</td>
+<td class="num">0.00</td>
+<td class="num">64,000.00</td>
+</tr>
+
+<tr>
+<td class="description">
+IPHONE 13 MINI 256GB<br>
+<small>IMEI 359251340015094 | Pink</small>
+</td>
+<td class="num">76,000.00</td>
+<td class="num">1</td>
+<td class="num">0.00</td>
+<td class="num">76,000.00</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<div class="summary">
+
+<div class="summary-left">
+<p>Number of Items: 6</p>
+<p>Number of Pieces: 6</p>
+<p>Cash: 0.00</p>
+<p style="color:red">Credit: 403,000.00</p>
+</div>
+
+<div class="summary-right">
+
+<div>
+<span>Sub Total:</span>
+<span>Rs. 403,000.00</span>
+</div>
+
+<div>
+<span>Discount (0%):</span>
+<span>- Rs. 0.00</span>
+</div>
+
+<div class="net">
+<span>Net Amount:</span>
+<span>Rs. 403,000.00</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+<p>Thank you for your business!</p>
+<p>This is a computer-generated invoice.</p>
+</div>
+
+</div>
+
+</body>
+</html>
