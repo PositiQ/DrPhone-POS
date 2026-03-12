@@ -28,39 +28,7 @@ $pageSubtitle = 'Add and manage system users.';
         <?php include __DIR__ . '/../../UI/sidebar.php'; ?>
 
         <div class="main-content">
-            <div class="top-header">
-                <div class="header-left">
-                    <i class="fas fa-bars menu-toggle" id="menuToggle" onclick="toggleSidebar()"></i>
-                    <h1 class="page-title"><?php echo $pageTitle; ?></h1>
-                </div>
-
-                <div class="header-center">
-                    <div class="search-box" id="searchTrigger" role="button" aria-haspopup="dialog" aria-controls="searchOverlay" tabindex="0">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search..." id="globalSearch" aria-label="Global search" readonly>
-                    </div>
-                </div>
-
-                <div class="header-right">
-                    <div class="header-icon">
-                        <i class="far fa-bell"></i>
-                        <span class="badge">5</span>
-                    </div>
-
-                    <div class="header-icon">
-                        <i class="far fa-envelope"></i>
-                        <span class="badge">3</span>
-                    </div>
-
-                    <div class="user-profile">
-                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=1a237e&color=ffd700&bold=true" alt="User">
-                        <div class="user-info">
-                            <h4>Admin User</h4>
-                            <p>Super Admin</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php include __DIR__ . '/../../UI/top-navigation.php'; ?>
 
             <div class="content-area">
                 <div class="toolbar">
