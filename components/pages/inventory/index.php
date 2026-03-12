@@ -6,6 +6,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,6 +24,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
 </head>
+
 <body>
     <!-- PWA Client Library -->
     <script src="/pwa-client.js"></script>
@@ -395,6 +397,18 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         </div>
                     </div>
 
+                    <!-- Transfer Item Price -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                            <i class="fas fa-money-bill" style="margin-right: 6px; color: #7a86ad;"></i>
+                            Price
+                        </label>
+                        <div style="position: relative;">
+                            <input type="text" id="productPrice" placeholder="Item Price" style="width: 100%; padding: 12px 40px 12px 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e';">
+                            <i class="fas fa-search" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #7a86ad; pointer-events: none;"></i>
+                        </div>
+                    </div>
+
                     <!-- Current Stock Info -->
                     <div id="stockInfo" style="display: none; margin-bottom: 20px; padding: 12px; background: #f4f7fc; border-radius: 8px; border-left: 4px solid #2196f3;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -410,6 +424,20 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             Transfer Quantity
                         </label>
                         <input type="number" id="transferQuantity" min="1" required placeholder="Enter quantity" style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                    </div>
+
+
+                    <!-- Payment Status -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                            <i class="fas fa-map-marker-alt" style="margin-right: 6px; color: #7a86ad;"></i>
+                            Payment Status
+                        </label>
+                        <select id="paymentStatus" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                            <option value="">Select payment status...</option>
+                            <option value="paid">Paid</option>
+                            <option value="pending">Pending</option>
+                        </select>
                     </div>
 
                     <!-- Action Buttons -->
@@ -442,15 +470,70 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
 
     <script>
         // Sample product data with stock information
-        const productsData = [
-            { id: 'P001', name: 'iPhone 14 Pro', variant: '256GB · Space Black', imei: '352913547821', stock: 5, price: 'LKR 289,000' },
-            { id: 'P002', name: 'Samsung S23 Ultra', variant: '512GB · Phantom Black', imei: '352913547945', stock: 3, price: 'LKR 245,000' },
-            { id: 'P003', name: 'Google Pixel 7', variant: '128GB · Snow', imei: '352913547233', stock: 8, price: 'LKR 185,000' },
-            { id: 'P004', name: 'iPhone 13', variant: '128GB · Midnight', imei: '352913548765', stock: 12, price: 'LKR 215,000' },
-            { id: 'P005', name: 'Xiaomi 13', variant: '256GB · Alpine Green', imei: '352913547108', stock: 15, price: 'LKR 165,000' },
-            { id: 'P006', name: 'OnePlus 11', variant: '256GB · Eternal Green', imei: '352913549876', stock: 6, price: 'LKR 198,000' },
-            { id: 'P007', name: 'Samsung A54', variant: '256GB · Awesome Violet', imei: '352913549123', stock: 20, price: 'LKR 125,000' },
-            { id: 'P008', name: 'Vivo V27 Pro', variant: '256GB · Magic Blue', imei: '352913549456', stock: 10, price: 'LKR 145,000' }
+        const productsData = [{
+                id: 'P001',
+                name: 'iPhone 14 Pro',
+                variant: '256GB · Space Black',
+                imei: '352913547821',
+                stock: 5,
+                price: 'LKR 289,000'
+            },
+            {
+                id: 'P002',
+                name: 'Samsung S23 Ultra',
+                variant: '512GB · Phantom Black',
+                imei: '352913547945',
+                stock: 3,
+                price: 'LKR 245,000'
+            },
+            {
+                id: 'P003',
+                name: 'Google Pixel 7',
+                variant: '128GB · Snow',
+                imei: '352913547233',
+                stock: 8,
+                price: 'LKR 185,000'
+            },
+            {
+                id: 'P004',
+                name: 'iPhone 13',
+                variant: '128GB · Midnight',
+                imei: '352913548765',
+                stock: 12,
+                price: 'LKR 215,000'
+            },
+            {
+                id: 'P005',
+                name: 'Xiaomi 13',
+                variant: '256GB · Alpine Green',
+                imei: '352913547108',
+                stock: 15,
+                price: 'LKR 165,000'
+            },
+            {
+                id: 'P006',
+                name: 'OnePlus 11',
+                variant: '256GB · Eternal Green',
+                imei: '352913549876',
+                stock: 6,
+                price: 'LKR 198,000'
+            },
+            {
+                id: 'P007',
+                name: 'Samsung A54',
+                variant: '256GB · Awesome Violet',
+                imei: '352913549123',
+                stock: 20,
+                price: 'LKR 125,000'
+            },
+            {
+                id: 'P008',
+                name: 'Vivo V27 Pro',
+                variant: '256GB · Magic Blue',
+                imei: '352913549456',
+                stock: 10,
+                price: 'LKR 145,000'
+            }
         ];
 
         function toggleSidebar() {
@@ -500,79 +583,80 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             searchOverlay.classList.remove('active');
         }
 
-        if (searchTrigger) { - Location 
-        const pills = document.querySelectorAll('.pill');
-        pills.forEach(pill => {
-            pill.addEventListener('click', function() {
-                pills.forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
+        if (searchTrigger) {
+            -Location
+            const pills = document.querySelectorAll('.pill');
+            pills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    pills.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
 
-                const locationFilter = this.getAttribute('data-location');
+                    const locationFilter = this.getAttribute('data-location');
+                    const rows = inventoryTable.querySelectorAll('tr');
+
+                    rows.forEach(row => {
+                        const rowLocation = row.getAttribute('data-location');
+                        const rowStatus = row.getAttribute('data-status');
+
+                        if (locationFilter === 'all') {
+                            row.style.display = '';
+                        } else if (locationFilter === 'main') {
+                            row.style.display = rowLocation === 'main' ? '' : 'none';
+                        } else if (locationFilter === 'branches') {
+                            row.style.display = (rowLocation !== 'main' && rowLocation) ? '' : 'none';
+                        } else if (locationFilter === 'pending') {
+                            row.style.display = (rowStatus === 'pending-sale' || rowStatus === 'pending-payment') ? '' : 'none';
+                        }
+                    });
+                });
+            });
+
+            // Dropdown filters
+            const locationFilter = document.getElementById('locationFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const categoryFilter = document.getElementById('categoryFilter');
+
+            function applyFilters() {
+                const location = locationFilter.value.toLowerCase();
+                const status = statusFilter.value.toLowerCase();
+                const category = categoryFilter.value.toLowerCase();
                 const rows = inventoryTable.querySelectorAll('tr');
 
                 rows.forEach(row => {
-                    const rowLocation = row.getAttribute('data-location');
-                    const rowStatus = row.getAttribute('data-status');
+                    const rowLocation = row.getAttribute('data-location') || '';
+                    const rowStatus = row.getAttribute('data-status') || '';
+                    const rowCategory = row.getAttribute('data-category') || '';
 
-                    if (locationFilter === 'all') {
-                        row.style.display = '';
-                    } else if (locationFilter === 'main') {
-                        row.style.display = rowLocation === 'main' ? '' : 'none';
-                    } else if (locationFilter === 'branches') {
-                        row.style.display = (rowLocation !== 'main' && rowLocation) ? '' : 'none';
-                    } else if (locationFilter === 'pending') {
-                        row.style.display = (rowStatus === 'pending-sale' || rowStatus === 'pending-payment') ? '' : 'none';
+                    let showRow = true;
+
+                    // Location filter
+                    if (location !== 'all locations') {
+                        if (location === 'main shop' && rowLocation !== 'main') showRow = false;
+                        if (location === 'colombo branch' && rowLocation !== 'colombo') showRow = false;
+                        if (location === 'kandy branch' && rowLocation !== 'kandy') showRow = false;
+                        if (location === 'galle branch' && rowLocation !== 'galle') showRow = false;
                     }
+
+                    // Status filter
+                    if (status !== 'all status') {
+                        if (status === 'in stock' && rowStatus !== 'in-stock') showRow = false;
+                        if (status === 'issued - pending sale' && rowStatus !== 'pending-sale') showRow = false;
+                        if (status === 'issued - pending payment' && rowStatus !== 'pending-payment') showRow = false;
+                        if (status === 'sale completed' && rowStatus !== 'sale-completed') showRow = false;
+                    }
+
+                    // Category filter
+                    if (category !== 'all categories' && !rowCategory.includes(category.replace(' ', ''))) {
+                        showRow = false;
+                    }
+
+                    row.style.display = showRow ? '' : 'none';
                 });
-            });
-        });
+            }
 
-        // Dropdown filters
-        const locationFilter = document.getElementById('locationFilter');
-        const statusFilter = document.getElementById('statusFilter');
-        const categoryFilter = document.getElementById('categoryFilter');
-
-        function applyFilters() {
-            const location = locationFilter.value.toLowerCase();
-            const status = statusFilter.value.toLowerCase();
-            const category = categoryFilter.value.toLowerCase();
-            const rows = inventoryTable.querySelectorAll('tr');
-
-            rows.forEach(row => {
-                const rowLocation = row.getAttribute('data-location') || '';
-                const rowStatus = row.getAttribute('data-status') || '';
-                const rowCategory = row.getAttribute('data-category') || '';
-
-                let showRow = true;
-
-                // Location filter
-                if (location !== 'all locations') {
-                    if (location === 'main shop' && rowLocation !== 'main') showRow = false;
-                    if (location === 'colombo branch' && rowLocation !== 'colombo') showRow = false;
-                    if (location === 'kandy branch' && rowLocation !== 'kandy') showRow = false;
-                    if (location === 'galle branch' && rowLocation !== 'galle') showRow = false;
-                }
-
-                // Status filter
-                if (status !== 'all status') {
-                    if (status === 'in stock' && rowStatus !== 'in-stock') showRow = false;
-                    if (status === 'issued - pending sale' && rowStatus !== 'pending-sale') showRow = false;
-                    if (status === 'issued - pending payment' && rowStatus !== 'pending-payment') showRow = false;
-                    if (status === 'sale completed' && rowStatus !== 'sale-completed') showRow = false;
-                }
-
-                // Category filter
-                if (category !== 'all categories' && !rowCategory.includes(category.replace(' ', ''))) {
-                    showRow = false;
-                }
-
-                row.style.display = showRow ? '' : 'none';
-            });
-        }
-
-        if (locationFilter) locationFilter.addEventListener('change', applyFilters);
-        if (statusFilter) statusFilter.addEventListener('change', applyFilters);
-        if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
+            if (locationFilter) locationFilter.addEventListener('change', applyFilters);
+            if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+            if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
         }
 
         if (searchClose) {
@@ -601,12 +685,12 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         // Product search functionality
         const searchProducts = document.getElementById('searchProducts');
         const inventoryTable = document.getElementById('inventoryTable');
-        
+
         if (searchProducts && inventoryTable) {
             searchProducts.addEventListener('input', function() {
                 const query = this.value.toLowerCase();
                 const rows = inventoryTable.querySelectorAll('tr');
-                
+
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
                     row.style.display = text.includes(query) ? '' : 'none';
@@ -628,9 +712,9 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             const dialog = document.getElementById('transferDialog');
             const productSearch = document.getElementById('productSearch');
             const selectedProductId = document.getElementById('selectedProductId');
-            
+
             dialog.classList.add('active');
-            
+
             // If product details are provided, pre-fill the search
             if (imei && productName) {
                 const product = productsData.find(p => p.imei === imei);
@@ -640,7 +724,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     updateStockInfo(product);
                 }
             }
-            
+
             // Populate product dropdown initially
             populateProductDropdown(productsData);
         }
@@ -649,7 +733,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             const dialog = document.getElementById('transferDialog');
             const form = document.getElementById('transferForm');
             const productDropdown = document.getElementById('productDropdown');
-            
+
             dialog.classList.remove('active');
             form.reset();
             document.getElementById('selectedProductId').value = '';
@@ -665,31 +749,31 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
 
         function filterProducts() {
             const searchTerm = document.getElementById('productSearch').value.toLowerCase();
-            
+
             if (searchTerm.length === 0) {
                 populateProductDropdown(productsData);
                 return;
             }
-            
+
             const filtered = productsData.filter(product => {
                 const last4Digits = product.imei.slice(-4);
                 return product.name.toLowerCase().includes(searchTerm) ||
-                       product.variant.toLowerCase().includes(searchTerm) ||
-                       product.imei.includes(searchTerm) ||
-                       last4Digits.includes(searchTerm);
+                    product.variant.toLowerCase().includes(searchTerm) ||
+                    product.imei.includes(searchTerm) ||
+                    last4Digits.includes(searchTerm);
             });
-            
+
             populateProductDropdown(filtered);
         }
 
         function populateProductDropdown(products) {
             const dropdown = document.getElementById('productDropdown');
-            
+
             if (products.length === 0) {
                 dropdown.innerHTML = '<div style="padding: 16px; text-align: center; color: #7a86ad; font-size: 14px;"><i class="fas fa-inbox" style="margin-right: 8px;"></i>No products found</div>';
                 return;
             }
-            
+
             dropdown.innerHTML = products.map(product => `
                 <div class="product-option" onclick="selectProduct('${product.id}')" style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f4f7fc; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
                     <div style="display: flex; justify-content: space-between; align-items: start;">
@@ -710,16 +794,16 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         function selectProduct(productId) {
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
-            
+
             const productSearch = document.getElementById('productSearch');
             const selectedProductId = document.getElementById('selectedProductId');
             const productDropdown = document.getElementById('productDropdown');
             const transferQuantity = document.getElementById('transferQuantity');
-            
+
             productSearch.value = `${product.name} - ${product.variant} (IMEI: ${product.imei})`;
             selectedProductId.value = product.id;
             productDropdown.style.display = 'none';
-            
+
             // Update stock info and set default quantity
             updateStockInfo(product);
             transferQuantity.value = product.stock;
@@ -729,27 +813,27 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         function updateStockInfo(product) {
             const stockInfo = document.getElementById('stockInfo');
             const currentStock = document.getElementById('currentStock');
-            
+
             currentStock.textContent = product.stock;
             stockInfo.style.display = 'block';
         }
 
         function handleTransferSubmit(event) {
             event.preventDefault();
-            
+
             const location = document.getElementById('transferLocation').value;
             const productId = document.getElementById('selectedProductId').value;
             const quantity = document.getElementById('transferQuantity').value;
-            
+
             const product = productsData.find(p => p.id === productId);
             const locationText = document.getElementById('transferLocation').selectedOptions[0].text;
-            
+
             // Validate quantity
             if (parseInt(quantity) > product.stock) {
                 alert('Transfer quantity cannot exceed available stock!');
                 return;
             }
-            
+
             // Here you would typically make an API call to process the transfer
             console.log('Transfer Details:', {
                 location,
@@ -757,9 +841,9 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 product,
                 quantity
             });
-            
+
             alert(`Stock transfer initiated!\n\nProduct: ${product.name}\nQuantity: ${quantity}\nDestination: ${locationText}\n\nTransfer will be processed shortly.`);
-            
+
             closeTransferDialog();
         }
 
@@ -768,7 +852,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             const productSearch = document.getElementById('productSearch');
             const productDropdown = document.getElementById('productDropdown');
             const transferDialog = document.getElementById('transferDialog');
-            
+
             if (transferDialog && transferDialog.classList.contains('active')) {
                 if (!productSearch.contains(event.target) && !productDropdown.contains(event.target)) {
                     productDropdown.style.display = 'none';
@@ -787,4 +871,5 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         });
     </script>
 </body>
+
 </html>
