@@ -138,9 +138,9 @@ $pageTitle = 'Add Product';
                                 <div class="form-hint">Calculated automatically</div>
                             </div>
                             <div class="form-field">
-                                <label for="price">Display Price (LKR)</label>
-                                <input type="number" id="price" name="price" placeholder="Same as selling price" step="0.01">
-                                <div class="form-hint">Optional: price shown on product card</div>
+                                <label for="wholesale_price">Wholesale Price (LKR)</label>
+                                <input type="number" id="wholesale_price" name="wholesale_price" placeholder="0.00" step="0.01">
+                                <div class="form-hint">Optional: wholesale price for bulk purchases</div>
                             </div>
                         </div>
                     </div>
@@ -481,6 +481,7 @@ $pageTitle = 'Add Product';
                         
                         // Product_Stock fields (optional)
                         profit_margin: null,  // Will be calculated by API, but include it
+                        wholesale_price: document.getElementById('wholesale_price')?.value ? parseFloat(document.getElementById('wholesale_price').value) : null,
                         supplier: document.getElementById('supplier')?.value?.trim() || null,
                         minimum_stock_level: document.getElementById('minimum_stock_level')?.value ? parseInt(document.getElementById('minimum_stock_level').value) : null,
                         quantity_in_stock: document.getElementById('quantity_in_stock')?.value ? parseInt(document.getElementById('quantity_in_stock').value, 10) : null,
@@ -498,12 +499,12 @@ $pageTitle = 'Add Product';
                     
                     // Ensure required fields are always present
                     productData.productName = productNameInput.value.trim();
-                    productData.price = parseFloat(sellingPriceInput.value);
                     productData.brand = brandInput.value.trim();
                     productData.product_type = productType;
                     productData.sku = skuInput.value.trim();
                     productData.cost_price = parseFloat(costPriceInput.value);
                     productData.selling_price = parseFloat(sellingPriceInput.value);
+                    productData.price = parseFloat(sellingPriceInput.value);
                     productData.status = document.getElementById('status')?.value || 'active';
                     
                     console.log('Submitting product data:', productData);

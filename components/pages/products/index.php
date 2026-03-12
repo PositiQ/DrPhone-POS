@@ -443,12 +443,24 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
               <div class="app-dialog-section-title">PRICING</div>
               <div class="app-dialog-row"><strong>Cost Price:</strong> LKR ${(stock.cost_price || 0).toLocaleString()}</div>
               <div class="app-dialog-row"><strong>Selling Price:</strong> LKR ${(stock.selling_price || 0).toLocaleString()}</div>
-              <div class="app-dialog-row"><strong>Display Price:</strong> LKR ${(product.price || 0).toLocaleString()}</div>
-              <div class="app-dialog-row"><strong>Profit Margin:</strong> ${stock.profit_margin || 'N/A'}%</div>
+              <div class="app-dialog-row"><strong>Wholesale Price:</strong> LKR ${(stock.wholesale_price || 0).toLocaleString()}</div>
+              <div class="app-dialog-row"><strong>Profit Margin:</strong> ${
+                (() => {
+                  const cost = stock.cost_price || 0;
+                  const selling = stock.selling_price || 0;
+                  if (cost > 0 && selling > 0) {
+                    const profit = selling - cost;
+                    const margin = ((profit / selling) * 100).toFixed(2);
+                    return margin + '% (LKR ' + profit.toFixed(2) + ')';
+                  }
+                  return 'N/A';
+                })()
+              }</div>
             </div>
 
             <div class="app-dialog-section">
               <div class="app-dialog-section-title">STOCK</div>
+              <div class="app-dialog-row"><strong>In Stock Quantity:</strong> ${stock.quantity_in_stock ?? 'N/A'}</div>
               <div class="app-dialog-row"><strong>Status:</strong> <span class="app-dialog-pill">${stock.status || 'N/A'}</span></div>
               <div class="app-dialog-row"><strong>Minimum Stock:</strong> ${stock.minimum_stock_level ?? 'N/A'}</div>
               <div class="app-dialog-row"><strong>Supplier:</strong> ${stock.supplier || 'N/A'}</div>
