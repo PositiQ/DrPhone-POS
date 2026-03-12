@@ -124,9 +124,6 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             <tr data-location="main" data-status="in-stock" data-category="smartphone">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
                                         <div>
                                             <strong style="display: block; color: #1a237e;">iPhone 14 Pro</strong>
                                             <span style="font-size: 12px; color: #7a86ad;">256GB · Space Black · LKR 289,000</span>
@@ -152,9 +149,6 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             <tr data-location="colombo" data-status="pending-sale" data-category="smartphone">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
                                         <div>
                                             <strong style="display: block; color: #1a237e;">Samsung S23 Ultra</strong>
                                             <span style="font-size: 12px; color: #7a86ad;">512GB · Phantom Black · LKR 245,000</span>
@@ -180,9 +174,6 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             <tr data-location="main" data-status="in-stock" data-category="smartphone">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
                                         <div>
                                             <strong style="display: block; color: #1a237e;">Google Pixel 7</strong>
                                             <span style="font-size: 12px; color: #7a86ad;">128GB · Snow · LKR 185,000</span>
@@ -208,9 +199,6 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             <tr data-location="kandy" data-status="pending-payment" data-category="smartphone">
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
                                         <div>
                                             <strong style="display: block; color: #1a237e;">iPhone 13</strong>
                                             <span style="font-size: 12px; color: #7a86ad;">128GB · Midnight · LKR 215,000</span>
@@ -226,118 +214,6 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                                     <div style="display: flex; gap: 6px;">
                                         <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Update Status">
                                             <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-location="galle" data-status="sale-completed" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Xiaomi 13</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">256GB · Alpine Green · LKR 165,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913547108</code></td>
-                                <td><span style="color: #7a86ad;">Issued</span></td>
-                                <td><strong style="color: #2196f3;">Galle Branch</strong></td>
-                                <td><span style="font-size: 12px;">2026-02-15</span></td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Sale Completed</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Invoice">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-location="main" data-status="in-stock" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">OnePlus 11</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">256GB · Eternal Green · LKR 198,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913549876</code></td>
-                                <td><strong style="color: #1a237e;">Main Shop</strong></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913549876', 'OnePlus 11', '256GB · Eternal Green')">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-location="colombo" data-status="pending-sale" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Samsung A54</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">256GB · Awesome Violet · LKR 125,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913549123</code></td>
-                                <td><span style="color: #7a86ad;">Issued</span></td>
-                                <td><strong style="color: #2196f3;">Colombo Branch</strong></td>
-                                <td><span style="font-size: 12px;">2026-02-22</span></td>
-                                <td><span class="status-badge" style="background: #fff3e0; color: #b45f06;">Pending Sale</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Update Status">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-location="main" data-status="in-stock" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Vivo V27 Pro</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">256GB · Magic Blue · LKR 145,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913549456</code></td>
-                                <td><strong style="color: #1a237e;">Main Shop</strong></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913549456', 'Vivo V27 Pro', '256GB · Magic Blue')">
-                                            <i class="fas fa-exchange-alt"></i>
                                         </button>
                                         <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
                                             <i class="fas fa-eye"></i>
