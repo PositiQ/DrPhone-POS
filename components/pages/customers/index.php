@@ -224,9 +224,11 @@ $pageSubtitle = 'Manage customers, invoices, and credit sales.';
             const validSales = salesHistory.filter(sale => String(sale.status || '').toLowerCase() !== 'cancelled');
             const totalPurchases = validSales.reduce((sum, sale) => sum + parseFloat(sale.total_amount || 0), 0);
 
-            const due = customerSales.reduce((sum, sale) => {
-                if (sale.is_due_available && ['pending', 'overdue'].includes(String(sale.payment_status || '').toLowerCase())) {
-                    return sum + (parseFloat(sale.total_sales_amount || 0) - parseFloat(sale.paid_amount || 0));
+            // Credit balance follows sale status: pending => credit, sold/completed => cleared.
+            const due = validSales.reduce((sum, sale) => {
+                const normalizedStatus = String(sale.status || '').toLowerCase();
+                if (['pending', 'pending_payment'].includes(normalizedStatus)) {
+                    return sum + parseFloat(sale.total_amount || 0);
                 }
                 return sum;
             }, 0);

@@ -333,7 +333,23 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             transition: all 0.2s ease;
         }
 
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #dfe3ed;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+
         .form-group input:focus {
+            outline: none;
+            border-color: #1a237e;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+        }
+
+        .form-group select:focus {
             outline: none;
             border-color: #1a237e;
             box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
@@ -653,6 +669,26 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label for="settlePaymentMethod">Payment Method</label>
+                    <select id="settlePaymentMethod" required>
+                        <option value="cash" selected>Cash</option>
+                        <option value="card">Card</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="koko">Koko</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="settleAccount">Account</label>
+                    <select id="settleAccount" required>
+                        <option value="">Select account...</option>
+                    </select>
+                    <div id="settleAccountHint" style="margin-top: 6px; font-size: 12px; color: #6a759d;">
+                        Cash requires a drawer account.
+                    </div>
+                </div>
+
                 <div class="modal-actions">
                     <button class="modal-btn secondary" type="button" onclick="closeModal('settlePaymentModal')">Cancel</button>
                     <button class="modal-btn primary" type="button" id="confirmSettleBtn">
@@ -667,11 +703,13 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
     <script>
         const SHOPS_API_URL = 'http://localhost:3000/api/shops';
         const INVENTORY_API_URL = 'http://localhost:3000/api/inventory';
+        const VAULT_ACCOUNTS_API_URL = 'http://localhost:3000/api/vault/accounts';
         let allShops = [];
         let filteredShops = [];
         let selectedShopId = null;
         let selectedShopDetails = null;
         let selectedShopIssues = [];
+        let vaultAccounts = [];
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('collapsed');
@@ -710,6 +748,48 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             if (toNumber(sales?.total_outstanding) > 0) return 'outstanding';
             if (toNumber(sales?.active_devices) > 0) return 'active';
             return 'sold';
+        }
+
+        function getRequiredAccountTypeByPaymentMethod(paymentMethod) {
+            const method = String(paymentMethod || '').toLowerCase();
+            if (method === 'cash') return 'drawer';
+            if (method === 'card' || method === 'bank_transfer' || method === 'koko') return 'bank';
+            return null;
+        }
+
+        async function loadVaultAccounts() {
+            const response = await apiRequest(VAULT_ACCOUNTS_API_URL);
+            const accounts = Array.isArray(response.accounts) ? response.accounts : [];
+
+            vaultAccounts = accounts.map(account => ({
+                id: account.account_id,
+                type: String(account.account_type || '').toLowerCase(),
+                displayName: account.display_name || account.account_id,
+                balance: toNumber(account.available_balance),
+            }));
+        }
+
+        function renderSettleAccountOptions() {
+            const paymentMethod = document.getElementById('settlePaymentMethod').value;
+            const accountSelect = document.getElementById('settleAccount');
+            const hint = document.getElementById('settleAccountHint');
+
+            const requiredType = getRequiredAccountTypeByPaymentMethod(paymentMethod);
+            const matchingAccounts = vaultAccounts.filter(account => account.type === requiredType);
+
+            accountSelect.innerHTML = `<option value="">Select ${requiredType || ''} account...</option>` + matchingAccounts.map(account =>
+                `<option value="${escapeHtml(account.id)}">${escapeHtml(account.displayName)} · ${formatCurrency(account.balance)}</option>`
+            ).join('');
+
+            if (requiredType === 'drawer') {
+                hint.textContent = 'Cash requires a drawer account.';
+            } else {
+                hint.textContent = 'Card, Bank Transfer, and Koko require a bank account.';
+            }
+
+            if (!matchingAccounts.length) {
+                hint.textContent += ` No ${requiredType} accounts available.`;
+            }
         }
 
         function renderShops(shops) {
@@ -964,7 +1044,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             }
         }
 
-        function openSettlePaymentModal() {
+        async function openSettlePaymentModal() {
             if (!selectedShopDetails || !selectedShopId) {
                 alert('Open shop details first.');
                 return;
@@ -982,6 +1062,21 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             document.getElementById('settlePendingCount').textContent = selectedShopIssues.length.toLocaleString();
             const selectedTypeElement = document.querySelector('input[name="settlementType"][value="full"]');
             if (selectedTypeElement) selectedTypeElement.checked = true;
+
+            try {
+                await loadVaultAccounts();
+            } catch (error) {
+                alert(`Unable to load vault accounts: ${error.message}`);
+                return;
+            }
+
+            if (!vaultAccounts.length) {
+                alert('No vault accounts found. Create at least one vault account first.');
+                return;
+            }
+
+            document.getElementById('settlePaymentMethod').value = 'cash';
+            renderSettleAccountOptions();
             openModal('settlePaymentModal');
         }
 
@@ -993,6 +1088,19 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
             const selectedTypeElement = document.querySelector('input[name="settlementType"]:checked');
             const type = selectedTypeElement ? selectedTypeElement.value : 'full';
+            const paymentMethod = document.getElementById('settlePaymentMethod').value;
+            const accountId = document.getElementById('settleAccount').value;
+
+            if (!paymentMethod) {
+                alert('Please select payment method.');
+                return;
+            }
+
+            if (!accountId) {
+                alert('Please select account.');
+                return;
+            }
+
             const confirmed = confirm(`Proceed with ${type} settlement for shop ${selectedShopId}?`);
             if (!confirmed) return;
 
@@ -1007,7 +1115,11 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ type }),
+                    body: JSON.stringify({
+                        type,
+                        payment_method: paymentMethod,
+                        account_id: accountId,
+                    }),
                 });
 
                 const settledAmount = toNumber(response?.data?.amount_settled);
@@ -1140,6 +1252,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
         document.getElementById('detailsPrintInvoiceBtn').addEventListener('click', printShopInvoice);
         document.getElementById('detailsSettleBtn').addEventListener('click', openSettlePaymentModal);
+        document.getElementById('settlePaymentMethod').addEventListener('change', renderSettleAccountOptions);
         document.getElementById('confirmSettleBtn').addEventListener('click', confirmSettlement);
 
         document.getElementById('detailsDeleteBtn').addEventListener('click', deleteSelectedShop);

@@ -205,7 +205,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     <!-- Payment Status -->
                     <div style="margin-bottom: 20px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
-                            <i class="fas fa-map-marker-alt" style="margin-right: 6px; color: #7a86ad;"></i>
+                            <i class="fas fa-money-check-dollar" style="margin-right: 6px; color: #7a86ad;"></i>
                             Payment Status
                         </label>
                         <select id="paymentStatus" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
@@ -213,6 +213,26 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             <option value="sold">Sold / Completed</option>
                             <option value="pending_payment">Pending Payment</option>
                         </select>
+                    </div>
+
+                    <!-- Sold Payment Details -->
+                    <div id="soldPaymentFields" style="display: none; margin-bottom: 20px; padding: 12px; background: #f4f7fc; border-radius: 8px; border-left: 4px solid #1a237e;">
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">Payment Method</label>
+                            <select id="soldPaymentMethod" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                                <option value="cash" selected>Cash</option>
+                                <option value="card">Card</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="koko">Koko</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">Account</label>
+                            <select id="soldPaymentAccount" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                                <option value="">Select account...</option>
+                            </select>
+                            <div id="soldPaymentAccountHint" style="margin-top: 6px; font-size: 12px; color: #7a86ad;">Cash requires a drawer account.</div>
+                        </div>
                     </div>
 
                     <!-- Action Buttons -->
@@ -243,11 +263,55 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         </div>
     </div>
 
+    <!-- Complete Sale Dialog -->
+    <div class="search-overlay" id="completeSaleDialog" role="dialog" aria-modal="true" aria-label="Complete Sale">
+        <div class="search-dialog" role="document" style="max-width: 520px; padding: 0;">
+            <div class="search-dialog-header" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; padding: 20px; border-radius: 12px 12px 0 0;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-check-circle" style="font-size: 20px;"></i>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Complete Sale</h3>
+                </div>
+                <button class="search-close" type="button" onclick="closeCompleteSaleDialog()" aria-label="Close dialog" style="color: white;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div style="padding: 24px;">
+                <form id="completeSaleForm">
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">Payment Method</label>
+                        <select id="completeSalePaymentMethod" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                            <option value="cash" selected>Cash</option>
+                            <option value="card">Card</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                            <option value="koko">Koko</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">Account</label>
+                        <select id="completeSaleAccount" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                            <option value="">Select account...</option>
+                        </select>
+                        <div id="completeSaleAccountHint" style="margin-top: 6px; font-size: 12px; color: #7a86ad;">Cash requires a drawer account.</div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button type="button" onclick="closeCompleteSaleDialog()" style="padding: 12px 24px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">Cancel</button>
+                        <button type="submit" id="completeSaleSubmitBtn" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            <i class="fas fa-check" style="margin-right: 6px;"></i>Complete Sale
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_BASE = 'http://localhost:3000/api';
         const PRODUCTS_API = `${API_BASE}/products`;
         const SHOPS_API = `${API_BASE}/shops`;
         const INVENTORY_API = `${API_BASE}/inventory`;
+        const VAULT_ACCOUNTS_API = `${API_BASE}/vault/accounts`;
 
         let allProducts = [];
         let allShops = [];
@@ -256,6 +320,8 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         let filteredRows = [];
         let transferProducts = [];
         let transferShops = [];
+        let vaultAccounts = [];
+        let pendingCompleteIssueId = null;
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -312,7 +378,8 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         productName: product.productName || 'Unknown Product',
                         productDetails: [product.capacity, product.color].filter(Boolean).join(' · '),
                         imei: product.IMEI || '-',
-                        location: stock.storage_location || 'Main Shop',
+                        // Quantity in Product_Stock is the remaining balance at main shop.
+                        location: 'Main Shop',
                         issuedTo: '-',
                         issuedDate: '-',
                         status: 'in_stock',
@@ -320,36 +387,51 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     };
                 });
 
-            const issueRows = allIssues.map(issue => ({
-                type: 'issue',
-                issueId: issue.id,
-                productId: null,
-                productName: issue.product_name || 'Unknown Product',
-                productDetails: [issue.capacity, issue.color].filter(Boolean).join(' · '),
-                imei: issue.IMEI || '-',
-                location: issue.storage_location || issue.issued_to || '-',
-                issuedTo: issue.issued_to || '-',
-                issuedDate: issue.issued_date ? new Date(issue.issued_date).toISOString().slice(0, 10) : '-',
-                status: issue.issue_status || 'pending_payment',
-                category: getProductCategory(issue.product_name),
-            }));
+            const issueRows = allIssues.flatMap(issue => {
+                const issuedUnits = Math.max(1, Math.floor(toNumber(issue.issued_stock)));
+                const details = [issue.capacity, issue.color].filter(Boolean).join(' · ');
+
+                return Array.from({ length: issuedUnits }, (_, index) => ({
+                    type: 'issue',
+                    issueId: issue.id,
+                    issueUnitIndex: index + 1,
+                    issueUnitTotal: issuedUnits,
+                    isIssuePrimary: index === 0,
+                    productId: null,
+                    productName: issue.product_name || 'Unknown Product',
+                    productDetails: issuedUnits > 1
+                        ? [details, `Unit ${index + 1}/${issuedUnits}`].filter(Boolean).join(' · ')
+                        : details,
+                    imei: issue.IMEI || '-',
+                    location: issue.issued_to || issue.storage_location || '-',
+                    issuedTo: issue.issued_to || '-',
+                    issuedDate: issue.issued_date ? new Date(issue.issued_date).toISOString().slice(0, 10) : '-',
+                    status: issue.issue_status || 'pending_payment',
+                    category: getProductCategory(issue.product_name),
+                }));
+            });
 
             combinedRows = [...issueRows, ...inStockRows];
             filteredRows = [...combinedRows];
         }
 
         function updateMetrics() {
+            // Product_Stock.quantity_in_stock represents current main-shop balance.
             const mainShopStock = allProducts.reduce((sum, product) => {
                 const stock = product.Product_Stock || {};
-                const storage = String(stock.storage_location || 'Main Shop').toLowerCase();
-                if (storage.includes('main')) {
-                    return sum + toNumber(stock.quantity_in_stock);
+                return sum + toNumber(stock.quantity_in_stock);
+            }, 0);
+
+            const issuedToBranches = allIssues.reduce(
+                (sum, issue) => sum + Math.max(1, Math.floor(toNumber(issue.issued_stock))),
+                0
+            );
+            const pendingSale = allIssues.reduce((sum, issue) => {
+                if (String(issue.issue_status || '').toLowerCase() === 'pending_payment') {
+                    return sum + Math.max(1, Math.floor(toNumber(issue.issued_stock)));
                 }
                 return sum;
             }, 0);
-
-            const issuedToBranches = allIssues.length;
-            const pendingSale = allIssues.filter(issue => String(issue.issue_status || '').toLowerCase() === 'pending_payment').length;
             const totalInventory = allProducts.reduce((sum, product) => sum + toNumber(product?.Product_Stock?.quantity_in_stock), 0);
 
             document.getElementById('metricMainShopStock').textContent = mainShopStock.toLocaleString();
@@ -398,7 +480,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     <td>
                         <div style="display: flex; gap: 6px;">
                             ${row.type === 'stock' ? `<button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialogByProduct('${escapeHtml(row.productId)}')"><i class="fas fa-exchange-alt"></i></button>` : ''}
-                            ${row.type === 'issue' && row.status === 'pending_payment' ? `<button class="button-secondary" style="padding: 6px 10px; font-size: 12px; background: #e8f5e9; color: #1b5e20;" title="Complete Sale" onclick="completeIssueSale(${Number(row.issueId)})"><i class="fas fa-check-circle"></i></button>` : ''}
+                            ${row.type === 'issue' && row.status === 'pending_payment' && row.isIssuePrimary ? `<button class="button-secondary" style="padding: 6px 10px; font-size: 12px; background: #e8f5e9; color: #1b5e20;" title="Complete Sale" onclick="completeIssueSale(${Number(row.issueId)})"><i class="fas fa-check-circle"></i></button>` : ''}
                             <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Product" onclick="window.location.href='../products/index.php'">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -455,10 +537,11 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         }
 
         async function loadInitialData() {
-            const [productsResult, shopsResult, issuesResult] = await Promise.allSettled([
+            const [productsResult, shopsResult, issuesResult, accountsResult] = await Promise.allSettled([
                 requestJson(`${PRODUCTS_API}?limit=500`),
                 requestJson(`${SHOPS_API}?limit=500`),
                 requestJson(`${INVENTORY_API}/issues?page=1`),
+                requestJson(VAULT_ACCOUNTS_API),
             ]);
 
             allProducts = productsResult.status === 'fulfilled' && Array.isArray(productsResult.value.data)
@@ -473,6 +556,15 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 ? issuesResult.value.data
                 : [];
 
+            vaultAccounts = accountsResult.status === 'fulfilled' && Array.isArray(accountsResult.value.accounts)
+                ? accountsResult.value.accounts.map(account => ({
+                    id: account.account_id,
+                    type: String(account.account_type || '').toLowerCase(),
+                    displayName: account.display_name || account.account_id,
+                    balance: toNumber(account.available_balance),
+                }))
+                : [];
+
             // Keep transfer product suggestions available even when quantity is missing/null.
             transferProducts = allProducts
                 .filter(product => product && product.id)
@@ -482,7 +574,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     variant: [product.capacity, product.color].filter(Boolean).join(' · '),
                     imei: product.IMEI || '',
                     stock: toNumber(product?.Product_Stock?.quantity_in_stock),
-                    price: toNumber(product?.Product_Stock?.selling_price || product.price),
+                    price: toNumber(product?.Product_Stock?.wholesale_price || product?.Product_Stock?.selling_price || product.price),
                 }));
 
             transferShops = allShops
@@ -504,6 +596,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 const failedParts = [
                     productsResult.status === 'rejected' ? 'products' : null,
                     shopsResult.status === 'rejected' ? 'shops' : null,
+                    accountsResult.status === 'rejected' ? 'vault accounts' : null,
                 ].filter(Boolean).join(', ');
 
                 document.getElementById('inventoryTable').insertAdjacentHTML('afterbegin', `
@@ -579,6 +672,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             document.getElementById('stockInfo').style.display = 'none';
             document.getElementById('shopDropdown').style.display = 'none';
             document.getElementById('productDropdown').style.display = 'none';
+            document.getElementById('soldPaymentFields').style.display = 'none';
         }
 
         function showProductDropdown() {
@@ -652,6 +746,8 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             const issuedStock = parseInt(document.getElementById('transferQuantity').value, 10);
             const sellingPrice = toNumber(document.getElementById('productPrice').value);
             const paymentStatus = document.getElementById('paymentStatus').value;
+            const soldPaymentMethod = document.getElementById('soldPaymentMethod').value;
+            const soldPaymentAccount = document.getElementById('soldPaymentAccount').value;
 
             const product = transferProducts.find(p => p.id === productId);
 
@@ -695,6 +791,17 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 return;
             }
 
+            if (paymentStatus === 'sold') {
+                if (!soldPaymentMethod) {
+                    alert('Please select payment method for sold/completed transfer.');
+                    return;
+                }
+                if (!soldPaymentAccount) {
+                    alert('Please select account for sold/completed transfer.');
+                    return;
+                }
+            }
+
             const transferSubmitBtn = document.getElementById('transferSubmitBtn');
             transferSubmitBtn.disabled = true;
             transferSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i> Processing...';
@@ -711,6 +818,8 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         issued_stock: issuedStock,
                         selling_price: sellingPrice,
                         payment_status: paymentStatus,
+                        payment_method: paymentStatus === 'sold' ? soldPaymentMethod : undefined,
+                        account_id: paymentStatus === 'sold' ? soldPaymentAccount : undefined,
                     }),
                 });
 
@@ -731,23 +840,128 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 return;
             }
 
-            const confirmed = confirm('Mark this pending issue as sold/completed?');
-            if (!confirmed) {
+            pendingCompleteIssueId = issueId;
+            if (!vaultAccounts.length) {
+                alert('No vault accounts found. Create at least one vault account first.');
                 return;
             }
 
+            const paymentMethodSelect = document.getElementById('completeSalePaymentMethod');
+            paymentMethodSelect.value = 'cash';
+            renderCompleteSaleAccountOptions();
+            document.getElementById('completeSaleDialog').classList.add('active');
+        }
+
+        function getRequiredAccountTypeByPaymentMethod(paymentMethod) {
+            const method = String(paymentMethod || '').toLowerCase();
+            if (method === 'cash') return 'drawer';
+            if (method === 'card' || method === 'bank_transfer' || method === 'koko') return 'bank';
+            return null;
+        }
+
+        function renderSoldPaymentAccountOptions() {
+            const paymentMethod = document.getElementById('soldPaymentMethod').value;
+            const accountSelect = document.getElementById('soldPaymentAccount');
+            const hint = document.getElementById('soldPaymentAccountHint');
+            const requiredType = getRequiredAccountTypeByPaymentMethod(paymentMethod);
+
+            const matchingAccounts = vaultAccounts.filter(account => account.type === requiredType);
+
+            accountSelect.innerHTML = `<option value="">Select ${requiredType || ''} account...</option>` + matchingAccounts.map(account =>
+                `<option value="${escapeHtml(account.id)}">${escapeHtml(account.displayName)} · LKR ${toNumber(account.balance).toLocaleString()}</option>`
+            ).join('');
+
+            if (requiredType === 'drawer') {
+                hint.textContent = 'Cash requires a drawer account.';
+            } else {
+                hint.textContent = 'Card, Bank Transfer, and Koko require a bank account.';
+            }
+
+            if (!matchingAccounts.length) {
+                hint.textContent += ` No ${requiredType} accounts available.`;
+            }
+        }
+
+        function toggleTransferSoldPaymentFields() {
+            const status = document.getElementById('paymentStatus').value;
+            const container = document.getElementById('soldPaymentFields');
+            if (status === 'sold') {
+                container.style.display = 'block';
+                renderSoldPaymentAccountOptions();
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function renderCompleteSaleAccountOptions() {
+            const paymentMethod = document.getElementById('completeSalePaymentMethod').value;
+            const accountSelect = document.getElementById('completeSaleAccount');
+            const hint = document.getElementById('completeSaleAccountHint');
+            const requiredType = getRequiredAccountTypeByPaymentMethod(paymentMethod);
+
+            const matchingAccounts = vaultAccounts.filter(account => account.type === requiredType);
+
+            accountSelect.innerHTML = `<option value="">Select ${requiredType || ''} account...</option>` + matchingAccounts.map(account =>
+                `<option value="${escapeHtml(account.id)}">${escapeHtml(account.displayName)} · LKR ${toNumber(account.balance).toLocaleString()}</option>`
+            ).join('');
+
+            if (requiredType === 'drawer') {
+                hint.textContent = 'Cash requires a drawer account.';
+            } else {
+                hint.textContent = 'Card, Bank Transfer, and Koko require a bank account.';
+            }
+
+            if (!matchingAccounts.length) {
+                hint.textContent += ` No ${requiredType} accounts available.`;
+            }
+        }
+
+        function closeCompleteSaleDialog() {
+            document.getElementById('completeSaleDialog').classList.remove('active');
+            document.getElementById('completeSaleForm').reset();
+            pendingCompleteIssueId = null;
+        }
+
+        async function handleCompleteSaleSubmit(event) {
+            event.preventDefault();
+
+            if (!pendingCompleteIssueId) {
+                alert('No issue selected.');
+                return;
+            }
+
+            const paymentMethod = document.getElementById('completeSalePaymentMethod').value;
+            const accountId = document.getElementById('completeSaleAccount').value;
+
+            if (!accountId) {
+                alert('Please select an account.');
+                return;
+            }
+
+            const submitBtn = document.getElementById('completeSaleSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i> Processing...';
+
             try {
-                await requestJson(`${INVENTORY_API}/issues/${issueId}/complete`, {
+                await requestJson(`${INVENTORY_API}/issues/${pendingCompleteIssueId}/complete`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    body: JSON.stringify({
+                        account_id: accountId,
+                        payment_method: paymentMethod,
+                    }),
                 });
 
                 alert('Sale completed successfully.');
+                closeCompleteSaleDialog();
                 await loadInitialData();
             } catch (error) {
                 alert(`Unable to complete sale: ${error.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-check" style="margin-right: 6px;"></i>Complete Sale';
             }
         }
 
@@ -841,6 +1055,10 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         document.getElementById('statusFilter').addEventListener('change', applyFilters);
         document.getElementById('categoryFilter').addEventListener('change', applyFilters);
         document.getElementById('transferForm').addEventListener('submit', handleTransferSubmit);
+        document.getElementById('paymentStatus').addEventListener('change', toggleTransferSoldPaymentFields);
+        document.getElementById('soldPaymentMethod').addEventListener('change', renderSoldPaymentAccountOptions);
+        document.getElementById('completeSaleForm').addEventListener('submit', handleCompleteSaleSubmit);
+        document.getElementById('completeSalePaymentMethod').addEventListener('change', renderCompleteSaleAccountOptions);
         document.getElementById('exportInventoryBtn').addEventListener('click', exportRowsToCsv);
 
         document.querySelectorAll('.pill').forEach(pill => {

@@ -292,6 +292,27 @@ $pageSubtitle = 'View sales insights and add new sales.';
             return new Date(saleDate);
         }
 
+        function classifySaleAmount(sale) {
+            const total = Number(sale.total_amount || 0);
+            const normalizedStatus = String(sale.status || '').toLowerCase();
+            const normalizedMethod = String(sale.payment_method || '').toLowerCase();
+
+            if (['completed', 'sold'].includes(normalizedStatus)) {
+                return { total, actual: total, credit: 0 };
+            }
+
+            if (['pending', 'pending_payment'].includes(normalizedStatus)) {
+                return { total, actual: 0, credit: total };
+            }
+
+            // Backward compatibility for legacy rows without normalized status values.
+            if (['cash', 'card'].includes(normalizedMethod)) {
+                return { total, actual: total, credit: 0 };
+            }
+
+            return { total, actual: 0, credit: total };
+        }
+
         function setActiveRange(range) {
             activeRange = range;
             rangeButtons.forEach(button => {
@@ -340,37 +361,35 @@ $pageSubtitle = 'View sales insights and add new sales.';
 
             sales.forEach(sale => {
                 const dateKey = toDateOnly(parseSaleDate(sale.sales_date));
-                const total = Number(sale.total_amount || 0);
-                const isActual = ['cash', 'card'].includes((sale.payment_method || '').toLowerCase());
+                const classified = classifySaleAmount(sale);
 
                 if (!groupedByDay.has(dateKey)) {
                     groupedByDay.set(dateKey, {
                         date: dateKey,
                         total: 0,
                         actual: 0,
+                        credit: 0,
                         transactions: 0,
                     });
                 }
 
                 const day = groupedByDay.get(dateKey);
-                day.total += total;
+                day.total += classified.total;
+                day.actual += classified.actual;
+                day.credit += classified.credit;
                 day.transactions += 1;
-                if (isActual) {
-                    day.actual += total;
-                }
             });
 
             const rows = Array.from(groupedByDay.values()).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 20);
 
             salesByDayBody.innerHTML = rows.map(day => {
-                const credit = day.total - day.actual;
                 return `
                     <tr>
                         <td>${day.date}</td>
                         <td>${formatLkr(day.total)}</td>
                         <td>${day.transactions}</td>
                         <td>${formatLkr(day.actual)}</td>
-                        <td>${formatLkr(credit)}</td>
+                        <td>${formatLkr(day.credit)}</td>
                         <td>${formatLkr(day.actual)}</td>
                     </tr>
                 `;
@@ -382,11 +401,10 @@ $pageSubtitle = 'View sales insights and add new sales.';
             const now = new Date();
 
             const todaySales = sales.filter(sale => toDateOnly(parseSaleDate(sale.sales_date)) === todayKey);
-            const todayTotal = todaySales.reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
-            const todayActual = todaySales
-                .filter(sale => ['cash', 'card'].includes((sale.payment_method || '').toLowerCase()))
-                .reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
-            const todayCredit = Math.max(0, todayTotal - todayActual);
+            const todayClassified = todaySales.map(classifySaleAmount);
+            const todayTotal = todayClassified.reduce((sum, sale) => sum + sale.total, 0);
+            const todayActual = todayClassified.reduce((sum, sale) => sum + sale.actual, 0);
+            const todayCredit = todayClassified.reduce((sum, sale) => sum + sale.credit, 0);
 
             dailySalesAmount.textContent = formatLkr(todayTotal);
             dailySalesSub.textContent = `${todaySales.length} transactions today`;
@@ -407,11 +425,10 @@ $pageSubtitle = 'View sales insights and add new sales.';
                 return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
             });
 
-            const monthTotal = monthSales.reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
-            const monthActual = monthSales
-                .filter(sale => ['cash', 'card'].includes((sale.payment_method || '').toLowerCase()))
-                .reduce((sum, sale) => sum + Number(sale.total_amount || 0), 0);
-            const monthCredit = Math.max(0, monthTotal - monthActual);
+            const monthClassified = monthSales.map(classifySaleAmount);
+            const monthTotal = monthClassified.reduce((sum, sale) => sum + sale.total, 0);
+            const monthActual = monthClassified.reduce((sum, sale) => sum + sale.actual, 0);
+            const monthCredit = monthClassified.reduce((sum, sale) => sum + sale.credit, 0);
 
             monthSalesAmount.textContent = formatLkr(monthTotal);
             monthSalesSub.textContent = `Selected range revenue: ${formatLkr(summary.totalRevenue || 0)}`;

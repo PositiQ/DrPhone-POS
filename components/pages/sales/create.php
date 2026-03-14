@@ -69,17 +69,20 @@ $pageTitle = 'Create Sale';
                                 <select id="paymentMethod" name="paymentMethod" required>
                                     <option value="cash" selected>Cash</option>
                                     <option value="card">Card</option>
-                                    <option value="mobile">Mobile</option>
                                     <option value="bank_transfer">Bank Transfer</option>
+                                    <option value="koko">Koko</option>
                                 </select>
                             </div>
                             <div class="form-field">
-                                <label for="saleStatus">Sale Status</label>
-                                <select id="saleStatus" name="saleStatus">
-                                    <option value="completed" selected>Completed</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="cancelled">Cancelled</option>
+                                <label for="saleAccount">Account <span style="color: #f44336;">*</span></label>
+                                <select id="saleAccount" name="saleAccount" required>
+                                    <option value="">Select account...</option>
                                 </select>
+                                <div class="form-hint" id="saleAccountHint">Cash requires a drawer account.</div>
+                            </div>
+                            <div class="form-field">
+                                <label for="saleStatus">Sale Status</label>
+                                <input type="text" id="saleStatus" name="saleStatus" value="Completed" readonly>
                             </div>
                         </div>
                     </div>
@@ -341,9 +344,11 @@ $pageTitle = 'Create Sale';
         const PRODUCTS_API = `${API_BASE_URL}/products`;
         const CUSTOMERS_API = `${API_BASE_URL}/customers`;
         const SALES_API = `${API_BASE_URL}/sales`;
+        const VAULT_ACCOUNTS_API = `${API_BASE_URL}/vault/accounts`;
 
         let products = [];
         let customers = [];
+        let vaultAccounts = [];
 
         const productSearch = document.getElementById('productSearch');
         const productDropdown = document.getElementById('productDropdown');
@@ -376,6 +381,8 @@ $pageTitle = 'Create Sale';
         const totalValue = document.getElementById('totalValue');
         const totalDiscountInput = document.getElementById('totalDiscount');
         const paymentMethodInput = document.getElementById('paymentMethod');
+        const saleAccountInput = document.getElementById('saleAccount');
+        const saleAccountHint = document.getElementById('saleAccountHint');
         const saleStatusInput = document.getElementById('saleStatus');
         const saleForm = document.getElementById('createSaleForm');
         const submitButton = saleForm ? saleForm.querySelector('button[type="submit"]') : null;
@@ -569,15 +576,66 @@ $pageTitle = 'Create Sale';
             };
         }
 
+        function normalizeVaultAccount(accountData) {
+            return {
+                id: accountData.account_id,
+                type: String(accountData.account_type || '').toLowerCase(),
+                display: accountData.display_name || accountData.account_id || 'Account',
+                balance: Number(accountData.available_balance || 0),
+            };
+        }
+
+        function getRequiredAccountType(paymentMethod) {
+            const method = String(paymentMethod || '').toLowerCase();
+            if (method === 'cash') return 'drawer';
+            if (method === 'bank_transfer' || method === 'card' || method === 'koko') return 'bank';
+            return null;
+        }
+
+        function renderSaleAccountOptions() {
+            if (!saleAccountInput) return;
+
+            const requiredType = getRequiredAccountType(paymentMethodInput?.value);
+            const available = requiredType
+                ? vaultAccounts.filter(acc => acc.type === requiredType)
+                : [...vaultAccounts];
+
+            const previousValue = saleAccountInput.value;
+
+            const placeholder = requiredType
+                ? `Select ${requiredType} account...`
+                : 'Select account...';
+
+            saleAccountInput.innerHTML = `<option value="">${placeholder}</option>` + available.map(acc => {
+                return `<option value="${acc.id}">${acc.display} · LKR ${acc.balance.toLocaleString()}</option>`;
+            }).join('');
+
+            if (available.some(acc => acc.id === previousValue)) {
+                saleAccountInput.value = previousValue;
+            }
+
+            if (saleAccountHint) {
+                if (requiredType === 'drawer') {
+                    saleAccountHint.textContent = 'Cash requires a drawer account.';
+                } else if (requiredType === 'bank') {
+                    saleAccountHint.textContent = 'Card, Bank Transfer, and Koko require a bank account.';
+                } else {
+                    saleAccountHint.textContent = 'Select account for transaction.';
+                }
+            }
+        }
+
         async function loadInitialData() {
             try {
-                const [productsResponse, customersResponse] = await Promise.all([
+                const [productsResponse, customersResponse, accountsResponse] = await Promise.all([
                     fetch(PRODUCTS_API),
                     fetch(CUSTOMERS_API),
+                    fetch(VAULT_ACCOUNTS_API),
                 ]);
 
                 const productsResult = await productsResponse.json();
                 const customersResult = await customersResponse.json();
+                const accountsResult = await accountsResponse.json();
 
                 if (!productsResponse.ok || !productsResult.success) {
                     throw new Error(productsResult.message || productsResult.error || 'Failed to load products');
@@ -587,15 +645,25 @@ $pageTitle = 'Create Sale';
                     throw new Error(customersResult.message || customersResult.error || 'Failed to load customers');
                 }
 
+                if (!accountsResponse.ok || !accountsResult.success) {
+                    throw new Error(accountsResult.message || accountsResult.error || 'Failed to load vault accounts');
+                }
+
                 products = (productsResult.data || []).map(normalizeProduct);
                 customers = (customersResult.data || []).map(normalizeCustomer);
+                vaultAccounts = (accountsResult.accounts || []).map(normalizeVaultAccount);
+                renderSaleAccountOptions();
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Load Error',
-                    html: `Unable to load products/customers.<br><br><small>${error.message}</small>`,
+                    html: `Unable to load products/customers/accounts.<br><br><small>${error.message}</small>`,
                 });
             }
+        }
+
+        if (paymentMethodInput) {
+            paymentMethodInput.addEventListener('change', renderSaleAccountOptions);
         }
 
         // Product search autocomplete
@@ -959,9 +1027,22 @@ $pageTitle = 'Create Sale';
                     return;
                 }
 
+                if (!saleAccountInput?.value) {
+                    const requiredType = getRequiredAccountType(paymentMethodInput?.value);
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Account Required',
+                        text: requiredType
+                            ? `Please select a ${requiredType} account for this payment method.`
+                            : 'Please select an account.',
+                    });
+                    return;
+                }
+
                 const payload = {
                     items,
                     payment_method: paymentMethodInput.value,
+                    account_id: saleAccountInput.value,
                     status: saleStatusInput?.value || 'completed',
                     total_discount: Number(totalDiscountInput?.value || 0),
                 };
