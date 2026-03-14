@@ -21,6 +21,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .shop-cards-container {
             display: grid;
@@ -744,6 +745,48 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             return data;
         }
 
+        function showSuccess(message) {
+            return Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: message,
+                confirmButtonColor: '#1a237e',
+            });
+        }
+
+        function showError(message) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: message,
+                confirmButtonColor: '#1a237e',
+            });
+        }
+
+        function showWarning(message) {
+            return Swal.fire({
+                icon: 'warning',
+                title: 'Notice',
+                text: message,
+                confirmButtonColor: '#1a237e',
+            });
+        }
+
+        async function showConfirm(message) {
+            const result = await Swal.fire({
+                icon: 'question',
+                title: 'Please Confirm',
+                text: message,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#1a237e',
+                cancelButtonColor: '#9e9e9e',
+            });
+
+            return result.isConfirmed;
+        }
+
         function getShopStatusClass(sales) {
             if (toNumber(sales?.total_outstanding) > 0) return 'outstanding';
             if (toNumber(sales?.active_devices) > 0) return 'active';
@@ -977,13 +1020,13 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
                 openModal('shopDetailsModal');
             } catch (error) {
-                alert(`Unable to load shop details: ${error.message}`);
+                showError(`Unable to load shop details: ${error.message}`);
             }
         }
 
         async function printShopInvoice() {
             if (!selectedShopId) {
-                alert('No shop selected.');
+                showWarning('No shop selected.');
                 return;
             }
 
@@ -995,7 +1038,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                 const issues = Array.isArray(issuesResponse.data) ? issuesResponse.data : [];
 
                 if (!issues.length) {
-                    alert('No pending issued products found for invoice.');
+                    showWarning('No pending issued products found for invoice.');
                     return;
                 }
 
@@ -1036,24 +1079,24 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
                 const printWindow = window.open(`shop-invoice.html?autoprint=1&t=${Date.now()}`, '_blank');
                 if (!printWindow) {
-                    alert('Please allow popups to print invoice.');
+                    showWarning('Please allow popups to print invoice.');
                     return;
                 }
             } catch (error) {
-                alert(`Invoice print failed: ${error.message}`);
+                showError(`Invoice print failed: ${error.message}`);
             }
         }
 
         async function openSettlePaymentModal() {
             if (!selectedShopDetails || !selectedShopId) {
-                alert('Open shop details first.');
+                showWarning('Open shop details first.');
                 return;
             }
 
             const currentOutstanding = selectedShopIssues.reduce((sum, item) => sum + toNumber(item.issue_amount), 0);
 
             if (currentOutstanding <= 0) {
-                alert('This shop has no pending outstanding balance to settle.');
+                showWarning('This shop has no pending outstanding balance to settle.');
                 return;
             }
 
@@ -1066,12 +1109,12 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             try {
                 await loadVaultAccounts();
             } catch (error) {
-                alert(`Unable to load vault accounts: ${error.message}`);
+                showError(`Unable to load vault accounts: ${error.message}`);
                 return;
             }
 
             if (!vaultAccounts.length) {
-                alert('No vault accounts found. Create at least one vault account first.');
+                showWarning('No vault accounts found. Create at least one vault account first.');
                 return;
             }
 
@@ -1082,7 +1125,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
         async function confirmSettlement() {
             if (!selectedShopId) {
-                alert('No shop selected.');
+                showWarning('No shop selected.');
                 return;
             }
 
@@ -1092,16 +1135,16 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             const accountId = document.getElementById('settleAccount').value;
 
             if (!paymentMethod) {
-                alert('Please select payment method.');
+                showWarning('Please select payment method.');
                 return;
             }
 
             if (!accountId) {
-                alert('Please select account.');
+                showWarning('Please select account.');
                 return;
             }
 
-            const confirmed = confirm(`Proceed with ${type} settlement for shop ${selectedShopId}?`);
+            const confirmed = await showConfirm(`Proceed with ${type} settlement for shop ${selectedShopId}?`);
             if (!confirmed) return;
 
             const settleBtn = document.getElementById('confirmSettleBtn');
@@ -1127,9 +1170,9 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                 await loadShops();
                 await openShopDetails(selectedShopId);
 
-                alert(`${type === 'full' ? 'Full' : 'Half'} settlement completed. Amount settled: ${formatCurrency(settledAmount)}`);
+                showSuccess(`${type === 'full' ? 'Full' : 'Half'} settlement completed. Amount settled: ${formatCurrency(settledAmount)}`);
             } catch (error) {
-                alert(`Settlement failed: ${error.message}`);
+                showError(`Settlement failed: ${error.message}`);
             } finally {
                 settleBtn.disabled = false;
                 settleBtn.innerHTML = previous;
@@ -1139,7 +1182,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
         function openEditModal(shopId) {
             const shopData = allShops.find(item => item.shop_id === shopId);
             if (!shopData) {
-                alert('Shop not found in the current list. Please refresh.');
+                showWarning('Shop not found in the current list. Please refresh.');
                 return;
             }
 
@@ -1156,7 +1199,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
         async function deleteSelectedShop() {
             if (!selectedShopId) return;
 
-            const confirmed = confirm(`Delete shop ${selectedShopId}? This cannot be undone.`);
+            const confirmed = await showConfirm(`Delete shop ${selectedShopId}? This cannot be undone.`);
             if (!confirmed) return;
 
             try {
@@ -1166,9 +1209,9 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
                 closeModal('shopDetailsModal');
                 await loadShops();
-                alert('Shop deleted successfully.');
+                showSuccess('Shop deleted successfully.');
             } catch (error) {
-                alert(`Delete failed: ${error.message}`);
+                showError(`Delete failed: ${error.message}`);
             }
         }
 
@@ -1182,7 +1225,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
         function exportCurrentShops() {
             if (!filteredShops.length) {
-                alert('No shop data to export.');
+                showWarning('No shop data to export.');
                 return;
             }
 
@@ -1261,7 +1304,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             event.preventDefault();
 
             if (!selectedShopId) {
-                alert('No shop selected for update.');
+                showWarning('No shop selected for update.');
                 return;
             }
 
@@ -1284,9 +1327,9 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
 
                 closeModal('editShopModal');
                 await loadShops();
-                alert('Shop updated successfully.');
+                showSuccess('Shop updated successfully.');
             } catch (error) {
-                alert(`Update failed: ${error.message}`);
+                showError(`Update failed: ${error.message}`);
             }
         });
 

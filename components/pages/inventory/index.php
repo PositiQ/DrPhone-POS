@@ -23,6 +23,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -357,6 +358,33 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             }
 
             return data;
+        }
+
+        function showSuccess(message) {
+            return Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: message,
+                confirmButtonColor: '#1a237e',
+            });
+        }
+
+        function showError(message) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: message,
+                confirmButtonColor: '#1a237e',
+            });
+        }
+
+        function showWarning(message) {
+            return Swal.fire({
+                icon: 'warning',
+                title: 'Notice',
+                text: message,
+                confirmButtonColor: '#1a237e',
+            });
         }
 
         function getProductCategory(productName) {
@@ -752,52 +780,52 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             const product = transferProducts.find(p => p.id === productId);
 
             if (!transferShops.length) {
-                alert('No shops are available yet. Create a shop first, then try transfer.');
+                showWarning('No shops are available yet. Create a shop first, then try transfer.');
                 return;
             }
 
             if (!transferProducts.length) {
-                alert('No products are available for transfer yet. Add products first.');
+                showWarning('No products are available for transfer yet. Add products first.');
                 return;
             }
 
             if (!product) {
-                alert('Please select a valid product.');
+                showWarning('Please select a valid product.');
                 return;
             }
 
             if (!issuedShopId) {
-                alert('Please select destination shop.');
+                showWarning('Please select destination shop.');
                 return;
             }
 
             if (!issuedStock || issuedStock < 1) {
-                alert('Please enter a valid quantity.');
+                showWarning('Please enter a valid quantity.');
                 return;
             }
 
             if (product.stock <= 0) {
-                alert('Selected product has no available stock quantity.');
+                showWarning('Selected product has no available stock quantity.');
                 return;
             }
 
             if (issuedStock > product.stock) {
-                alert('Transfer quantity cannot exceed available stock.');
+                showWarning('Transfer quantity cannot exceed available stock.');
                 return;
             }
 
             if (!sellingPrice || sellingPrice <= 0) {
-                alert('Please enter a valid selling price.');
+                showWarning('Please enter a valid selling price.');
                 return;
             }
 
             if (paymentStatus === 'sold') {
                 if (!soldPaymentMethod) {
-                    alert('Please select payment method for sold/completed transfer.');
+                    showWarning('Please select payment method for sold/completed transfer.');
                     return;
                 }
                 if (!soldPaymentAccount) {
-                    alert('Please select account for sold/completed transfer.');
+                    showWarning('Please select account for sold/completed transfer.');
                     return;
                 }
             }
@@ -823,11 +851,11 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     }),
                 });
 
-                alert('Stock issued successfully.');
+                showSuccess('Stock issued successfully.');
                 closeTransferDialog();
                 await loadInitialData();
             } catch (error) {
-                alert(`Unable to issue stock: ${error.message}`);
+                showError(`Unable to issue stock: ${error.message}`);
             } finally {
                 transferSubmitBtn.disabled = false;
                 transferSubmitBtn.innerHTML = '<i class="fas fa-check" style="margin-right: 6px;"></i> Transfer Stock';
@@ -836,13 +864,13 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
 
         async function completeIssueSale(issueId) {
             if (!issueId) {
-                alert('Invalid issue selected.');
+                showWarning('Invalid issue selected.');
                 return;
             }
 
             pendingCompleteIssueId = issueId;
             if (!vaultAccounts.length) {
-                alert('No vault accounts found. Create at least one vault account first.');
+                showWarning('No vault accounts found. Create at least one vault account first.');
                 return;
             }
 
@@ -926,7 +954,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             event.preventDefault();
 
             if (!pendingCompleteIssueId) {
-                alert('No issue selected.');
+                showWarning('No issue selected.');
                 return;
             }
 
@@ -934,7 +962,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             const accountId = document.getElementById('completeSaleAccount').value;
 
             if (!accountId) {
-                alert('Please select an account.');
+                showWarning('Please select an account.');
                 return;
             }
 
@@ -954,11 +982,11 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     }),
                 });
 
-                alert('Sale completed successfully.');
+                showSuccess('Sale completed successfully.');
                 closeCompleteSaleDialog();
                 await loadInitialData();
             } catch (error) {
-                alert(`Unable to complete sale: ${error.message}`);
+                showError(`Unable to complete sale: ${error.message}`);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-check" style="margin-right: 6px;"></i>Complete Sale';
@@ -967,7 +995,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
 
         function exportRowsToCsv() {
             if (!filteredRows.length) {
-                alert('No rows to export.');
+                showWarning('No rows to export.');
                 return;
             }
 
