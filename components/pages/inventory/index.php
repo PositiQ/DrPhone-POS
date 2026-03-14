@@ -39,21 +39,16 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                     <div class="filter-group">
                         <input type="text" id="searchProducts" placeholder="Search by product, IMEI, location..." style="min-width: 300px;">
                         <select id="locationFilter" aria-label="Location">
-                            <option>All Locations</option>
-                            <option>Main Shop</option>
-                            <option>Colombo Branch</option>
-                            <option>Kandy Branch</option>
-                            <option>Galle Branch</option>
+                            <option value="all">All Locations</option>
                         </select>
                         <select id="statusFilter" aria-label="Status">
-                            <option>All Status</option>
-                            <option>In Stock</option>
-                            <option>Issued - Pending Sale</option>
-                            <option>Issued - Pending Payment</option>
-                            <option>Sale Completed</option>
+                            <option value="all">All Status</option>
+                            <option value="in_stock">In Stock</option>
+                            <option value="pending_payment">Pending Payment</option>
+                            <option value="sold">Sold</option>
                         </select>
                         <select id="categoryFilter" aria-label="Category">
-                            <option>All Categories</option>
+                            <option value="all">All Categories</option>
                             <option>Smartphones</option>
                             <option>Accessories</option>
                             <option>Tablets</option>
@@ -68,7 +63,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             <i class="fas fa-box"></i>
                             Products
                         </a>
-                        <button class="button-secondary" type="button">
+                        <button class="button-secondary" type="button" id="exportInventoryBtn">
                             <i class="fas fa-download"></i>
                             Export
                         </button>
@@ -78,22 +73,22 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 <div class="insight-grid">
                     <div class="metric-card">
                         <h4>Main Shop Stock</h4>
-                        <div class="metric-value">856</div>
+                        <div class="metric-value" id="metricMainShopStock">0</div>
                         <div class="metric-sub">Items in main location</div>
                     </div>
                     <div class="metric-card">
-                        <h4>Issued to Branches</h4>
-                        <div class="metric-value" style="color: #2196f3;">389</div>
+                        <h4>Issued to Shops</h4>
+                        <div class="metric-value" style="color: #2196f3;" id="metricIssuedToBranches">0</div>
                         <div class="metric-sub">Items at other locations</div>
                     </div>
                     <div class="metric-card">
                         <h4>Pending Sale</h4>
-                        <div class="metric-value" style="color: #ff9800;">45</div>
+                        <div class="metric-value" style="color: #ff9800;" id="metricPendingSale">0</div>
                         <div class="metric-sub">Awaiting completion</div>
                     </div>
                     <div class="metric-card">
                         <h4>Total Inventory</h4>
-                        <div class="metric-value">1,245</div>
+                        <div class="metric-value" id="metricTotalInventory">0</div>
                         <div class="metric-sub">All tracked items</div>
                     </div>
                 </div>
@@ -121,105 +116,8 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                             </tr>
                         </thead>
                         <tbody id="inventoryTable">
-                            <tr data-location="main" data-status="in-stock" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">iPhone 14 Pro</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">256GB · Space Black · LKR 289,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913547821</code></td>
-                                <td><strong style="color: #1a237e;">Main Shop</strong></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913547821', 'iPhone 14 Pro', '256GB · Space Black')">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-location="colombo" data-status="pending-sale" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Samsung S23 Ultra</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">512GB · Phantom Black · LKR 245,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913547945</code></td>
-                                <td><span style="color: #7a86ad;">Issued</span></td>
-                                <td><strong style="color: #2196f3;">Colombo Branch</strong></td>
-                                <td><span style="font-size: 12px;">2026-02-20</span></td>
-                                <td><span class="status-badge" style="background: #fff3e0; color: #b45f06;">Pending Sale</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Update Status">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-location="main" data-status="in-stock" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">Google Pixel 7</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">128GB · Snow · LKR 185,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913547233</code></td>
-                                <td><strong style="color: #1a237e;">Main Shop</strong></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span style="color: #7a86ad;">—</span></td>
-                                <td><span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialog('352913547233', 'Google Pixel 7', '128GB · Snow')">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-location="kandy" data-status="pending-payment" data-category="smartphone">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div>
-                                            <strong style="display: block; color: #1a237e;">iPhone 13</strong>
-                                            <span style="font-size: 12px; color: #7a86ad;">128GB · Midnight · LKR 215,000</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">352913548765</code></td>
-                                <td><span style="color: #7a86ad;">Issued</span></td>
-                                <td><strong style="color: #2196f3;">Kandy Branch</strong></td>
-                                <td><span style="font-size: 12px;">2026-02-18</span></td>
-                                <td><span class="status-badge" style="background: #fff8e1; color: #c77700;">Pending Payment</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 6px;">
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Update Status">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                            <tr>
+                                <td colspan="7" style="text-align:center; padding: 28px; color: #7a86ad;">Loading inventory...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -241,20 +139,21 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 </button>
             </div>
             <div style="padding: 24px;">
-                <form id="transferForm" onsubmit="handleTransferSubmit(event)">
+                <form id="transferForm">
                     <!-- Transfer Location -->
                     <div style="margin-bottom: 20px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
                             <i class="fas fa-map-marker-alt" style="margin-right: 6px; color: #7a86ad;"></i>
                             Transfer Location
                         </label>
-                        <select id="transferLocation" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
-                            <option value="">Select destination shop...</option>
-                            <option value="main">Main Shop</option>
-                            <option value="colombo">Colombo Branch</option>
-                            <option value="kandy">Kandy Branch</option>
-                            <option value="galle">Galle Branch</option>
-                        </select>
+                        <div style="position: relative;">
+                            <input type="text" id="transferLocationSearch" placeholder="Type shop name or shop ID..." autocomplete="off" style="width: 100%; padding: 12px 40px 12px 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'; showShopDropdown()" oninput="filterShops()">
+                            <i class="fas fa-search" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #7a86ad; pointer-events: none;"></i>
+                            <input type="hidden" id="selectedShopId" required>
+                        </div>
+                        <div id="shopDropdown" style="display: none; position: absolute; z-index: 1000; background: white; border: 2px solid #e0e7ff; border-radius: 8px; margin-top: 4px; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: calc(100% - 48px);">
+                            <!-- Shop options will be populated here -->
+                        </div>
                     </div>
 
                     <!-- Transfer Item with Search -->
@@ -311,8 +210,8 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         </label>
                         <select id="paymentStatus" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
                             <option value="">Select payment status...</option>
-                            <option value="paid">Paid</option>
-                            <option value="pending">Pending</option>
+                            <option value="sold">Sold / Completed</option>
+                            <option value="pending_payment">Pending Payment</option>
                         </select>
                     </div>
 
@@ -321,7 +220,7 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                         <button type="button" onclick="closeTransferDialog()" style="padding: 12px 24px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
                             Cancel
                         </button>
-                        <button type="submit" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button type="submit" id="transferSubmitBtn" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             <i class="fas fa-check" style="margin-right: 6px;"></i>
                             Transfer Stock
                         </button>
@@ -345,96 +244,547 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
     </div>
 
     <script>
-        // Sample product data with stock information
-        const productsData = [{
-                id: 'P001',
-                name: 'iPhone 14 Pro',
-                variant: '256GB · Space Black',
-                imei: '352913547821',
-                stock: 5,
-                price: 'LKR 289,000'
-            },
-            {
-                id: 'P002',
-                name: 'Samsung S23 Ultra',
-                variant: '512GB · Phantom Black',
-                imei: '352913547945',
-                stock: 3,
-                price: 'LKR 245,000'
-            },
-            {
-                id: 'P003',
-                name: 'Google Pixel 7',
-                variant: '128GB · Snow',
-                imei: '352913547233',
-                stock: 8,
-                price: 'LKR 185,000'
-            },
-            {
-                id: 'P004',
-                name: 'iPhone 13',
-                variant: '128GB · Midnight',
-                imei: '352913548765',
-                stock: 12,
-                price: 'LKR 215,000'
-            },
-            {
-                id: 'P005',
-                name: 'Xiaomi 13',
-                variant: '256GB · Alpine Green',
-                imei: '352913547108',
-                stock: 15,
-                price: 'LKR 165,000'
-            },
-            {
-                id: 'P006',
-                name: 'OnePlus 11',
-                variant: '256GB · Eternal Green',
-                imei: '352913549876',
-                stock: 6,
-                price: 'LKR 198,000'
-            },
-            {
-                id: 'P007',
-                name: 'Samsung A54',
-                variant: '256GB · Awesome Violet',
-                imei: '352913549123',
-                stock: 20,
-                price: 'LKR 125,000'
-            },
-            {
-                id: 'P008',
-                name: 'Vivo V27 Pro',
-                variant: '256GB · Magic Blue',
-                imei: '352913549456',
-                stock: 10,
-                price: 'LKR 145,000'
-            }
-        ];
+        const API_BASE = 'http://localhost:3000/api';
+        const PRODUCTS_API = `${API_BASE}/products`;
+        const SHOPS_API = `${API_BASE}/shops`;
+        const INVENTORY_API = `${API_BASE}/inventory`;
+
+        let allProducts = [];
+        let allShops = [];
+        let allIssues = [];
+        let combinedRows = [];
+        let filteredRows = [];
+        let transferProducts = [];
+        let transferShops = [];
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
 
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const menuToggle = document.getElementById('menuToggle');
+        function toNumber(value) {
+            const cleaned = String(value ?? 0).replace(/,/g, '');
+            const parsed = parseFloat(cleaned);
+            return Number.isNaN(parsed) ? 0 : parsed;
+        }
 
-            if (window.innerWidth <= 768) {
-                if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
-                    sidebar.classList.remove('active');
-                }
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function formatCurrency(value) {
+            return `LKR ${toNumber(value).toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+        }
+
+        async function requestJson(url, options = {}) {
+            const response = await fetch(url, options);
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok || data.success === false) {
+                const errorMessage = [data.message, data.error].filter(Boolean).join(': ');
+                throw new Error(errorMessage || 'Request failed');
             }
-        });
 
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
+            return data;
+        }
+
+        function getProductCategory(productName) {
+            const text = String(productName || '').toLowerCase();
+            if (text.includes('iphone') || text.includes('samsung') || text.includes('pixel') || text.includes('vivo') || text.includes('xiaomi') || text.includes('oneplus')) return 'smartphones';
+            if (text.includes('ipad') || text.includes('tablet')) return 'tablets';
+            if (text.includes('case') || text.includes('charger') || text.includes('airpods') || text.includes('accessor')) return 'accessories';
+            return 'smartphones';
+        }
+
+        function rebuildCombinedRows() {
+            const inStockRows = allProducts
+                .filter(product => toNumber(product?.Product_Stock?.quantity_in_stock) > 0)
+                .map(product => {
+                    const stock = product.Product_Stock || {};
+                    return {
+                        type: 'stock',
+                        productId: product.id,
+                        productName: product.productName || 'Unknown Product',
+                        productDetails: [product.capacity, product.color].filter(Boolean).join(' · '),
+                        imei: product.IMEI || '-',
+                        location: stock.storage_location || 'Main Shop',
+                        issuedTo: '-',
+                        issuedDate: '-',
+                        status: 'in_stock',
+                        category: getProductCategory(product.productName),
+                    };
+                });
+
+            const issueRows = allIssues.map(issue => ({
+                type: 'issue',
+                issueId: issue.id,
+                productId: null,
+                productName: issue.product_name || 'Unknown Product',
+                productDetails: [issue.capacity, issue.color].filter(Boolean).join(' · '),
+                imei: issue.IMEI || '-',
+                location: issue.storage_location || issue.issued_to || '-',
+                issuedTo: issue.issued_to || '-',
+                issuedDate: issue.issued_date ? new Date(issue.issued_date).toISOString().slice(0, 10) : '-',
+                status: issue.issue_status || 'pending_payment',
+                category: getProductCategory(issue.product_name),
+            }));
+
+            combinedRows = [...issueRows, ...inStockRows];
+            filteredRows = [...combinedRows];
+        }
+
+        function updateMetrics() {
+            const mainShopStock = allProducts.reduce((sum, product) => {
+                const stock = product.Product_Stock || {};
+                const storage = String(stock.storage_location || 'Main Shop').toLowerCase();
+                if (storage.includes('main')) {
+                    return sum + toNumber(stock.quantity_in_stock);
+                }
+                return sum;
+            }, 0);
+
+            const issuedToBranches = allIssues.length;
+            const pendingSale = allIssues.filter(issue => String(issue.issue_status || '').toLowerCase() === 'pending_payment').length;
+            const totalInventory = allProducts.reduce((sum, product) => sum + toNumber(product?.Product_Stock?.quantity_in_stock), 0);
+
+            document.getElementById('metricMainShopStock').textContent = mainShopStock.toLocaleString();
+            document.getElementById('metricIssuedToBranches').textContent = issuedToBranches.toLocaleString();
+            document.getElementById('metricPendingSale').textContent = pendingSale.toLocaleString();
+            document.getElementById('metricTotalInventory').textContent = totalInventory.toLocaleString();
+        }
+
+        function getStatusBadge(status) {
+            const normalized = String(status || '').toLowerCase();
+            if (normalized === 'in_stock') {
+                return '<span class="status-badge" style="background: #e1f7e3; color: #0d6832;">In Stock</span>';
+            }
+            if (normalized === 'pending_payment') {
+                return '<span class="status-badge" style="background: #fff8e1; color: #c77700;">Pending Payment</span>';
+            }
+            if (normalized === 'sold') {
+                return '<span class="status-badge" style="background: #e3f2fd; color: #0d47a1;">Sold</span>';
+            }
+            return '<span class="status-badge" style="background: #f4f7fc; color: #6a759d;">Unknown</span>';
+        }
+
+        function renderInventoryTable(rows) {
+            const inventoryTable = document.getElementById('inventoryTable');
+
+            if (!rows.length) {
+                inventoryTable.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 28px; color: #7a86ad;">No inventory records found</td></tr>';
+                return;
+            }
+
+            inventoryTable.innerHTML = rows.map(row => `
+                <tr data-location="${escapeHtml(String(row.location || '').toLowerCase())}" data-status="${escapeHtml(row.status)}" data-category="${escapeHtml(row.category)}">
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div>
+                                <strong style="display: block; color: #1a237e;">${escapeHtml(row.productName)}</strong>
+                                <span style="font-size: 12px; color: #7a86ad;">${escapeHtml(row.productDetails || '')}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><code style="font-size: 11px; background: #f4f7fc; padding: 4px 8px; border-radius: 4px; font-weight: 600;">${escapeHtml(row.imei)}</code></td>
+                    <td><strong style="color: #1a237e;">${escapeHtml(row.location || '-')}</strong></td>
+                    <td><strong style="color: #2196f3;">${escapeHtml(row.issuedTo || '-')}</strong></td>
+                    <td><span style="font-size: 12px; color: #7a86ad;">${escapeHtml(row.issuedDate || '-')}</span></td>
+                    <td>${getStatusBadge(row.status)}</td>
+                    <td>
+                        <div style="display: flex; gap: 6px;">
+                            ${row.type === 'stock' ? `<button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="Transfer Stock" onclick="openTransferDialogByProduct('${escapeHtml(row.productId)}')"><i class="fas fa-exchange-alt"></i></button>` : ''}
+                            ${row.type === 'issue' && row.status === 'pending_payment' ? `<button class="button-secondary" style="padding: 6px 10px; font-size: 12px; background: #e8f5e9; color: #1b5e20;" title="Complete Sale" onclick="completeIssueSale(${Number(row.issueId)})"><i class="fas fa-check-circle"></i></button>` : ''}
+                            <button class="button-secondary" style="padding: 6px 10px; font-size: 12px;" title="View Product" onclick="window.location.href='../products/index.php'">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateLocationOptions() {
+            const locationFilter = document.getElementById('locationFilter');
+            const locations = new Set(['all', 'Main Shop']);
+
+            allShops.forEach(shop => {
+                if (shop.name) locations.add(shop.name);
             });
-        });
+
+            combinedRows.forEach(row => {
+                if (row.location && row.location !== '-') locations.add(row.location);
+            });
+
+            locationFilter.innerHTML = '';
+            Array.from(locations).forEach(location => {
+                const option = document.createElement('option');
+                option.value = location === 'all' ? 'all' : String(location).toLowerCase();
+                option.textContent = location === 'all' ? 'All Locations' : location;
+                locationFilter.appendChild(option);
+            });
+        }
+
+        function applyFilters() {
+            const searchQuery = (document.getElementById('searchProducts').value || '').toLowerCase();
+            const locationValue = document.getElementById('locationFilter').value;
+            const statusValue = document.getElementById('statusFilter').value;
+            const categoryValue = (document.getElementById('categoryFilter').value || 'all').toLowerCase();
+            const activePill = document.querySelector('.pill.active')?.dataset.location || 'all';
+
+            filteredRows = combinedRows.filter(row => {
+                const searchable = [row.productName, row.productDetails, row.imei, row.location, row.issuedTo].join(' ').toLowerCase();
+                if (searchQuery && !searchable.includes(searchQuery)) return false;
+
+                if (locationValue !== 'all' && String(row.location || '').toLowerCase() !== locationValue) return false;
+                if (statusValue !== 'all' && String(row.status || '').toLowerCase() !== statusValue) return false;
+                if (categoryValue !== 'all' && String(row.category || '').toLowerCase() !== categoryValue) return false;
+
+                if (activePill === 'main' && !String(row.location || '').toLowerCase().includes('main')) return false;
+                if (activePill === 'branches' && String(row.location || '').toLowerCase().includes('main')) return false;
+                if (activePill === 'pending' && String(row.status || '').toLowerCase() !== 'pending_payment') return false;
+
+                return true;
+            });
+
+            renderInventoryTable(filteredRows);
+        }
+
+        async function loadInitialData() {
+            const [productsResult, shopsResult, issuesResult] = await Promise.allSettled([
+                requestJson(`${PRODUCTS_API}?limit=500`),
+                requestJson(`${SHOPS_API}?limit=500`),
+                requestJson(`${INVENTORY_API}/issues?page=1`),
+            ]);
+
+            allProducts = productsResult.status === 'fulfilled' && Array.isArray(productsResult.value.data)
+                ? productsResult.value.data
+                : [];
+
+            allShops = shopsResult.status === 'fulfilled' && Array.isArray(shopsResult.value.data)
+                ? shopsResult.value.data
+                : [];
+
+            allIssues = issuesResult.status === 'fulfilled' && Array.isArray(issuesResult.value.data)
+                ? issuesResult.value.data
+                : [];
+
+            // Keep transfer product suggestions available even when quantity is missing/null.
+            transferProducts = allProducts
+                .filter(product => product && product.id)
+                .map(product => ({
+                    id: product.id,
+                    name: product.productName || 'Unknown Product',
+                    variant: [product.capacity, product.color].filter(Boolean).join(' · '),
+                    imei: product.IMEI || '',
+                    stock: toNumber(product?.Product_Stock?.quantity_in_stock),
+                    price: toNumber(product?.Product_Stock?.selling_price || product.price),
+                }));
+
+            transferShops = allShops
+                .filter(shop => shop && shop.shop_id)
+                .map(shop => ({
+                    id: shop.shop_id,
+                    name: shop.name || 'Unnamed Shop',
+                    location: shop.location || '',
+                }));
+
+            rebuildCombinedRows();
+            updateLocationOptions();
+            updateMetrics();
+            renderInventoryTable(combinedRows);
+            populateShopDropdown(transferShops);
+            populateProductDropdown(transferProducts);
+
+            if (productsResult.status === 'rejected' || shopsResult.status === 'rejected') {
+                const failedParts = [
+                    productsResult.status === 'rejected' ? 'products' : null,
+                    shopsResult.status === 'rejected' ? 'shops' : null,
+                ].filter(Boolean).join(', ');
+
+                document.getElementById('inventoryTable').insertAdjacentHTML('afterbegin', `
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding: 10px; color: #c77700; background:#fff8e1;">
+                            Partial load warning: unable to fetch ${escapeHtml(failedParts)} API data.
+                        </td>
+                    </tr>
+                `);
+            }
+        }
+
+        function showShopDropdown() {
+            document.getElementById('shopDropdown').style.display = 'block';
+            filterShops();
+        }
+
+        function filterShops() {
+            const searchTerm = document.getElementById('transferLocationSearch').value.toLowerCase().trim();
+            document.getElementById('selectedShopId').value = '';
+
+            const filtered = transferShops.filter(shop => {
+                const text = `${shop.name} ${shop.id} ${shop.location}`.toLowerCase();
+                return text.includes(searchTerm);
+            });
+
+            populateShopDropdown(filtered);
+        }
+
+        function populateShopDropdown(shops) {
+            const dropdown = document.getElementById('shopDropdown');
+
+            if (!shops.length) {
+                dropdown.innerHTML = '<div style="padding: 16px; text-align: center; color: #7a86ad; font-size: 14px;"><i class="fas fa-store-slash" style="margin-right: 8px;"></i>No shops found</div>';
+                return;
+            }
+
+            dropdown.innerHTML = shops.map(shop => `
+                <div class="shop-option" onclick="selectShop('${escapeHtml(shop.id)}')" style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f4f7fc; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
+                    <div style="font-weight: 600; color: #1a237e; margin-bottom: 4px;">${escapeHtml(shop.name)}</div>
+                    <div style="font-size: 12px; color: #7a86ad;">${escapeHtml(shop.id)}${shop.location ? ` • ${escapeHtml(shop.location)}` : ''}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectShop(shopId) {
+            const shop = transferShops.find(item => item.id === shopId);
+            if (!shop) return;
+
+            document.getElementById('transferLocationSearch').value = `${shop.name} (${shop.id})`;
+            document.getElementById('selectedShopId').value = shop.id;
+            document.getElementById('shopDropdown').style.display = 'none';
+        }
+
+        function openTransferDialogByProduct(productId) {
+            openTransferDialog();
+            const product = transferProducts.find(p => p.id === productId);
+            if (product) {
+                selectProduct(product.id);
+            }
+        }
+
+        function openTransferDialog() {
+            document.getElementById('transferDialog').classList.add('active');
+            document.getElementById('transferLocationSearch').focus();
+        }
+
+        function closeTransferDialog() {
+            document.getElementById('transferDialog').classList.remove('active');
+            document.getElementById('transferForm').reset();
+            document.getElementById('selectedShopId').value = '';
+            document.getElementById('selectedProductId').value = '';
+            document.getElementById('stockInfo').style.display = 'none';
+            document.getElementById('shopDropdown').style.display = 'none';
+            document.getElementById('productDropdown').style.display = 'none';
+        }
+
+        function showProductDropdown() {
+            document.getElementById('productDropdown').style.display = 'block';
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('productSearch').value.toLowerCase();
+            const filtered = transferProducts.filter(product => {
+                const last4Digits = String(product.imei || '').slice(-4);
+                return product.name.toLowerCase().includes(searchTerm)
+                    || product.variant.toLowerCase().includes(searchTerm)
+                    || String(product.imei).toLowerCase().includes(searchTerm)
+                    || last4Digits.includes(searchTerm);
+            });
+            populateProductDropdown(filtered);
+        }
+
+        function populateProductDropdown(products) {
+            const dropdown = document.getElementById('productDropdown');
+
+            if (!products.length) {
+                dropdown.innerHTML = '<div style="padding: 16px; text-align: center; color: #7a86ad; font-size: 14px;"><i class="fas fa-inbox" style="margin-right: 8px;"></i>No products found</div>';
+                return;
+            }
+
+            dropdown.innerHTML = products.map(product => `
+                <div class="product-option" onclick="selectProduct('${escapeHtml(product.id)}')" style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f4f7fc; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <div style="font-weight: 600; color: #1a237e; margin-bottom: 4px;">${escapeHtml(product.name)}</div>
+                            <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">${escapeHtml(product.variant || '-')}</div>
+                            <div style="font-size: 11px; color: #7a86ad;">IMEI: <code style="background: #f4f7fc; padding: 2px 6px; border-radius: 4px; font-weight: 600;">${escapeHtml(product.imei || '-')}</code></div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">Stock</div>
+                            <div style="font-weight: 700; color: ${product.stock > 5 ? '#0d6832' : '#b45f06'}; font-size: 16px;">${product.stock}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectProduct(productId) {
+            const product = transferProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('productSearch').value = `${product.name} - ${product.variant} (IMEI: ${product.imei})`;
+            document.getElementById('selectedProductId').value = product.id;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productDropdown').style.display = 'none';
+
+            updateStockInfo(product);
+
+            const transferQuantity = document.getElementById('transferQuantity');
+            transferQuantity.value = 1;
+            transferQuantity.max = product.stock;
+        }
+
+        function updateStockInfo(product) {
+            document.getElementById('currentStock').textContent = product.stock;
+            document.getElementById('stockInfo').style.display = 'block';
+        }
+
+        async function handleTransferSubmit(event) {
+            event.preventDefault();
+
+            const issuedShopId = document.getElementById('selectedShopId').value;
+            const productId = document.getElementById('selectedProductId').value;
+            const issuedStock = parseInt(document.getElementById('transferQuantity').value, 10);
+            const sellingPrice = toNumber(document.getElementById('productPrice').value);
+            const paymentStatus = document.getElementById('paymentStatus').value;
+
+            const product = transferProducts.find(p => p.id === productId);
+
+            if (!transferShops.length) {
+                alert('No shops are available yet. Create a shop first, then try transfer.');
+                return;
+            }
+
+            if (!transferProducts.length) {
+                alert('No products are available for transfer yet. Add products first.');
+                return;
+            }
+
+            if (!product) {
+                alert('Please select a valid product.');
+                return;
+            }
+
+            if (!issuedShopId) {
+                alert('Please select destination shop.');
+                return;
+            }
+
+            if (!issuedStock || issuedStock < 1) {
+                alert('Please enter a valid quantity.');
+                return;
+            }
+
+            if (product.stock <= 0) {
+                alert('Selected product has no available stock quantity.');
+                return;
+            }
+
+            if (issuedStock > product.stock) {
+                alert('Transfer quantity cannot exceed available stock.');
+                return;
+            }
+
+            if (!sellingPrice || sellingPrice <= 0) {
+                alert('Please enter a valid selling price.');
+                return;
+            }
+
+            const transferSubmitBtn = document.getElementById('transferSubmitBtn');
+            transferSubmitBtn.disabled = true;
+            transferSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i> Processing...';
+
+            try {
+                await requestJson(`${INVENTORY_API}/issue`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        issued_shop_id: issuedShopId,
+                        issued_stock: issuedStock,
+                        selling_price: sellingPrice,
+                        payment_status: paymentStatus,
+                    }),
+                });
+
+                alert('Stock issued successfully.');
+                closeTransferDialog();
+                await loadInitialData();
+            } catch (error) {
+                alert(`Unable to issue stock: ${error.message}`);
+            } finally {
+                transferSubmitBtn.disabled = false;
+                transferSubmitBtn.innerHTML = '<i class="fas fa-check" style="margin-right: 6px;"></i> Transfer Stock';
+            }
+        }
+
+        async function completeIssueSale(issueId) {
+            if (!issueId) {
+                alert('Invalid issue selected.');
+                return;
+            }
+
+            const confirmed = confirm('Mark this pending issue as sold/completed?');
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+                await requestJson(`${INVENTORY_API}/issues/${issueId}/complete`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                alert('Sale completed successfully.');
+                await loadInitialData();
+            } catch (error) {
+                alert(`Unable to complete sale: ${error.message}`);
+            }
+        }
+
+        function exportRowsToCsv() {
+            if (!filteredRows.length) {
+                alert('No rows to export.');
+                return;
+            }
+
+            const csvRows = [
+                ['product_name', 'product_details', 'imei', 'location', 'issued_to', 'issued_date', 'status'],
+                ...filteredRows.map(row => [
+                    row.productName,
+                    row.productDetails,
+                    row.imei,
+                    row.location,
+                    row.issuedTo,
+                    row.issuedDate,
+                    row.status,
+                ]),
+            ];
+
+            const csvText = csvRows.map(row => row.map(value => {
+                const cell = String(value || '');
+                return /[",\n]/.test(cell) ? `"${cell.replace(/"/g, '""')}"` : cell;
+            }).join(',')).join('\n');
+
+            const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'inventory-stock-issues.csv';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        }
 
         const searchOverlay = document.getElementById('searchOverlay');
         const searchModalInput = document.getElementById('globalSearchModal');
@@ -442,97 +792,25 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
         const searchClose = document.getElementById('searchClose');
 
         function openSearchModal() {
-            if (!searchOverlay || !searchModalInput) {
-                return;
-            }
-
+            if (!searchOverlay || !searchModalInput) return;
             searchOverlay.classList.add('active');
             searchModalInput.focus();
             searchModalInput.select();
         }
 
         function closeSearchModal() {
-            if (!searchOverlay) {
-                return;
-            }
-
+            if (!searchOverlay) return;
             searchOverlay.classList.remove('active');
         }
 
         if (searchTrigger) {
-            -Location
-            const pills = document.querySelectorAll('.pill');
-            pills.forEach(pill => {
-                pill.addEventListener('click', function() {
-                    pills.forEach(p => p.classList.remove('active'));
-                    this.classList.add('active');
-
-                    const locationFilter = this.getAttribute('data-location');
-                    const rows = inventoryTable.querySelectorAll('tr');
-
-                    rows.forEach(row => {
-                        const rowLocation = row.getAttribute('data-location');
-                        const rowStatus = row.getAttribute('data-status');
-
-                        if (locationFilter === 'all') {
-                            row.style.display = '';
-                        } else if (locationFilter === 'main') {
-                            row.style.display = rowLocation === 'main' ? '' : 'none';
-                        } else if (locationFilter === 'branches') {
-                            row.style.display = (rowLocation !== 'main' && rowLocation) ? '' : 'none';
-                        } else if (locationFilter === 'pending') {
-                            row.style.display = (rowStatus === 'pending-sale' || rowStatus === 'pending-payment') ? '' : 'none';
-                        }
-                    });
-                });
+            searchTrigger.addEventListener('click', openSearchModal);
+            searchTrigger.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openSearchModal();
+                }
             });
-
-            // Dropdown filters
-            const locationFilter = document.getElementById('locationFilter');
-            const statusFilter = document.getElementById('statusFilter');
-            const categoryFilter = document.getElementById('categoryFilter');
-
-            function applyFilters() {
-                const location = locationFilter.value.toLowerCase();
-                const status = statusFilter.value.toLowerCase();
-                const category = categoryFilter.value.toLowerCase();
-                const rows = inventoryTable.querySelectorAll('tr');
-
-                rows.forEach(row => {
-                    const rowLocation = row.getAttribute('data-location') || '';
-                    const rowStatus = row.getAttribute('data-status') || '';
-                    const rowCategory = row.getAttribute('data-category') || '';
-
-                    let showRow = true;
-
-                    // Location filter
-                    if (location !== 'all locations') {
-                        if (location === 'main shop' && rowLocation !== 'main') showRow = false;
-                        if (location === 'colombo branch' && rowLocation !== 'colombo') showRow = false;
-                        if (location === 'kandy branch' && rowLocation !== 'kandy') showRow = false;
-                        if (location === 'galle branch' && rowLocation !== 'galle') showRow = false;
-                    }
-
-                    // Status filter
-                    if (status !== 'all status') {
-                        if (status === 'in stock' && rowStatus !== 'in-stock') showRow = false;
-                        if (status === 'issued - pending sale' && rowStatus !== 'pending-sale') showRow = false;
-                        if (status === 'issued - pending payment' && rowStatus !== 'pending-payment') showRow = false;
-                        if (status === 'sale completed' && rowStatus !== 'sale-completed') showRow = false;
-                    }
-
-                    // Category filter
-                    if (category !== 'all categories' && !rowCategory.includes(category.replace(' ', ''))) {
-                        showRow = false;
-                    }
-
-                    row.style.display = showRow ? '' : 'none';
-                });
-            }
-
-            if (locationFilter) locationFilter.addEventListener('change', applyFilters);
-            if (statusFilter) statusFilter.addEventListener('change', applyFilters);
-            if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
         }
 
         if (searchClose) {
@@ -558,185 +836,46 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
             }
         });
 
-        // Product search functionality
-        const searchProducts = document.getElementById('searchProducts');
-        const inventoryTable = document.getElementById('inventoryTable');
+        document.getElementById('searchProducts').addEventListener('input', applyFilters);
+        document.getElementById('locationFilter').addEventListener('change', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('transferForm').addEventListener('submit', handleTransferSubmit);
+        document.getElementById('exportInventoryBtn').addEventListener('click', exportRowsToCsv);
 
-        if (searchProducts && inventoryTable) {
-            searchProducts.addEventListener('input', function() {
-                const query = this.value.toLowerCase();
-                const rows = inventoryTable.querySelectorAll('tr');
-
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(query) ? '' : 'none';
-                });
-            });
-        }
-
-        // Pill filter functionality
-        const pills = document.querySelectorAll('.pill');
-        pills.forEach(pill => {
+        document.querySelectorAll('.pill').forEach(pill => {
             pill.addEventListener('click', function() {
-                pills.forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.pill').forEach(item => item.classList.remove('active'));
                 this.classList.add('active');
+                applyFilters();
             });
         });
 
-        // Stock Transfer Dialog Functions
-        function openTransferDialog(imei = '', productName = '', variant = '') {
-            const dialog = document.getElementById('transferDialog');
-            const productSearch = document.getElementById('productSearch');
-            const selectedProductId = document.getElementById('selectedProductId');
-
-            dialog.classList.add('active');
-
-            // If product details are provided, pre-fill the search
-            if (imei && productName) {
-                const product = productsData.find(p => p.imei === imei);
-                if (product) {
-                    productSearch.value = `${product.name} - ${product.variant} (IMEI: ${product.imei})`;
-                    selectedProductId.value = product.id;
-                    updateStockInfo(product);
-                }
-            }
-
-            // Populate product dropdown initially
-            populateProductDropdown(productsData);
-        }
-
-        function closeTransferDialog() {
-            const dialog = document.getElementById('transferDialog');
-            const form = document.getElementById('transferForm');
-            const productDropdown = document.getElementById('productDropdown');
-
-            dialog.classList.remove('active');
-            form.reset();
-            document.getElementById('selectedProductId').value = '';
-            document.getElementById('stockInfo').style.display = 'none';
-            productDropdown.style.display = 'none';
-        }
-
-        function showProductDropdown() {
-            const dropdown = document.getElementById('productDropdown');
-            dropdown.style.display = 'block';
-            populateProductDropdown(productsData);
-        }
-
-        function filterProducts() {
-            const searchTerm = document.getElementById('productSearch').value.toLowerCase();
-
-            if (searchTerm.length === 0) {
-                populateProductDropdown(productsData);
-                return;
-            }
-
-            const filtered = productsData.filter(product => {
-                const last4Digits = product.imei.slice(-4);
-                return product.name.toLowerCase().includes(searchTerm) ||
-                    product.variant.toLowerCase().includes(searchTerm) ||
-                    product.imei.includes(searchTerm) ||
-                    last4Digits.includes(searchTerm);
-            });
-
-            populateProductDropdown(filtered);
-        }
-
-        function populateProductDropdown(products) {
-            const dropdown = document.getElementById('productDropdown');
-
-            if (products.length === 0) {
-                dropdown.innerHTML = '<div style="padding: 16px; text-align: center; color: #7a86ad; font-size: 14px;"><i class="fas fa-inbox" style="margin-right: 8px;"></i>No products found</div>';
-                return;
-            }
-
-            dropdown.innerHTML = products.map(product => `
-                <div class="product-option" onclick="selectProduct('${product.id}')" style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f4f7fc; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
-                    <div style="display: flex; justify-content: space-between; align-items: start;">
-                        <div>
-                            <div style="font-weight: 600; color: #1a237e; margin-bottom: 4px;">${product.name}</div>
-                            <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">${product.variant}</div>
-                            <div style="font-size: 11px; color: #7a86ad;">IMEI: <code style="background: #f4f7fc; padding: 2px 6px; border-radius: 4px; font-weight: 600;">${product.imei}</code></div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">Stock</div>
-                            <div style="font-weight: 700; color: ${product.stock > 5 ? '#0d6832' : '#b45f06'}; font-size: 16px;">${product.stock}</div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function selectProduct(productId) {
-            const product = productsData.find(p => p.id === productId);
-            if (!product) return;
-
-            const productSearch = document.getElementById('productSearch');
-            const selectedProductId = document.getElementById('selectedProductId');
-            const productDropdown = document.getElementById('productDropdown');
-            const transferQuantity = document.getElementById('transferQuantity');
-
-            productSearch.value = `${product.name} - ${product.variant} (IMEI: ${product.imei})`;
-            selectedProductId.value = product.id;
-            productDropdown.style.display = 'none';
-
-            // Update stock info and set default quantity
-            updateStockInfo(product);
-            transferQuantity.value = product.stock;
-            transferQuantity.max = product.stock;
-        }
-
-        function updateStockInfo(product) {
-            const stockInfo = document.getElementById('stockInfo');
-            const currentStock = document.getElementById('currentStock');
-
-            currentStock.textContent = product.stock;
-            stockInfo.style.display = 'block';
-        }
-
-        function handleTransferSubmit(event) {
-            event.preventDefault();
-
-            const location = document.getElementById('transferLocation').value;
-            const productId = document.getElementById('selectedProductId').value;
-            const quantity = document.getElementById('transferQuantity').value;
-
-            const product = productsData.find(p => p.id === productId);
-            const locationText = document.getElementById('transferLocation').selectedOptions[0].text;
-
-            // Validate quantity
-            if (parseInt(quantity) > product.stock) {
-                alert('Transfer quantity cannot exceed available stock!');
-                return;
-            }
-
-            // Here you would typically make an API call to process the transfer
-            console.log('Transfer Details:', {
-                location,
-                locationText,
-                product,
-                quantity
-            });
-
-            alert(`Stock transfer initiated!\n\nProduct: ${product.name}\nQuantity: ${quantity}\nDestination: ${locationText}\n\nTransfer will be processed shortly.`);
-
-            closeTransferDialog();
-        }
-
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
+            const transferLocationSearch = document.getElementById('transferLocationSearch');
+            const shopDropdown = document.getElementById('shopDropdown');
             const productSearch = document.getElementById('productSearch');
             const productDropdown = document.getElementById('productDropdown');
             const transferDialog = document.getElementById('transferDialog');
 
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const menuToggle = document.getElementById('menuToggle');
+                if (sidebar && menuToggle && !sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+
             if (transferDialog && transferDialog.classList.contains('active')) {
+                if (!transferLocationSearch.contains(event.target) && !shopDropdown.contains(event.target)) {
+                    shopDropdown.style.display = 'none';
+                }
                 if (!productSearch.contains(event.target) && !productDropdown.contains(event.target)) {
                     productDropdown.style.display = 'none';
                 }
             }
         });
 
-        // Close dialog on Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 const transferDialog = document.getElementById('transferDialog');
@@ -745,6 +884,8 @@ $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
                 }
             }
         });
+
+        loadInitialData();
     </script>
 </body>
 
