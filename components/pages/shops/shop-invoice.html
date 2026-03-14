@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Invoice #1170</title>
+<title>Shop Invoice</title>
 
 <style>
 
@@ -163,17 +163,17 @@ td.num{
 <div class="invoice-info">
 
 <div class="invoice-left">
-    <h2>Invoice No. #1170</h2>
-    <p><strong>Customer:</strong> DOCTOR MOBILE (SURESH)</p>
-    <p>Tel: 0704551614</p>
-    <p>A/C: 1-2-5-14883</p>
+    <h2 id="invoiceNo">Invoice No. #</h2>
+    <p><strong>Customer:</strong> <span id="customerName">-</span></p>
+    <p>Tel: <span id="customerTel">-</span></p>
+    <p>A/C: <span id="customerAccount">-</span></p>
 </div>
 
 <div class="invoice-right">
-    <p>Date: 2026-02-26 04:07:43 PM</p>
-    <p>Salesman: 39</p>
-    <p>Cashier: cashier</p>
-    <p><strong>Customer O/S LKR: 403,000.00</strong></p>
+    <p>Date: <span id="invoiceDate">-</span></p>
+    <p>Salesman: System</p>
+    <p>Cashier: POS</p>
+    <p><strong>Customer O/S LKR: <span id="customerOutstanding">0.00</span></strong></p>
 </div>
 
 </div>
@@ -186,80 +186,11 @@ td.num{
 <th>Description</th>
 <th>Unit Price</th>
 <th>Qty</th>
-<th>Discount</th>
 <th>Amount</th>
 </tr>
 </thead>
 
-<tbody>
-
-<tr>
-<td class="description">
-IPHONE 13 MINI 128GB<br>
-<small>IMEI 354628824968804 | White</small>
-</td>
-<td class="num">66,000.00</td>
-<td class="num">1</td>
-<td class="num">0.00</td>
-<td class="num">66,000.00</td>
-</tr>
-
-<tr>
-<td class="description">
-IPHONE 13 MINI 128GB<br>
-<small>IMEI 350971744860071 | Black</small>
-</td>
-<td class="num">67,000.00</td>
-<td class="num">1</td>
-<td class="num">0.00</td>
-<td class="num">67,000.00</td>
-</tr>
-
-<tr>
-<td class="description">
-IPHONE 13 MINI 128GB<br>
-<small>IMEI 353131402109900 | Black</small>
-</td>
-<td class="num">66,000.00</td>
-<td class="num">1</td>
-<td class="num">0.00</td>
-<td class="num">66,000.00</td>
-</tr>
-
-<tr>
-<td class="description">
-IPHONE 13 MINI 128GB<br>
-<small>IMEI 359155243887493 | White</small>
-</td>
-<td class="num">64,000.00</td>
-<td class="num">1</td>
-<td class="num">0.00</td>
-<td class="num">64,000.00</td>
-</tr>
-
-<tr>
-<td class="description">
-IPHONE 13 MINI 128GB<br>
-<small>IMEI 358082907077768 | Pink</small>
-</td>
-<td class="num">64,000.00</td>
-<td class="num">1</td>
-<td class="num">0.00</td>
-<td class="num">64,000.00</td>
-</tr>
-
-<tr>
-<td class="description">
-IPHONE 13 MINI 256GB<br>
-<small>IMEI 359251340015094 | Pink</small>
-</td>
-<td class="num">76,000.00</td>
-<td class="num">1</td>
-<td class="num">0.00</td>
-<td class="num">76,000.00</td>
-</tr>
-
-</tbody>
+<tbody id="invoiceItemsBody"></tbody>
 
 </table>
 
@@ -267,27 +198,27 @@ IPHONE 13 MINI 256GB<br>
 <div class="summary">
 
 <div class="summary-left">
-<p>Number of Items: 6</p>
-<p>Number of Pieces: 6</p>
-<p>Cash: 0.00</p>
-<p style="color:red">Credit: 403,000.00</p>
+<p>Number of Items: <span id="summaryItemCount">0</span></p>
+<p>Number of Pieces: <span id="summaryPieceCount">0</span></p>
+<p>Cash: <span id="summaryCash">0.00</span></p>
+<p style="color:red">Credit: <span id="summaryCredit">0.00</span></p>
 </div>
 
 <div class="summary-right">
 
 <div>
 <span>Sub Total:</span>
-<span>Rs. 403,000.00</span>
+<span id="summarySubtotal">Rs. 0.00</span>
 </div>
 
 <div>
 <span>Discount (0%):</span>
-<span>- Rs. 0.00</span>
+<span id="summaryDiscount">- Rs. 0.00</span>
 </div>
 
 <div class="net">
 <span>Net Amount:</span>
-<span>Rs. 403,000.00</span>
+<span id="summaryNet">Rs. 0.00</span>
 </div>
 
 </div>
@@ -301,6 +232,89 @@ IPHONE 13 MINI 256GB<br>
 </div>
 
 </div>
+
+<script>
+function toNumber(value) {
+    const num = parseFloat(value || 0);
+    return Number.isNaN(num) ? 0 : num;
+}
+
+function formatMoney(value) {
+    return toNumber(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
+
+function renderItems(items) {
+    const body = document.getElementById('invoiceItemsBody');
+    if (!body) return;
+
+    body.innerHTML = items.map((item) => {
+        const name = item.product_name || 'Product';
+        const imei = item.imei || '-';
+        const color = item.color || '-';
+        const unitPrice = formatMoney(item.unit_price);
+        const qty = toNumber(item.qty);
+        const amount = formatMoney(item.amount);
+
+        return `
+            <tr>
+                <td class="description">
+                    ${name}<br>
+                    <small>IMEI ${imei} | ${color}</small>
+                </td>
+                <td class="num">${unitPrice}</td>
+                <td class="num">${qty}</td>
+                <td class="num">${amount}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function populateInvoiceFromPayload() {
+    let payload = null;
+    try {
+        payload = JSON.parse(localStorage.getItem('shopInvoicePayload') || '{}');
+    } catch (e) {
+        payload = {};
+    }
+
+    const shop = payload.shop || {};
+    const summary = payload.summary || {};
+    const items = Array.isArray(payload.items) ? payload.items : [];
+
+    setText('invoiceNo', `Invoice No. #${payload.invoiceNumber || '-'}`);
+    setText('customerName', shop.name || '-');
+    setText('customerTel', shop.contact || '-');
+    setText('customerAccount', shop.id || '-');
+    setText('invoiceDate', payload.dateTime || '-');
+    setText('customerOutstanding', formatMoney(summary.outstanding || 0));
+
+    setText('summaryItemCount', toNumber(summary.itemCount));
+    setText('summaryPieceCount', toNumber(summary.pieceCount));
+    setText('summaryCash', formatMoney(0));
+    setText('summaryCredit', formatMoney(summary.outstanding || 0));
+    setText('summarySubtotal', `Rs. ${formatMoney(summary.subtotal || 0)}`);
+    setText('summaryDiscount', `- Rs. ${formatMoney(summary.discount || 0)}`);
+    setText('summaryNet', `Rs. ${formatMoney(summary.netAmount || 0)}`);
+
+    renderItems(items);
+}
+
+populateInvoiceFromPayload();
+
+const params = new URLSearchParams(window.location.search);
+if (params.get('autoprint') === '1') {
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            window.print();
+        }, 120);
+    });
+}
+</script>
 
 </body>
 </html>

@@ -552,6 +552,14 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                         <i class="fas fa-sync"></i>
                         Refresh Summary
                     </button>
+                    <button class="modal-btn secondary" id="detailsPrintInvoiceBtn">
+                        <i class="fas fa-print"></i>
+                        Print Invoice
+                    </button>
+                    <button class="modal-btn secondary" id="detailsSettleBtn">
+                        <i class="fas fa-money-check-dollar"></i>
+                        Settle Payment
+                    </button>
                     <button class="modal-btn secondary" id="detailsEditBtn">
                         <i class="fas fa-edit"></i>
                         Edit Shop
@@ -605,11 +613,65 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
         </div>
     </div>
 
+    <!-- Settle Payment Modal -->
+    <div class="modal-overlay" id="settlePaymentModal">
+        <div class="modal" style="max-width: 520px;">
+            <div class="modal-header">
+                <h2>Settle Shop Payment</h2>
+                <button class="modal-close" onclick="closeModal('settlePaymentModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="details-grid" style="margin-bottom: 16px;">
+                    <div class="detail-item">
+                        <span class="detail-label">Shop</span>
+                        <span class="detail-value" id="settleShopName">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Current Outstanding</span>
+                        <span class="detail-value" style="color:#ff9800;" id="settleOutstanding">LKR 0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Pending Issues</span>
+                        <span class="detail-value" id="settlePendingCount">0</span>
+                    </div>
+                </div>
+
+                <div class="settlement-options">
+                    <div class="settlement-option">
+                        <label>
+                            <input type="radio" name="settlementType" value="full" checked>
+                            Full Settlement (clear all pending issued products)
+                        </label>
+                    </div>
+                    <div class="settlement-option">
+                        <label>
+                            <input type="radio" name="settlementType" value="half">
+                            Half Settlement (auto-settle about half of outstanding)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="modal-btn secondary" type="button" onclick="closeModal('settlePaymentModal')">Cancel</button>
+                    <button class="modal-btn primary" type="button" id="confirmSettleBtn">
+                        <i class="fas fa-money-bill-wave"></i>
+                        Confirm Settlement
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const SHOPS_API_URL = 'http://localhost:3000/api/shops';
+        const INVENTORY_API_URL = 'http://localhost:3000/api/inventory';
         let allShops = [];
         let filteredShops = [];
         let selectedShopId = null;
+        let selectedShopDetails = null;
+        let selectedShopIssues = [];
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('collapsed');
@@ -824,9 +886,141 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                 document.getElementById('detailsTotalSales').textContent = toNumber(sales.total_sales).toLocaleString();
                 document.getElementById('detailsTotalPaid').textContent = formatCurrency(sales.total_paid);
 
+                selectedShopDetails = shopData;
+
+                try {
+                    const issuesResponse = await apiRequest(`${INVENTORY_API_URL}/issues/shop/${encodeURIComponent(shopId)}?status=pending_payment`);
+                    selectedShopIssues = Array.isArray(issuesResponse.data) ? issuesResponse.data : [];
+                } catch (issuesError) {
+                    selectedShopIssues = [];
+                }
+
                 openModal('shopDetailsModal');
             } catch (error) {
                 alert(`Unable to load shop details: ${error.message}`);
+            }
+        }
+
+        async function printShopInvoice() {
+            if (!selectedShopId) {
+                alert('No shop selected.');
+                return;
+            }
+
+            try {
+                const detailResponse = await apiRequest(`${SHOPS_API_URL}/${encodeURIComponent(selectedShopId)}`);
+                const issuesResponse = await apiRequest(`${INVENTORY_API_URL}/issues/shop/${encodeURIComponent(selectedShopId)}?status=pending_payment`);
+
+                const shopData = detailResponse.data || {};
+                const issues = Array.isArray(issuesResponse.data) ? issuesResponse.data : [];
+
+                if (!issues.length) {
+                    alert('No pending issued products found for invoice.');
+                    return;
+                }
+
+                const now = new Date();
+                const invoiceNumber = `${shopData.shop_id || 'SHOP'}-${now.getTime().toString().slice(-6)}`;
+                const total = issues.reduce((sum, item) => sum + toNumber(item.issue_amount), 0);
+
+                const invoicePayload = {
+                    invoiceNumber,
+                    dateTime: now.toLocaleString(),
+                    shop: {
+                        id: shopData.shop_id || '-',
+                        name: shopData.name || '-',
+                        ownerName: shopData.owner_name || '-',
+                        contact: shopData.contact_number || '-',
+                        ownerCustomerId: shopData.owner_customer_id || '-',
+                    },
+                    items: issues.map(item => ({
+                        product_name: item.product_name || 'Product',
+                        imei: item.IMEI || '-',
+                        color: item.color || '-',
+                        capacity: item.capacity || '-',
+                        qty: toNumber(item.issued_stock) || 1,
+                        unit_price: toNumber(item.selling_price),
+                        amount: toNumber(item.issue_amount),
+                    })),
+                    summary: {
+                        itemCount: issues.length,
+                        pieceCount: issues.reduce((sum, item) => sum + (toNumber(item.issued_stock) || 1), 0),
+                        subtotal: total,
+                        discount: 0,
+                        netAmount: total,
+                        outstanding: total,
+                    },
+                };
+
+                localStorage.setItem('shopInvoicePayload', JSON.stringify(invoicePayload));
+
+                const printWindow = window.open(`shop-invoice.html?autoprint=1&t=${Date.now()}`, '_blank');
+                if (!printWindow) {
+                    alert('Please allow popups to print invoice.');
+                    return;
+                }
+            } catch (error) {
+                alert(`Invoice print failed: ${error.message}`);
+            }
+        }
+
+        function openSettlePaymentModal() {
+            if (!selectedShopDetails || !selectedShopId) {
+                alert('Open shop details first.');
+                return;
+            }
+
+            const currentOutstanding = selectedShopIssues.reduce((sum, item) => sum + toNumber(item.issue_amount), 0);
+
+            if (currentOutstanding <= 0) {
+                alert('This shop has no pending outstanding balance to settle.');
+                return;
+            }
+
+            document.getElementById('settleShopName').textContent = selectedShopDetails.name || selectedShopId;
+            document.getElementById('settleOutstanding').textContent = formatCurrency(currentOutstanding);
+            document.getElementById('settlePendingCount').textContent = selectedShopIssues.length.toLocaleString();
+            const selectedTypeElement = document.querySelector('input[name="settlementType"][value="full"]');
+            if (selectedTypeElement) selectedTypeElement.checked = true;
+            openModal('settlePaymentModal');
+        }
+
+        async function confirmSettlement() {
+            if (!selectedShopId) {
+                alert('No shop selected.');
+                return;
+            }
+
+            const selectedTypeElement = document.querySelector('input[name="settlementType"]:checked');
+            const type = selectedTypeElement ? selectedTypeElement.value : 'full';
+            const confirmed = confirm(`Proceed with ${type} settlement for shop ${selectedShopId}?`);
+            if (!confirmed) return;
+
+            const settleBtn = document.getElementById('confirmSettleBtn');
+            const previous = settleBtn.innerHTML;
+            settleBtn.disabled = true;
+            settleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Settling...';
+
+            try {
+                const response = await apiRequest(`${INVENTORY_API_URL}/issues/shop/${encodeURIComponent(selectedShopId)}/settle`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ type }),
+                });
+
+                const settledAmount = toNumber(response?.data?.amount_settled);
+                closeModal('settlePaymentModal');
+                await loadShops();
+                await openShopDetails(selectedShopId);
+
+                alert(`${type === 'full' ? 'Full' : 'Half'} settlement completed. Amount settled: ${formatCurrency(settledAmount)}`);
+            } catch (error) {
+                alert(`Settlement failed: ${error.message}`);
+            } finally {
+                settleBtn.disabled = false;
+                settleBtn.innerHTML = previous;
             }
         }
 
@@ -943,6 +1137,10 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                 openEditModal(selectedShopId);
             }
         });
+
+        document.getElementById('detailsPrintInvoiceBtn').addEventListener('click', printShopInvoice);
+        document.getElementById('detailsSettleBtn').addEventListener('click', openSettlePaymentModal);
+        document.getElementById('confirmSettleBtn').addEventListener('click', confirmSettlement);
 
         document.getElementById('detailsDeleteBtn').addEventListener('click', deleteSelectedShop);
 
