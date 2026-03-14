@@ -12,6 +12,53 @@ $pageTitle = 'Add Shop';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
+    <style>
+        .owner-autocomplete-wrap {
+            position: relative;
+        }
+
+        .owner-suggestions {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 6px);
+            background: #ffffff;
+            border: 1px solid #dfe3ed;
+            border-radius: 10px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            z-index: 50;
+            max-height: 240px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .owner-suggestion-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eef1f6;
+        }
+
+        .owner-suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .owner-suggestion-item:hover,
+        .owner-suggestion-item.active {
+            background: #f5f8ff;
+        }
+
+        .owner-suggestion-name {
+            font-weight: 600;
+            color: #1a237e;
+            font-size: 14px;
+        }
+
+        .owner-suggestion-meta {
+            margin-top: 4px;
+            color: #6a759d;
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -30,7 +77,7 @@ $pageTitle = 'Add Shop';
                     </div>
                 </div>
 
-                <form class="sale-form" action="#" method="post">
+                <form class="sale-form" id="addShopForm" action="#" method="post">
                     <div class="chart-card">
                         <div class="chart-header">
                             <h3>Shop Information</h3>
@@ -38,201 +85,41 @@ $pageTitle = 'Add Shop';
                         <div class="form-grid">
                             <div class="form-field">
                                 <label for="shopName">Shop Name <span style="color: #f44336;">*</span></label>
-                                <input type="text" id="shopName" name="shopName" placeholder="e.g., Tech Haven Mobile" required>
+                                <input type="text" id="shopName" name="shopName" placeholder="e.g., Downtown Branch" required>
                             </div>
                             <div class="form-field">
-                                <label for="shopID">Shop ID <span style="color: #f44336;">*</span></label>
-                                <input type="text" id="shopID" name="shopID" placeholder="e.g., SH-001" required>
+                                <label for="shopID">Shop ID (Optional)</label>
+                                <input type="text" id="shopID" name="shopID" placeholder="e.g., SHOP-00010">
                             </div>
                             <div class="form-field">
                                 <label for="ownerName">Owner Name <span style="color: #f44336;">*</span></label>
-                                <input type="text" id="ownerName" name="ownerName" placeholder="e.g., John Doe" required>
+                                <div class="owner-autocomplete-wrap">
+                                    <input type="text" id="ownerName" name="ownerName" placeholder="Start typing customer name..." autocomplete="off" required>
+                                    <div id="ownerSuggestions" class="owner-suggestions" role="listbox" aria-label="Owner suggestions"></div>
+                                </div>
                             </div>
                             <div class="form-field">
-                                <label for="registrationDate">Registration Date <span style="color: #f44336;">*</span></label>
-                                <input type="date" id="registrationDate" name="registrationDate" value="<?php echo date('Y-m-d'); ?>" required>
+                                <label for="ownerCustomerId">Owner Customer ID <span style="color: #f44336;">*</span></label>
+                                <input type="text" id="ownerCustomerId" name="ownerCustomerId" placeholder="e.g., CUST-00001" required>
                             </div>
                         </div>
                     </div>
 
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h3>Contact Information</h3>
+                            <h3>Location & Contact</h3>
                         </div>
                         <div class="form-grid">
+                            <div class="form-field" style="grid-column: 1 / -1;">
+                                <label for="location">Location <span style="color: #f44336;">*</span></label>
+                                <input type="text" id="location" name="location" placeholder="e.g., Colombo 03" required>
+                            </div>
                             <div class="form-field">
                                 <label for="phone">Phone Number <span style="color: #f44336;">*</span></label>
                                 <input type="tel" id="phone" name="phone" placeholder="+94 77 123 4567" required>
                             </div>
-                            <div class="form-field">
-                                <label for="altPhone">Alternate Phone</label>
-                                <input type="tel" id="altPhone" name="altPhone" placeholder="+94 71 234 5678">
-                            </div>
-                            <div class="form-field">
-                                <label for="email">Email Address</label>
-                                <input type="email" id="email" name="email" placeholder="shop@email.com">
-                            </div>
-                            <div class="form-field">
-                                <label for="whatsapp">WhatsApp Number</label>
-                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+94 77 123 4567">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Location Details</h3>
-                        </div>
-                        <div class="form-grid">
                             <div class="form-field" style="grid-column: 1 / -1;">
-                                <label for="address">Shop Address <span style="color: #f44336;">*</span></label>
-                                <input type="text" id="address" name="address" placeholder="e.g., 123 Main Street" required>
-                            </div>
-                        </div>
-
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="city">City <span style="color: #f44336;">*</span></label>
-                                <input type="text" id="city" name="city" placeholder="e.g., Colombo" required>
-                            </div>
-                            <div class="form-field">
-                                <label for="district">District <span style="color: #f44336;">*</span></label>
-                                <select id="district" name="district" required>
-                                    <option value="">Select District</option>
-                                    <option>Colombo</option>
-                                    <option>Gampaha</option>
-                                    <option>Kalutara</option>
-                                    <option>Kandy</option>
-                                    <option>Galle</option>
-                                    <option>Matara</option>
-                                    <option>Hambantota</option>
-                                    <option>Jaffna</option>
-                                    <option>Kilinochchi</option>
-                                    <option>Mannar</option>
-                                    <option>Vavuniya</option>
-                                    <option>Mullaitivu</option>
-                                    <option>Batticaloa</option>
-                                    <option>Ampara</option>
-                                    <option>Trincomalee</option>
-                                    <option>Kurunegala</option>
-                                    <option>Puttalam</option>
-                                    <option>Anuradhapura</option>
-                                    <option>Polonnaruwa</option>
-                                    <option>Badulla</option>
-                                    <option>Moneragala</option>
-                                    <option>Ratnapura</option>
-                                    <option>Kegalle</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label for="postalCode">Postal Code</label>
-                                <input type="text" id="postalCode" name="postalCode" placeholder="e.g., 10100">
-                            </div>
-                            <div class="form-field">
-                                <label for="landmark">Landmark</label>
-                                <input type="text" id="landmark" name="landmark" placeholder="e.g., Near City Mall">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Business Details</h3>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="businessRegNo">Business Registration No.</label>
-                                <input type="text" id="businessRegNo" name="businessRegNo" placeholder="e.g., BR-123456">
-                            </div>
-                            <div class="form-field">
-                                <label for="taxID">Tax ID / TIN</label>
-                                <input type="text" id="taxID" name="taxID" placeholder="e.g., 123456789V">
-                            </div>
-                            <div class="form-field">
-                                <label for="shopType">Shop Type</label>
-                                <select id="shopType" name="shopType">
-                                    <option>Retail</option>
-                                    <option>Wholesale</option>
-                                    <option>Authorized Dealer</option>
-                                    <option>Partner</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label for="status">Shop Status</label>
-                                <select id="status" name="status">
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                    <option>On Hold</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Financial Settings</h3>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="creditLimit">Credit Limit (LKR)</label>
-                                <input type="number" id="creditLimit" name="creditLimit" placeholder="0.00" step="0.01" value="0">
-                                <div class="form-hint">Maximum credit allowed for this shop</div>
-                            </div>
-                            <div class="form-field">
-                                <label for="creditDays">Credit Days</label>
-                                <input type="number" id="creditDays" name="creditDays" placeholder="30" min="0" value="30">
-                                <div class="form-hint">Payment due within days</div>
-                            </div>
-                            <div class="form-field">
-                                <label for="commission">Commission Rate (%)</label>
-                                <input type="number" id="commission" name="commission" placeholder="0" step="0.01" min="0" max="100" value="0">
-                                <div class="form-hint">Commission on sales</div>
-                            </div>
-                            <div class="form-field">
-                                <label for="paymentTerms">Payment Terms</label>
-                                <select id="paymentTerms" name="paymentTerms">
-                                    <option>Cash on Delivery</option>
-                                    <option>Credit</option>
-                                    <option>Bank Transfer</option>
-                                    <option>Mixed</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Bank Details</h3>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="bankName">Bank Name</label>
-                                <input type="text" id="bankName" name="bankName" placeholder="e.g., Bank of Ceylon">
-                            </div>
-                            <div class="form-field">
-                                <label for="branchName">Branch Name</label>
-                                <input type="text" id="branchName" name="branchName" placeholder="e.g., Colombo Main">
-                            </div>
-                            <div class="form-field">
-                                <label for="accountNumber">Account Number</label>
-                                <input type="text" id="accountNumber" name="accountNumber" placeholder="e.g., 1234567890">
-                            </div>
-                            <div class="form-field">
-                                <label for="accountName">Account Holder Name</label>
-                                <input type="text" id="accountName" name="accountName" placeholder="e.g., Shop Owner Name">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Additional Notes</h3>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field" style="grid-column: 1 / -1;">
-                                <label for="notes">Notes / Comments</label>
-                                <textarea id="notes" name="notes" rows="4" placeholder="Add any additional information about this shop..." style="width: 100%; padding: 12px 16px; border: 1px solid #dfe3ed; border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
+                                <div class="form-hint">The API requires: <strong>name</strong>, <strong>location</strong>, <strong>contact_number</strong>, <strong>owner_name</strong>, <strong>owner_customer_id</strong>. The <strong>shop_id</strong> is optional and auto-generated when omitted.</div>
                             </div>
                         </div>
                     </div>
@@ -242,11 +129,11 @@ $pageTitle = 'Add Shop';
                             <i class="fas fa-times"></i>
                             Cancel
                         </a>
-                        <button type="reset" class="button-secondary">
+                        <button type="reset" class="button-secondary" id="resetShopFormBtn">
                             <i class="fas fa-redo"></i>
                             Reset Form
                         </button>
-                        <button type="submit" class="button-primary">
+                        <button type="submit" class="button-primary" id="saveShopBtn">
                             <i class="fas fa-save"></i>
                             Save Shop
                         </button>
@@ -257,27 +144,188 @@ $pageTitle = 'Add Shop';
     </div>
 
     <script>
+        const API_URL = 'http://localhost:3000/api/shops';
+        const CUSTOMER_API_URL = 'http://localhost:3000/api/customers';
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('collapsed');
         }
 
-        // Form validation
-        document.querySelector('.sale-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const shopName = document.getElementById('shopName').value;
-            const shopID = document.getElementById('shopID').value;
-            const ownerName = document.getElementById('ownerName').value;
-            
-            if (!shopName || !shopID || !ownerName) {
-                alert('Please fill in all required fields!');
-                return false;
+        const addShopForm = document.getElementById('addShopForm');
+        const saveShopBtn = document.getElementById('saveShopBtn');
+        const ownerNameInput = document.getElementById('ownerName');
+        const ownerCustomerIdInput = document.getElementById('ownerCustomerId');
+        const ownerSuggestionsEl = document.getElementById('ownerSuggestions');
+
+        let ownerSuggestionResults = [];
+        let activeOwnerSuggestionIndex = -1;
+        let ownerSearchDebounce;
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function hideOwnerSuggestions() {
+            ownerSuggestionsEl.style.display = 'none';
+            ownerSuggestionsEl.innerHTML = '';
+            ownerSuggestionResults = [];
+            activeOwnerSuggestionIndex = -1;
+        }
+
+        function selectOwnerSuggestion(customer) {
+            ownerNameInput.value = customer.name || '';
+            ownerCustomerIdInput.value = customer.customer_id || '';
+            hideOwnerSuggestions();
+        }
+
+        function renderOwnerSuggestions(customers) {
+            ownerSuggestionResults = customers;
+            activeOwnerSuggestionIndex = -1;
+
+            if (!customers.length) {
+                ownerSuggestionsEl.innerHTML = '<div class="owner-suggestion-item">No matching customers found</div>';
+                ownerSuggestionsEl.style.display = 'block';
+                return;
             }
-            
-            // Show success message
-            alert('Shop added successfully!');
-            window.location.href = 'index.php';
+
+            ownerSuggestionsEl.innerHTML = customers.map((customer, index) => `
+                <div class="owner-suggestion-item" data-index="${index}" role="option">
+                    <div class="owner-suggestion-name">${escapeHtml(customer.name || 'Unnamed Customer')}</div>
+                    <div class="owner-suggestion-meta">${escapeHtml(customer.customer_id || '')}${customer.phone_number ? ` • ${escapeHtml(customer.phone_number)}` : ''}</div>
+                </div>
+            `).join('');
+
+            ownerSuggestionsEl.style.display = 'block';
+        }
+
+        async function fetchOwnerSuggestions(query) {
+            try {
+                const response = await fetch(`${CUSTOMER_API_URL}/search?query=${encodeURIComponent(query)}`);
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok || result.success === false) {
+                    throw new Error(result.message || 'Unable to search customers');
+                }
+
+                renderOwnerSuggestions(Array.isArray(result.data) ? result.data.slice(0, 8) : []);
+            } catch (error) {
+                ownerSuggestionsEl.innerHTML = `<div class="owner-suggestion-item">${escapeHtml(error.message)}</div>`;
+                ownerSuggestionsEl.style.display = 'block';
+            }
+        }
+
+        ownerNameInput.addEventListener('input', function() {
+            const query = this.value.trim();
+
+            if (!query) {
+                ownerCustomerIdInput.value = '';
+                hideOwnerSuggestions();
+                return;
+            }
+
+            clearTimeout(ownerSearchDebounce);
+            ownerSearchDebounce = setTimeout(() => {
+                fetchOwnerSuggestions(query);
+            }, 250);
+        });
+
+        ownerNameInput.addEventListener('keydown', function(event) {
+            if (ownerSuggestionsEl.style.display !== 'block' || !ownerSuggestionResults.length) {
+                return;
+            }
+
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                activeOwnerSuggestionIndex = Math.min(activeOwnerSuggestionIndex + 1, ownerSuggestionResults.length - 1);
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                activeOwnerSuggestionIndex = Math.max(activeOwnerSuggestionIndex - 1, 0);
+            } else if (event.key === 'Enter' && activeOwnerSuggestionIndex >= 0) {
+                event.preventDefault();
+                selectOwnerSuggestion(ownerSuggestionResults[activeOwnerSuggestionIndex]);
+                return;
+            } else if (event.key === 'Escape') {
+                hideOwnerSuggestions();
+                return;
+            }
+
+            ownerSuggestionsEl.querySelectorAll('.owner-suggestion-item').forEach((item, index) => {
+                item.classList.toggle('active', index === activeOwnerSuggestionIndex);
+            });
+        });
+
+        ownerSuggestionsEl.addEventListener('mousedown', function(event) {
+            const target = event.target.closest('.owner-suggestion-item[data-index]');
+            if (!target) {
+                return;
+            }
+
+            event.preventDefault();
+            const selected = ownerSuggestionResults[parseInt(target.dataset.index, 10)];
+            if (selected) {
+                selectOwnerSuggestion(selected);
+            }
+        });
+
+        document.addEventListener('click', function(event) {
+            const wrap = event.target.closest('.owner-autocomplete-wrap');
+            if (!wrap) {
+                hideOwnerSuggestions();
+            }
+        });
+
+        addShopForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const payload = {
+                name: document.getElementById('shopName').value.trim(),
+                location: document.getElementById('location').value.trim(),
+                contact_number: document.getElementById('phone').value.trim(),
+                owner_name: document.getElementById('ownerName').value.trim(),
+                owner_customer_id: document.getElementById('ownerCustomerId').value.trim(),
+            };
+
+            const customShopId = document.getElementById('shopID').value.trim();
+            if (customShopId) {
+                payload.shop_id = customShopId;
+            }
+
+            if (!payload.name || !payload.location || !payload.contact_number || !payload.owner_name || !payload.owner_customer_id) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            saveShopBtn.disabled = true;
+            saveShopBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok || result.success === false) {
+                    throw new Error(result.message || 'Failed to create shop');
+                }
+
+                alert('Shop created successfully.');
+                window.location.href = 'index.php';
+            } catch (error) {
+                alert(`Unable to create shop: ${error.message}`);
+            } finally {
+                saveShopBtn.disabled = false;
+                saveShopBtn.innerHTML = '<i class="fas fa-save"></i> Save Shop';
+            }
         });
 
         // Auto-format phone numbers

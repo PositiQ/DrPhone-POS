@@ -433,11 +433,12 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             <div class="content-area">
                 <div class="toolbar">
                     <div class="filter-group">
-                        <input type="text" id="searchShops" placeholder="Search shops..." style="min-width: 300px;">
+                        <input type="text" id="searchShops" placeholder="Search by ID, name, location, owner, or contact..." style="min-width: 320px;">
+                        <input type="text" id="ownerFilter" placeholder="Filter by Owner Customer ID" style="min-width: 220px;">
                         <select id="statusFilter" aria-label="Status">
-                            <option>All Shops</option>
-                            <option>Active</option>
-                            <option>Has Outstanding</option>
+                            <option value="all">All Shops</option>
+                            <option value="active">Has Active Devices</option>
+                            <option value="outstanding">Has Outstanding</option>
                         </select>
                     </div>
                     <div class="toolbar-actions">
@@ -445,7 +446,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                             <i class="fas fa-plus"></i>
                             Add Shop
                         </a>
-                        <button class="button-secondary" type="button">
+                        <button class="button-secondary" type="button" id="exportShopsBtn">
                             <i class="fas fa-download"></i>
                             Export
                         </button>
@@ -455,119 +456,31 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                 <div class="insight-grid">
                     <div class="metric-card">
                         <h4>Total Shops</h4>
-                        <div class="metric-value">24</div>
+                        <div class="metric-value" id="metricTotalShops">0</div>
                         <div class="metric-sub">Registered shops</div>
                     </div>
                     <div class="metric-card">
                         <h4>Total Outstanding</h4>
-                        <div class="metric-value" style="color: #ff9800;">LKR 1.2M</div>
+                        <div class="metric-value" style="color: #ff9800;" id="metricOutstanding">LKR 0</div>
                         <div class="metric-sub">Pending settlements</div>
                     </div>
                     <div class="metric-card">
                         <h4>Active Devices</h4>
-                        <div class="metric-value" style="color: #4caf50;">186</div>
+                        <div class="metric-value" style="color: #4caf50;" id="metricActiveDevices">0</div>
                         <div class="metric-sub">Currently in shops</div>
                     </div>
                     <div class="metric-card">
-                        <h4>Sold This Month</h4>
-                        <div class="metric-value" style="color: #2196f3;">42</div>
-                        <div class="metric-sub">Devices sold</div>
+                        <h4>Total Sales</h4>
+                        <div class="metric-value" style="color: #2196f3;" id="metricTotalSales">0</div>
+                        <div class="metric-sub">Recorded entries</div>
                     </div>
                 </div>
 
                 <div class="shop-cards-container" id="shopCardsContainer">
-                    <!-- Sample Shop Cards -->
-                    <div class="shop-card" onclick="openShopDetails(1)">
-                        <div class="shop-card-header">
-                            <div class="shop-icon">
-                                <i class="fas fa-store"></i>
-                            </div>
-                            <div class="shop-name">
-                                <h3>Tech Haven - Colombo</h3>
-                                <p>ID: SH-001 • Since Jan 2025</p>
-                            </div>
-                            <div class="shop-status"></div>
-                        </div>
-                        <div class="shop-stats">
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Outstanding</div>
-                                <div class="shop-stat-value outstanding">LKR 125K</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Active Devices</div>
-                                <div class="shop-stat-value active">18</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Sold Devices</div>
-                                <div class="shop-stat-value sold">42</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Total Devices</div>
-                                <div class="shop-stat-value">60</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="shop-card" onclick="openShopDetails(2)">
-                        <div class="shop-card-header">
-                            <div class="shop-icon">
-                                <i class="fas fa-store"></i>
-                            </div>
-                            <div class="shop-name">
-                                <h3>Mobile World - Kandy</h3>
-                                <p>ID: SH-002 • Since Feb 2025</p>
-                            </div>
-                            <div class="shop-status"></div>
-                        </div>
-                        <div class="shop-stats">
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Outstanding</div>
-                                <div class="shop-stat-value outstanding">LKR 85K</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Active Devices</div>
-                                <div class="shop-stat-value active">12</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Sold Devices</div>
-                                <div class="shop-stat-value sold">28</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Total Devices</div>
-                                <div class="shop-stat-value">40</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="shop-card" onclick="openShopDetails(3)">
-                        <div class="shop-card-header">
-                            <div class="shop-icon">
-                                <i class="fas fa-store"></i>
-                            </div>
-                            <div class="shop-name">
-                                <h3>Phone Center - Galle</h3>
-                                <p>ID: SH-003 • Since Jan 2025</p>
-                            </div>
-                            <div class="shop-status"></div>
-                        </div>
-                        <div class="shop-stats">
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Outstanding</div>
-                                <div class="shop-stat-value outstanding">LKR 0</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Active Devices</div>
-                                <div class="shop-stat-value active">8</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Sold Devices</div>
-                                <div class="shop-stat-value sold">15</div>
-                            </div>
-                            <div class="shop-stat">
-                                <div class="shop-stat-label">Total Devices</div>
-                                <div class="shop-stat-value">23</div>
-                            </div>
-                        </div>
+                    <div class="empty-state">
+                        <i class="fas fa-store-slash"></i>
+                        <h3>Loading shops...</h3>
+                        <p>Please wait while we fetch data from the API.</p>
                     </div>
                 </div>
             </div>
@@ -578,7 +491,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
     <div class="modal-overlay" id="shopDetailsModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Tech Haven - Colombo</h2>
+                <h2 id="detailsShopName">Shop Details</h2>
                 <button class="modal-close" onclick="closeModal('shopDetailsModal')">
                     <i class="fas fa-times"></i>
                 </button>
@@ -589,114 +502,368 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
                     <div class="details-grid">
                         <div class="detail-item">
                             <span class="detail-label">Shop ID</span>
-                            <span class="detail-value">SH-001</span>
+                            <span class="detail-value" id="detailsShopId">-</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Location</span>
-                            <span class="detail-value">Colombo, Sri Lanka</span>
+                            <span class="detail-value" id="detailsLocation">-</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Contact</span>
-                            <span class="detail-value">+94 77 123 4567</span>
+                            <span class="detail-value" id="detailsContact">-</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Owner</span>
-                            <span class="detail-value">John Doe</span>
+                            <span class="detail-value" id="detailsOwner">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Owner Customer ID</span>
+                            <span class="detail-value" id="detailsOwnerCustomerId">-</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Outstanding Balance</span>
-                            <span class="detail-value" style="color: #ff9800;">LKR 125,000</span>
+                            <span class="detail-value" style="color: #ff9800;" id="detailsOutstanding">LKR 0</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Active Devices</span>
-                            <span class="detail-value" style="color: #4caf50;">18</span>
+                            <span class="detail-value" style="color: #4caf50;" id="detailsActiveDevices">0</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Sold Devices</span>
-                            <span class="detail-value" style="color: #2196f3;">42</span>
+                            <span class="detail-value" style="color: #2196f3;" id="detailsSoldDevices">0</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Total Devices</span>
-                            <span class="detail-value">60</span>
+                            <span class="detail-value" id="detailsTotalDevices">0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Total Sales Entries</span>
+                            <span class="detail-value" id="detailsTotalSales">0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Total Paid</span>
+                            <span class="detail-value" id="detailsTotalPaid">LKR 0</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-actions">
-                    <button class="modal-btn secondary" onclick="closeModal('shopDetailsModal'); openModal('settleOutstandingModal')">
-                        <i class="fas fa-money-bill-wave"></i>
-                        Settle Outstanding
+                    <button class="modal-btn secondary" id="detailsRefreshSummaryBtn">
+                        <i class="fas fa-sync"></i>
+                        Refresh Summary
                     </button>
-                    <button class="modal-btn secondary" onclick="printShopInvoice()">
-                        <i class="fas fa-print"></i>
-                        Print Invoice
+                    <button class="modal-btn secondary" id="detailsEditBtn">
+                        <i class="fas fa-edit"></i>
+                        Edit Shop
+                    </button>
+                    <button class="modal-btn primary" id="detailsDeleteBtn" style="background: linear-gradient(135deg, #d32f2f 0%, #f57c00 100%);">
+                        <i class="fas fa-trash"></i>
+                        Delete Shop
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Settle Outstanding Modal -->
-    <div class="modal-overlay" id="settleOutstandingModal">
+    <!-- Edit Shop Modal -->
+    <div class="modal-overlay" id="editShopModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Settle Outstanding</h2>
-                <button class="modal-close" onclick="closeModal('settleOutstandingModal')">
+                <h2>Edit Shop</h2>
+                <button class="modal-close" onclick="closeModal('editShopModal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="modal-section">
-                    <h3>Outstanding Amount: LKR 125,000</h3>
-                    <div class="settlement-options">
-                        <div class="settlement-option" onclick="selectSettlementOption('full')">
-                            <input type="radio" name="settlement" id="fullSettlement" value="full">
-                            <label for="fullSettlement">Full Settlement</label>
-                            <p style="margin: 8px 0 0 28px; color: #6a759d; font-size: 13px;">Pay the complete outstanding amount</p>
-                        </div>
-                        <div class="settlement-option" onclick="selectSettlementOption('partial')">
-                            <input type="radio" name="settlement" id="partialSettlement" value="partial">
-                            <label for="partialSettlement">Partial Payment / Installment</label>
-                            <p style="margin: 8px 0 0 28px; color: #6a759d; font-size: 13px;">Pay a portion of the outstanding amount</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group" id="partialAmountGroup" style="display: none;">
-                        <label>Payment Amount (LKR)</label>
-                        <input type="number" id="partialAmount" placeholder="Enter amount to pay">
-                    </div>
-
+                <form id="editShopForm">
                     <div class="form-group">
-                        <label>Payment Method</label>
-                        <select style="width: 100%; padding: 12px 16px; border: 1px solid #dfe3ed; border-radius: 8px; font-size: 14px;">
-                            <option>Cash</option>
-                            <option>Bank Transfer</option>
-                            <option>Cheque</option>
-                            <option>Online Payment</option>
-                        </select>
+                        <label for="editShopName">Shop Name</label>
+                        <input type="text" id="editShopName" required>
                     </div>
-
                     <div class="form-group">
-                        <label>Notes (Optional)</label>
-                        <textarea style="width: 100%; padding: 12px 16px; border: 1px solid #dfe3ed; border-radius: 8px; font-size: 14px; min-height: 80px; resize: vertical;" placeholder="Add any notes..."></textarea>
+                        <label for="editLocation">Location</label>
+                        <input type="text" id="editLocation" required>
                     </div>
-                </div>
-
-                <div class="modal-actions">
-                    <button class="modal-btn secondary" onclick="closeModal('settleOutstandingModal')">Cancel</button>
-                    <button class="modal-btn primary" onclick="processSettlement()">Process Payment</button>
-                </div>
+                    <div class="form-group">
+                        <label for="editContact">Contact Number</label>
+                        <input type="text" id="editContact" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOwnerName">Owner Name</label>
+                        <input type="text" id="editOwnerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOwnerCustomerId">Owner Customer ID</label>
+                        <input type="text" id="editOwnerCustomerId" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn secondary" type="button" onclick="closeModal('editShopModal')">Cancel</button>
+                        <button class="modal-btn primary" type="submit">Save Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
+        const SHOPS_API_URL = 'http://localhost:3000/api/shops';
+        let allShops = [];
+        let filteredShops = [];
+        let selectedShopId = null;
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('collapsed');
         }
 
-        function openShopDetails(shopId) {
-            openModal('shopDetailsModal');
+        function toNumber(value) {
+            const parsed = parseFloat(value || 0);
+            return Number.isNaN(parsed) ? 0 : parsed;
+        }
+
+        function formatCurrency(value) {
+            return 'LKR ' + toNumber(value).toLocaleString(undefined, { maximumFractionDigits: 2 });
+        }
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        async function apiRequest(url, options = {}) {
+            const response = await fetch(url, options);
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok || data.success === false) {
+                throw new Error(data.message || 'Request failed');
+            }
+
+            return data;
+        }
+
+        function getShopStatusClass(sales) {
+            if (toNumber(sales?.total_outstanding) > 0) return 'outstanding';
+            if (toNumber(sales?.active_devices) > 0) return 'active';
+            return 'sold';
+        }
+
+        function renderShops(shops) {
+            const container = document.getElementById('shopCardsContainer');
+            if (!container) return;
+
+            if (!shops.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-store-slash"></i>
+                        <h3>No shops found</h3>
+                        <p>Try adjusting search or filters, or add a new shop.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = shops.map(shop => {
+                const sales = shop.sales || {};
+                const statusClass = getShopStatusClass(sales);
+                const statusColor = statusClass === 'outstanding' ? '#ff9800' : '#4caf50';
+                const created = shop.createdAt ? new Date(shop.createdAt).toISOString().slice(0, 10) : 'N/A';
+
+                return `
+                    <div class="shop-card" data-shop-id="${escapeHtml(shop.shop_id)}">
+                        <div class="shop-card-header">
+                            <div class="shop-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="shop-name">
+                                <h3>${escapeHtml(shop.name)}</h3>
+                                <p>ID: ${escapeHtml(shop.shop_id)} • Since ${created}</p>
+                            </div>
+                            <div class="shop-status" style="background: ${statusColor}; box-shadow: 0 0 0 3px ${statusColor}33;"></div>
+                        </div>
+                        <div class="shop-stats">
+                            <div class="shop-stat">
+                                <div class="shop-stat-label">Outstanding</div>
+                                <div class="shop-stat-value outstanding">${formatCurrency(sales.total_outstanding)}</div>
+                            </div>
+                            <div class="shop-stat">
+                                <div class="shop-stat-label">Active Devices</div>
+                                <div class="shop-stat-value active">${toNumber(sales.active_devices).toLocaleString()}</div>
+                            </div>
+                            <div class="shop-stat">
+                                <div class="shop-stat-label">Sold Devices</div>
+                                <div class="shop-stat-value sold">${toNumber(sales.sold_devices).toLocaleString()}</div>
+                            </div>
+                            <div class="shop-stat">
+                                <div class="shop-stat-label">Total Devices</div>
+                                <div class="shop-stat-value">${toNumber(sales.total_devices).toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <div class="shop-card-footer">
+                            <button class="shop-action-btn secondary" type="button" onclick="openShopDetails('${escapeHtml(shop.shop_id)}')">
+                                <i class="fas fa-eye"></i>
+                                Details
+                            </button>
+                            <button class="shop-action-btn primary" type="button" onclick="openEditModal('${escapeHtml(shop.shop_id)}')">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateMetrics(stats) {
+            const computed = stats || filteredShops.reduce((acc, currentShop) => {
+                const sales = currentShop.sales || {};
+                acc.total_shops += 1;
+                acc.total_outstanding += toNumber(sales.total_outstanding);
+                acc.total_devices += toNumber(sales.active_devices);
+                acc.total_sales += toNumber(sales.total_sales);
+                return acc;
+            }, {
+                total_shops: 0,
+                total_outstanding: 0,
+                total_devices: 0,
+                total_sales: 0,
+            });
+
+            document.getElementById('metricTotalShops').textContent = toNumber(computed.total_shops).toLocaleString();
+            document.getElementById('metricOutstanding').textContent = formatCurrency(computed.total_outstanding);
+            document.getElementById('metricActiveDevices').textContent = toNumber(computed.total_devices).toLocaleString();
+            document.getElementById('metricTotalSales').textContent = toNumber(computed.total_sales).toLocaleString();
+        }
+
+        function applyLocalFilters() {
+            const ownerFilter = document.getElementById('ownerFilter').value.trim().toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            filteredShops = allShops.filter(shop => {
+                const sales = shop.sales || {};
+
+                if (ownerFilter && !String(shop.owner_customer_id || '').toLowerCase().includes(ownerFilter)) {
+                    return false;
+                }
+
+                if (statusFilter === 'active' && toNumber(sales.active_devices) <= 0) {
+                    return false;
+                }
+
+                if (statusFilter === 'outstanding' && toNumber(sales.total_outstanding) <= 0) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            renderShops(filteredShops);
+            updateMetrics(null);
+        }
+
+        async function loadShops() {
+            try {
+                const response = await apiRequest(`${SHOPS_API_URL}?limit=200`);
+                allShops = Array.isArray(response.data) ? response.data : [];
+                filteredShops = [...allShops];
+                renderShops(filteredShops);
+                updateMetrics(response.stats || null);
+            } catch (error) {
+                document.getElementById('shopCardsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-triangle-exclamation" style="color:#f57c00"></i>
+                        <h3>Failed to load shops</h3>
+                        <p>${escapeHtml(error.message)}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function searchShops(query) {
+            if (!query.trim()) {
+                await loadShops();
+                return;
+            }
+
+            try {
+                const response = await apiRequest(`${SHOPS_API_URL}/search?query=${encodeURIComponent(query.trim())}`);
+                allShops = Array.isArray(response.data) ? response.data : [];
+                applyLocalFilters();
+            } catch (error) {
+                document.getElementById('shopCardsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-triangle-exclamation" style="color:#f57c00"></i>
+                        <h3>Search failed</h3>
+                        <p>${escapeHtml(error.message)}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function openShopDetails(shopId) {
+            try {
+                selectedShopId = shopId;
+                const detailResponse = await apiRequest(`${SHOPS_API_URL}/${encodeURIComponent(shopId)}`);
+                const summaryResponse = await apiRequest(`${SHOPS_API_URL}/${encodeURIComponent(shopId)}/sales-summary`);
+
+                const shopData = detailResponse.data || {};
+                const sales = summaryResponse.data?.summary?.recorded_sales_row || shopData.sales || {};
+
+                document.getElementById('detailsShopName').textContent = shopData.name || 'Shop Details';
+                document.getElementById('detailsShopId').textContent = shopData.shop_id || '-';
+                document.getElementById('detailsLocation').textContent = shopData.location || '-';
+                document.getElementById('detailsContact').textContent = shopData.contact_number || '-';
+                document.getElementById('detailsOwner').textContent = shopData.owner_name || '-';
+                document.getElementById('detailsOwnerCustomerId').textContent = shopData.owner_customer_id || '-';
+                document.getElementById('detailsOutstanding').textContent = formatCurrency(sales.total_outstanding);
+                document.getElementById('detailsActiveDevices').textContent = toNumber(sales.active_devices).toLocaleString();
+                document.getElementById('detailsSoldDevices').textContent = toNumber(sales.sold_devices).toLocaleString();
+                document.getElementById('detailsTotalDevices').textContent = toNumber(sales.total_devices).toLocaleString();
+                document.getElementById('detailsTotalSales').textContent = toNumber(sales.total_sales).toLocaleString();
+                document.getElementById('detailsTotalPaid').textContent = formatCurrency(sales.total_paid);
+
+                openModal('shopDetailsModal');
+            } catch (error) {
+                alert(`Unable to load shop details: ${error.message}`);
+            }
+        }
+
+        function openEditModal(shopId) {
+            const shopData = allShops.find(item => item.shop_id === shopId);
+            if (!shopData) {
+                alert('Shop not found in the current list. Please refresh.');
+                return;
+            }
+
+            selectedShopId = shopId;
+            document.getElementById('editShopName').value = shopData.name || '';
+            document.getElementById('editLocation').value = shopData.location || '';
+            document.getElementById('editContact').value = shopData.contact_number || '';
+            document.getElementById('editOwnerName').value = shopData.owner_name || '';
+            document.getElementById('editOwnerCustomerId').value = shopData.owner_customer_id || '';
+
+            openModal('editShopModal');
+        }
+
+        async function deleteSelectedShop() {
+            if (!selectedShopId) return;
+
+            const confirmed = confirm(`Delete shop ${selectedShopId}? This cannot be undone.`);
+            if (!confirmed) return;
+
+            try {
+                await apiRequest(`${SHOPS_API_URL}/${encodeURIComponent(selectedShopId)}`, {
+                    method: 'DELETE',
+                });
+
+                closeModal('shopDetailsModal');
+                await loadShops();
+                alert('Shop deleted successfully.');
+            } catch (error) {
+                alert(`Delete failed: ${error.message}`);
+            }
         }
 
         function openModal(modalId) {
@@ -707,28 +874,110 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             document.getElementById(modalId).classList.remove('active');
         }
 
-        function selectSettlementOption(option) {
-            const fullRadio = document.getElementById('fullSettlement');
-            const partialRadio = document.getElementById('partialSettlement');
-            const partialAmountGroup = document.getElementById('partialAmountGroup');
-
-            if (option === 'full') {
-                fullRadio.checked = true;
-                partialAmountGroup.style.display = 'none';
-            } else {
-                partialRadio.checked = true;
-                partialAmountGroup.style.display = 'block';
+        function exportCurrentShops() {
+            if (!filteredShops.length) {
+                alert('No shop data to export.');
+                return;
             }
+
+            const rows = [
+                ['shop_id', 'name', 'location', 'contact_number', 'owner_name', 'owner_customer_id', 'total_sales', 'total_paid', 'total_outstanding', 'total_devices', 'active_devices', 'sold_devices'],
+                ...filteredShops.map(shop => {
+                    const sales = shop.sales || {};
+                    return [
+                        shop.shop_id || '',
+                        shop.name || '',
+                        shop.location || '',
+                        shop.contact_number || '',
+                        shop.owner_name || '',
+                        shop.owner_customer_id || '',
+                        toNumber(sales.total_sales),
+                        toNumber(sales.total_paid),
+                        toNumber(sales.total_outstanding),
+                        toNumber(sales.total_devices),
+                        toNumber(sales.active_devices),
+                        toNumber(sales.sold_devices),
+                    ];
+                }),
+            ];
+
+            const csv = rows.map(row => row.map(value => {
+                const cell = String(value);
+                return /[",\n]/.test(cell) ? `"${cell.replace(/"/g, '""')}"` : cell;
+            }).join(',')).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'shops-export.csv';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
         }
 
-        function processSettlement() {
-            alert('Payment processed successfully!');
-            closeModal('settleOutstandingModal');
-        }
+        // Keep searches responsive without spamming API calls.
+        let searchDebounce;
 
-        function printShopInvoice() {
-            alert('Printing invoice...');
-        }
+        document.getElementById('searchShops').addEventListener('input', function(e) {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(() => {
+                searchShops(e.target.value || '');
+            }, 350);
+        });
+
+        document.getElementById('ownerFilter').addEventListener('input', applyLocalFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyLocalFilters);
+        document.getElementById('exportShopsBtn').addEventListener('click', exportCurrentShops);
+
+        document.getElementById('detailsRefreshSummaryBtn').addEventListener('click', function() {
+            if (selectedShopId) {
+                openShopDetails(selectedShopId);
+            }
+        });
+
+        document.getElementById('detailsEditBtn').addEventListener('click', function() {
+            closeModal('shopDetailsModal');
+            if (selectedShopId) {
+                openEditModal(selectedShopId);
+            }
+        });
+
+        document.getElementById('detailsDeleteBtn').addEventListener('click', deleteSelectedShop);
+
+        document.getElementById('editShopForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            if (!selectedShopId) {
+                alert('No shop selected for update.');
+                return;
+            }
+
+            const payload = {
+                name: document.getElementById('editShopName').value.trim(),
+                location: document.getElementById('editLocation').value.trim(),
+                contact_number: document.getElementById('editContact').value.trim(),
+                owner_name: document.getElementById('editOwnerName').value.trim(),
+                owner_customer_id: document.getElementById('editOwnerCustomerId').value.trim(),
+            };
+
+            try {
+                await apiRequest(`${SHOPS_API_URL}/${encodeURIComponent(selectedShopId)}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                closeModal('editShopModal');
+                await loadShops();
+                alert('Shop updated successfully.');
+            } catch (error) {
+                alert(`Update failed: ${error.message}`);
+            }
+        });
 
         // Close modal when clicking outside
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -739,20 +988,7 @@ $pageSubtitle = 'Manage shops, track devices, and settlements.';
             });
         });
 
-        // Search functionality
-        document.getElementById('searchShops').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const shopCards = document.querySelectorAll('.shop-card');
-
-            shopCards.forEach(card => {
-                const shopName = card.querySelector('.shop-name h3').textContent.toLowerCase();
-                if (shopName.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
+        loadShops();
     </script>
 </body>
 </html>
