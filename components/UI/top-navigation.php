@@ -178,6 +178,37 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
 <script>
 (function () {
     const NOTIFICATIONS_API = 'http://localhost:3000/api/notifications?limit=25';
+    const READ_NOTIFICATIONS_KEY = 'pos.readNotifications.v1';
+
+    function getReadNotificationIds() {
+        try {
+            const value = JSON.parse(localStorage.getItem(READ_NOTIFICATIONS_KEY) || '[]');
+            return Array.isArray(value) ? value : [];
+        } catch (_) {
+            return [];
+        }
+    }
+
+    function setReadNotificationIds(ids) {
+        try {
+            const uniqueIds = Array.from(new Set((ids || []).filter(Boolean))).slice(-500);
+            localStorage.setItem(READ_NOTIFICATIONS_KEY, JSON.stringify(uniqueIds));
+        } catch (_) {
+            // Ignore storage errors.
+        }
+    }
+
+    function addReadNotificationId(id) {
+        if (!id) return;
+        const ids = getReadNotificationIds();
+        ids.push(id);
+        setReadNotificationIds(ids);
+    }
+
+    function addReadNotificationIds(ids) {
+        const current = getReadNotificationIds();
+        setReadNotificationIds(current.concat(ids || []));
+    }
 
     function toggleNotifDropdown() {
         const dropdown = document.getElementById('notifDropdown');
@@ -185,20 +216,36 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         dropdown.classList.toggle('open');
     }
 
+    function renderEmptyState() {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        list.innerHTML = `
+            <div class="notif-item">
+                <div class="notif-body">
+                    <p>No notifications right now.</p>
+                    <span class="notif-time">System is up to date</span>
+                </div>
+            </div>
+        `;
+    }
+
     function markRead(item) {
-        if (item.classList.contains('unread')) {
-            item.classList.remove('unread');
-            const dot = item.querySelector('.notif-dot');
-            if (dot) dot.remove();
+        const notificationId = item ? item.getAttribute('data-notification-id') : '';
+        addReadNotificationId(notificationId);
+        if (item && item.parentNode) {
+            item.remove();
             updateBadge();
         }
     }
 
     function markAllRead() {
-        document.querySelectorAll('#notifList .notif-item.unread').forEach(function (item) {
-            item.classList.remove('unread');
-            const dot = item.querySelector('.notif-dot');
-            if (dot) dot.remove();
+        const ids = Array.from(document.querySelectorAll('#notifList .notif-item[data-notification-id]'))
+            .map(function (item) { return item.getAttribute('data-notification-id'); })
+            .filter(Boolean);
+        addReadNotificationIds(ids);
+
+        document.querySelectorAll('#notifList .notif-item').forEach(function (item) {
+            item.remove();
         });
         updateBadge();
     }
@@ -217,20 +264,13 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         if (!list) return;
 
         if (!Array.isArray(items) || items.length === 0) {
-            list.innerHTML = `
-                <div class="notif-item">
-                    <div class="notif-body">
-                        <p>No notifications right now.</p>
-                        <span class="notif-time">System is up to date</span>
-                    </div>
-                </div>
-            `;
+            renderEmptyState();
             updateBadge();
             return;
         }
 
         list.innerHTML = items.map((n) => `
-            <div class="notif-item unread" onclick="markRead(this)">
+            <div class="notif-item unread" data-notification-id="${escapeHtml(n.id || '')}" onclick="markRead(this)">
                 <div class="notif-icon-wrap" style="background:${escapeHtml(n.iconBg || '#eef0fb')};">
                     <i class="fas ${escapeHtml(n.icon || 'fa-bell')}" style="color:${escapeHtml(n.iconColor || '#3f51b5')};"></i>
                 </div>
@@ -266,7 +306,8 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             if (!response.ok || !result.success) {
                 throw new Error(result.message || 'Failed to fetch notifications');
             }
-            const items = result.data?.notifications || [];
+            const readIds = new Set(getReadNotificationIds());
+            const items = (result.data?.notifications || []).filter((item) => !readIds.has(item.id));
             renderNotifications(items);
         } catch (error) {
             renderLoadError(error.message);
@@ -276,7 +317,11 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
 
     function updateBadge() {
         const count = document.querySelectorAll('#notifList .notif-item.unread').length;
+        const allItems = document.querySelectorAll('#notifList .notif-item').length;
         const badge = document.getElementById('notifBadge');
+        if (allItems === 0) {
+            renderEmptyState();
+        }
         if (badge) {
             badge.textContent = count;
             badge.style.display = count === 0 ? 'none' : '';
