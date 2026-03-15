@@ -87,6 +87,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       color: #667085;
       text-align: center;
     }
+    .login-btn{
+      background-color: #0d0d0e;
+      color: #ffffff;
+    }
+    .login-btn:hover {
+      background-color: #111111;
+      color: #ffffff;
+    }
+    .login-btn i {
+      transition: transform 0.2s;
+      color:#ffffff;
+    }
   </style>
 </head>
 <body>
