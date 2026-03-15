@@ -1,5 +1,5 @@
 /**
- * PWA Client Library for Dr.Mobile POS
+ * PWA Client Library for Dr.Phone POS
  * Handles service worker registration, updates, and offline features
  */
 

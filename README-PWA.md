@@ -1,8 +1,8 @@
-# PWA Implementation for Dr.Mobile POS - Complete Guide
+# PWA Implementation for Dr.Phone POS - Complete Guide
 
 ## 🎉 Welcome!
 
-Your Dr.Mobile POS system now has full **Progressive Web App (PWA)** capabilities! This means your app can be installed, works offline, and provides an app-like experience.
+Your Dr.Phone POS system now has full **Progressive Web App (PWA)** capabilities! This means your app can be installed, works offline, and provides an app-like experience.
 
 ## 📱 What Can Users Do Now?
 
@@ -442,7 +442,7 @@ if (navigator.onLine) {
 
 ## ✨ You're All Set!
 
-Your Dr.Mobile POS system now has complete PWA functionality:
+Your Dr.Phone POS system now has complete PWA functionality:
 
 ✅ Offline support  
 ✅ Installation capability  

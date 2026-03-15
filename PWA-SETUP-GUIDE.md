@@ -1,6 +1,6 @@
-# PWA (Progressive Web App) Setup Guide for Dr.Mobile POS
+# PWA (Progressive Web App) Setup Guide for Dr.Phone POS
 
-This guide explains the PWA functionality that has been added to your Dr.Mobile POS system.
+This guide explains the PWA functionality that has been added to your Dr.Phone POS system.
 
 ## 📱 What is a PWA?
 

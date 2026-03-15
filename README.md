@@ -1,4 +1,4 @@
-# Dr.Mobile POS
+# Dr.Phone POS
 
 A comprehensive Point of Sale (POS) system designed for mobile phone retail shops, featuring inventory management, sales tracking, customer management, and more.
 
@@ -32,7 +32,7 @@ A comprehensive Point of Sale (POS) system designed for mobile phone retail shop
 ## Project Structure
 
 ```
-Dr.Mobile POS/
+Dr.Phone POS/
 ├── index.php              # Main dashboard
 ├── login.php              # User authentication
 ├── app/
@@ -63,7 +63,7 @@ Dr.Mobile POS/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd "Dr.Mobile POS"
+   cd "Dr.Phone POS"
    ```
 
 2. **Configure the database**
@@ -87,7 +87,7 @@ Dr.Mobile POS/
    ```
 
 6. **Access the application**
-   - Open your browser and navigate to `http://localhost/Dr.Mobile%20POS`
+   - Open your browser and navigate to `http://localhost/Dr.Phone%20POS`
    - Login with your credentials
 
 ## Configuration
@@ -164,4 +164,4 @@ For support and inquiries, please contact [your contact information]
 
 ---
 
-**Dr.Mobile POS** - Streamlining mobile phone retail operations
+**Dr.Phone POS** - Streamlining mobile phone retail operations

@@ -1,4 +1,4 @@
-// Service Worker for Dr.Mobile POS - Progressive Web App
+// Service Worker for Dr.Phone POS - Progressive Web App
 const CACHE_NAME = 'pos-app-v1';
 const API_CACHE_NAME = 'pos-api-cache-v1';
 const OFFLINE_URL = '/offline.html';
