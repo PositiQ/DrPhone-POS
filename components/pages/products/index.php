@@ -288,9 +288,7 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
                 class="button-secondary print-label-btn"
                 style="padding: 6px 10px; font-size: 12px;"
                 title="Print Label"
-                data-name="${product.productName || 'Product'}"
-                data-sku="${stock.sku || 'N/A'}"
-                data-price="${stock.selling_price || product.price || 0}"
+                data-id="${product.id}"
               >
                 <i class="fas fa-barcode"></i>
               </button>
@@ -387,21 +385,92 @@ $pageSubtitle = 'Add and manage products, categories, and labels.';
 
       e.preventDefault();
 
-      const name = encodeURIComponent(btn.dataset.name || 'Product');
-      const sku = encodeURIComponent(btn.dataset.sku || 'SKU');
-      const price = encodeURIComponent(btn.dataset.price || '0');
-
-      const url = `label-print.php?name=${name}&sku=${sku}&price=${price}`;
-
-      const w = window.open(url, '_blank');
-      if (!w) {
+      const productId = btn.dataset.id;
+      const product = allProducts.find(p => String(p.id) === String(productId));
+      if (!product) {
         Swal.fire({
-          icon: 'warning',
-          title: 'Popup Blocked',
-          text: 'Popup was blocked! Please allow popups to print labels.',
-          confirmButtonColor: '#ff9800'
+          icon: 'error',
+          title: 'Product Not Found',
+          text: 'Unable to find product details for printing label.',
+          confirmButtonColor: '#d33'
         });
+        return;
       }
+
+      const today = new Date();
+      const pad = (v) => String(v).padStart(2, '0');
+      const defaultDate = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+
+      Swal.fire({
+        title: 'Label Details',
+        html: `
+          <div style="text-align: left; font-size: 13px; color: #546181; margin-bottom: 10px;">
+            Enter required details before printing this sticker.
+          </div>
+          <input id="labelSim" class="swal2-input" placeholder="Sim (e.g., Unlocked)" value="Unlocked">
+          <input id="labelDate" class="swal2-input" type="date" value="${defaultDate}">
+          <input id="labelIos" class="swal2-input" placeholder="IOS Version" value="N/A">
+          <input id="labelFmi" class="swal2-input" placeholder="FMI" value="Off">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Print Sticker',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#1a237e',
+        preConfirm: () => {
+          const sim = (document.getElementById('labelSim').value || '').trim();
+          const date = (document.getElementById('labelDate').value || '').trim();
+          const iosVersion = (document.getElementById('labelIos').value || '').trim();
+          const fmi = (document.getElementById('labelFmi').value || '').trim();
+
+          if (!sim || !date || !iosVersion || !fmi) {
+            Swal.showValidationMessage('Please fill Sim, Date, IOS Version, and FMI.');
+            return false;
+          }
+
+          return { sim, date, iosVersion, fmi };
+        }
+      }).then((result) => {
+        if (!result.isConfirmed || !result.value) {
+          return;
+        }
+
+        const stock = product.Product_Stock || {};
+        const brand = product.brand || '';
+        const model = product.model || '';
+        const explicitName = product.productName || [brand, model].filter(Boolean).join(', ') || 'Product';
+        const imei = product.IMEI || product.imei || product.barcode || stock.sku || 'N/A';
+        const productCode = stock.sku || product.id || 'N/A';
+        const battery = product.battery_health || product.battery || 'N/A';
+        const storage = product.capacity || product.storage || 'N/A';
+        const color = product.color || 'N/A';
+        const condition = product.condition || 'N/A';
+
+        const params = new URLSearchParams({
+          name: explicitName,
+          imei: imei,
+          product_id: String(product.id || 'N/A'),
+          fmi: result.value.fmi,
+          ios_version: result.value.iosVersion,
+          color: color,
+          condition: condition,
+          battery: battery,
+          storage: storage,
+          date: result.value.date,
+          sim: result.value.sim,
+          code: productCode,
+        });
+
+        const url = `label-print.php?${params.toString()}`;
+        const w = window.open(url, '_blank');
+        if (!w) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Popup Blocked',
+            text: 'Popup was blocked! Please allow popups to print labels.',
+            confirmButtonColor: '#ff9800'
+          });
+        }
+      });
     });
 
     // View product details handler

@@ -1,149 +1,216 @@
 <?php
-$name  = $_GET['name']  ?? 'Product';
-$sku   = $_GET['sku']   ?? 'SKU';
-$price = $_GET['price'] ?? '0';
+$name = $_GET['name'] ?? 'Product';
+$imei = $_GET['imei'] ?? 'N/A';
+$productId = $_GET['product_id'] ?? 'N/A';
+$fmi = $_GET['fmi'] ?? 'N/A';
+$iosVersion = $_GET['ios_version'] ?? 'N/A';
+$color = $_GET['color'] ?? 'N/A';
+$condition = $_GET['condition'] ?? 'N/A';
+$battery = $_GET['battery'] ?? 'N/A';
+$storage = $_GET['storage'] ?? 'N/A';
+$date = $_GET['date'] ?? date('Y-m-d');
+$sim = $_GET['sim'] ?? 'N/A';
+$code = $_GET['code'] ?? 'N/A';
 
-function e($v) { return htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); }
+function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 ?>
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Label - <?= e($name) ?></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone Sticker - <?= e($name) ?></title>
+<style>
+  :root {
+    --label-width: 58mm;
+    --label-height: 40mm;
+    --pad: 2mm;
+    --gap: 1mm;
+    --line: 0.4mm;
+    --font-main: "Arial", "Helvetica", sans-serif;
+  }
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
 
+  body {
+    margin: 0;
+    font-family: var(--font-main);
+    background: #f5f5f5;
+  }
+
+  .sticker-page {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 8px;
+  }
+
+  .sticker {
+    width: min(100%, calc(var(--label-width) * 3.7));
+    background: #fff;
+    padding: var(--pad);
+    color: #000;
+  }
+
+  .sticker-58x40 {
+    aspect-ratio: 58 / 40;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--gap);
+    border-bottom: var(--line) solid #000;
+    padding-bottom: 1mm;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: clamp(11px, 2.8vw, 13px);
+    white-space: nowrap;
+  }
+
+  .barcode-number {
+    font-size: clamp(10px, 2.7vw, 13px);
+    letter-spacing: 0.4px;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  .product {
+    border: var(--line) solid #000;
+    margin: 1.3mm 0;
+    padding: 1.1mm;
+    text-align: center;
+    font-size: clamp(9px, 2.4vw, 11px);
+    line-height: 1.15;
+  }
+
+  .bottom {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: var(--gap);
+  }
+
+  .left,
+  .middle,
+  .right {
+    border: var(--line) solid #000;
+    padding: 1mm;
+    font-size: clamp(8px, 2.2vw, 10px);
+    line-height: 1.15;
+    min-width: 0;
+  }
+
+  .left div,
+  .right div {
+    overflow-wrap: anywhere;
+  }
+
+  .middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: clamp(10px, 2.8vw, 12px);
+    text-align: center;
+  }
+
+  .code {
+    margin-top: 1mm;
+    font-size: clamp(8px, 2vw, 9px);
+  }
+
+  @media (max-width: 520px) {
+    .sticker-page {
+      padding: 8px;
+    }
+
+    .sticker {
+      width: 100%;
+    }
+  }
+
+  @media print {
+    @page {
+      size: auto;
+      margin: 0;
+    }
+
+    html,
     body {
-      font-family: Arial, sans-serif;
-      background: #f6f6f6;
-    }
-
-    /* Responsive center wrapper */
-    .wrap {
-      min-height: 100svh;               /* better on mobile than 100vh */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    /* Responsive label card */
-    .label {
-      width: min(92vw, 320px);          /* responsive width */
-      padding: clamp(12px, 3vw, 18px);  /* responsive padding */
-      text-align: center;
+      margin: 0;
+      padding: 0;
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
-    .name {
-      font-size: clamp(12px, 3.2vw, 14px);
-      font-weight: 800;
-      line-height: 1.3;
-      margin-bottom: 8px;
-      word-break: break-word;
-    }
-
-    .sku {
-      font-size: clamp(10px, 2.8vw, 11px);
-      color: #555;
-      margin: 8px 0;
-      font-family: "Courier New", monospace;
-      padding: 6px;
-      border-radius: 6px;
-      background: #f3f3f3;
-      overflow-wrap: anywhere;
-    }
-
-    /* Barcode container + responsive SVG */
-    .barcode-wrap {
-      margin: 10px 0;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    #barcode {
-      width: 100%;
-      height: auto;
+    .sticker-page {
+      min-height: auto;
       display: block;
+      padding: 0;
     }
 
-    .price {
-      margin-top: 8px;
-      font-size: clamp(13px, 3.4vw, 14px);
-      font-weight: 800;
+    .sticker {
+      page-break-inside: avoid;
+      break-inside: avoid;
+      width: var(--label-width);
+      height: var(--label-height);
     }
-
-    .price span {
-      font-size: clamp(11px, 3vw, 12px);
-      font-weight: 500;
-    }
-
-    #err {
-      margin-top: 10px;
-      color: red;
-      font-size: 12px;
-    }
-
-    /* Print-friendly */
-    @media print {
-      body { background: #fff; }
-      .wrap { min-height: auto; padding: 0; }
-      .label {
-        box-shadow: none;
-        border-radius: 0;
-        width: 100%;
-        max-width: 3.5in;
-        padding: 12px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="label">
-      <div class="name"><?= e($name) ?></div>
 
-      <div class="sku"><?= e($sku) ?></div>
+<div class="sticker-page">
+  <div class="sticker sticker-58x40" role="document" aria-label="Phone sticker label">
 
-      <div class="barcode-wrap">
-        <svg id="barcode"></svg>
+    <div class="top">
+      <div class="logo">Dr Phone</div>
+      <div class="barcode-number">IMEI: <?= e($imei) ?></div>
+    </div>
+
+    <div class="product">
+      <b><?= e($name) ?></b>
+    </div>
+
+    <div class="bottom">
+
+      <div class="left">
+        <div><strong>ID #</strong> <?= e($productId) ?></div>
+        <div><strong>FMI</strong> <?= e($fmi) ?></div>
+        <div><strong>IOS Version</strong> <?= e($iosVersion) ?></div>
+        <div><strong>Color</strong> <?= e($color) ?></div>
+        <div><strong>Condition</strong> <?= e($condition) ?></div>
       </div>
 
-      <div class="price"><span>LKR</span> <?= e($price) ?></div>
+      <div class="middle">
+        <div>Battery: <br>
+        <?= e($battery) ?> <br>
+        Storage: <br>
+        <?= e($storage) ?>
+        </div>
+      </div>
 
-      <div id="err"></div>
+      <div class="right">
+        <div>(<?= e($code) ?>)</div>
+        <div>Date: <?= e($date) ?></div>
+        <div>Sim: <?= e($sim) ?></div>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-  <script>
-    window.addEventListener('load', function () {
-      try {
-        if (!window.JsBarcode) throw new Error("JsBarcode not loaded");
+<script>
+window.addEventListener('load', function () {
+  setTimeout(function () { window.print(); }, 200);
+});
+</script>
 
-        // Make barcode responsive: render, then let SVG scale via CSS width:100%
-        JsBarcode('#barcode', <?= json_encode($sku) ?>, {
-          format: 'CODE128',
-          displayValue: true,
-          fontSize: 12,
-          height: 48,
-          margin: 0,
-          width: 2  // bar width (tweak if needed)
-        });
-      } catch (e) {
-        console.error(e);
-        document.getElementById('err').textContent = "Barcode failed. Check console.";
-      }
-
-      setTimeout(function () { window.print(); }, 300);
-    });
-  </script>
 </body>
-
 </html>
