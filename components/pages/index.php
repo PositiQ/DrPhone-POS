@@ -40,7 +40,7 @@ $basePath = './';
             <!-- Content Area -->
             <div class="content-area">
                 <!-- Low Stock Alert -->
-                <div class="alert-card">
+                <div class="alert-card" id="dashboardAlertCard" style="display: none;">
                     <div class="alert-content">
                         <i class="fas fa-exclamation-triangle"></i>
                         <span id="dashboardAlertText">Loading stock alerts...</span>
@@ -259,9 +259,17 @@ $basePath = './';
                 const stats = data.stats || {};
                 const alerts = data.alerts || {};
 
+                const alertCard = document.getElementById('dashboardAlertCard');
                 const alertText = document.getElementById('dashboardAlertText');
-                if (alertText) {
-                    alertText.textContent = alerts.text || 'No critical stock alerts.';
+                const lowStockCount = Number(alerts.lowStock || 0);
+                const outOfStockCount = Number(alerts.outOfStock || 0);
+                const hasStockAlert = lowStockCount > 0 || outOfStockCount > 0;
+
+                if (alertCard) {
+                    alertCard.style.display = hasStockAlert ? '' : 'none';
+                }
+                if (alertText && hasStockAlert) {
+                    alertText.textContent = alerts.text || 'Stock attention required.';
                 }
 
                 const statTodaysSales = document.getElementById('statTodaysSales');
@@ -280,7 +288,11 @@ $basePath = './';
                 renderTopProducts(data.topProducts || []);
                 renderRecentInvoices(data.recentInvoices || []);
             } catch (error) {
+                const alertCard = document.getElementById('dashboardAlertCard');
                 const alertText = document.getElementById('dashboardAlertText');
+                if (alertCard) {
+                    alertCard.style.display = 'none';
+                }
                 if (alertText) {
                     alertText.textContent = 'Failed to load live dashboard data.';
                 }
