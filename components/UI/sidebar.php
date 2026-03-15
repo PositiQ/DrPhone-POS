@@ -87,8 +87,33 @@ $basePath = $basePath ?? './';
     (function applySidebarBusinessSettings() {
         const nameEl = document.getElementById('sidebarBusinessName');
         const logoEl = document.getElementById('sidebarBusinessLogo');
+        const cacheKey = 'posSidebarSettings.v1';
         if (!nameEl || !logoEl) {
             return;
+        }
+
+        const applySettings = (settings) => {
+            if (!settings || typeof settings !== 'object') {
+                return;
+            }
+            if (settings.businessName) {
+                nameEl.textContent = settings.businessName;
+            }
+            if (settings.businessLogo) {
+                logoEl.src = settings.businessLogo;
+                logoEl.style.objectFit = 'contain';
+            }
+        };
+
+        try {
+            const cached = sessionStorage.getItem(cacheKey);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                applySettings(parsed);
+                return;
+            }
+        } catch (_) {
+            // Ignore cache read/parse errors and fall back to API call.
         }
 
         fetch('http://localhost:3000/api/settings')
@@ -97,13 +122,15 @@ $basePath = $basePath ?? './';
                 if (!json || !json.success || !json.data) {
                     return;
                 }
-                const settings = json.data;
-                if (settings.businessName) {
-                    nameEl.textContent = settings.businessName;
-                }
-                if (settings.businessLogo) {
-                    logoEl.src = settings.businessLogo;
-                    logoEl.style.objectFit = 'contain';
+                const settings = {
+                    businessName: json.data.businessName || '',
+                    businessLogo: json.data.businessLogo || '',
+                };
+                applySettings(settings);
+                try {
+                    sessionStorage.setItem(cacheKey, JSON.stringify(settings));
+                } catch (_) {
+                    // Ignore quota/storage errors.
                 }
             })
             .catch(() => {
