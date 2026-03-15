@@ -11,7 +11,7 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage customers and credit sales">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,8 +19,8 @@ pos_require_auth($activePage);
     <title>PositiQ POS System · Customers</title>
     <!-- PWA Manifest and Icons -->
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -112,7 +112,7 @@ pos_require_auth($activePage);
                         <tbody id="customerTable">
                             <tr>
                                 <td colspan="8" style="text-align: center; padding: 40px;">
-                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #1a237e;"></i>
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #111111;"></i>
                                     <p style="margin-top: 10px; color: #7a86ad;">Loading customers...</p>
                                 </td>
                             </tr>
@@ -298,11 +298,11 @@ pos_require_auth($activePage);
                     <tr data-status="${status}" data-type="${type}" data-credit="${hasCredit ? 'has' : 'none'}">
                         <td>
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #222222 0%, #444444 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600;">
                                     ${getInitials(customer.name)}
                                 </div>
                                 <div>
-                                    <strong style="display: block; color: #1a237e;">${customer.name || 'Unknown'}</strong>
+                                    <strong style="display: block; color: #111111;">${customer.name || 'Unknown'}</strong>
                                     <span style="font-size: 12px; color: #7a86ad;">Customer #${customer.customer_id || 'N/A'}</span>
                                 </div>
                             </div>

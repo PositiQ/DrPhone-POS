@@ -11,15 +11,15 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#1a237e">
+  <meta name="theme-color" content="#111111">
   <meta name="description" content="Manage products, categories, and labels">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Products</title>
   <link rel="manifest" href="/manifest.json">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -110,7 +110,7 @@ pos_require_auth($activePage);
                             <!-- Products will be loaded dynamically from API -->
                             <tr>
                                 <td colspan="9" style="text-align: center; padding: 40px;">
-                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #1a237e;"></i>
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #111111;"></i>
                                     <p style="margin-top: 10px; color: #7a86ad;">Loading products...</p>
                                 </td>
                             </tr>
@@ -237,7 +237,7 @@ pos_require_auth($activePage);
         'in-stock': { label: 'In Stock', bg: '#e1f7e3', color: '#0d6832', qtyColor: '#4caf50' },
         'low-stock': { label: 'Low Stock', bg: '#fff3e0', color: '#e65100', qtyColor: '#ff9800' },
         'sold-out': { label: 'Sold Out', bg: '#ffebee', color: '#b71c1c', qtyColor: '#f44336' },
-        'issued': { label: 'Issued', bg: '#e3f2fd', color: '#0d47a1', qtyColor: '#2196f3' }
+        'issued': { label: 'Issued', bg: '#f3f4f6', color: '#000000', qtyColor: '#2196f3' }
       };
       
       const config = statusConfig[stockStatus] || statusConfig['sold-out'];
@@ -253,7 +253,7 @@ pos_require_auth($activePage);
           <td>
             <div style="display: flex; align-items: center; gap: 10px;">
               <div>
-                <strong style="display: block; color: #1a237e;">${product.productName || 'Unknown Product'}</strong>
+                <strong style="display: block; color: #111111;">${product.productName || 'Unknown Product'}</strong>
                 ${productDetails ? `<span style="font-size: 12px; color: #7a86ad;">${productDetails}</span>` : ''}
               </div>
             </div>
@@ -417,7 +417,7 @@ pos_require_auth($activePage);
         showCancelButton: true,
         confirmButtonText: 'Print Sticker',
         cancelButtonText: 'Cancel',
-        confirmButtonColor: '#1a237e',
+        confirmButtonColor: '#111111',
         preConfirm: () => {
           const sim = (document.getElementById('labelSim').value || '').trim();
           const date = (document.getElementById('labelDate').value || '').trim();

@@ -54,13 +54,13 @@ pos_require_auth($activePage);
             align-items: flex-start;
             margin-bottom: 40px;
             padding-bottom: 20px;
-            border-bottom: 2px solid #3f51b5;
+            border-bottom: 2px solid #222222;
         }
 
         .shop-info h1 {
             margin: 0;
             font-size: 28px;
-            color: #1a237e;
+            color: #111111;
             font-weight: 700;
         }
 
@@ -77,7 +77,7 @@ pos_require_auth($activePage);
         .invoice-title h2 {
             margin: 0;
             font-size: 24px;
-            color: #1a237e;
+            color: #111111;
             font-weight: 700;
         }
 
@@ -122,8 +122,8 @@ pos_require_auth($activePage);
 
         .items-table thead {
             background: #f5f7fa;
-            border-top: 2px solid #3f51b5;
-            border-bottom: 2px solid #3f51b5;
+            border-top: 2px solid #222222;
+            border-bottom: 2px solid #222222;
         }
 
         .items-table th {
@@ -132,7 +132,7 @@ pos_require_auth($activePage);
             font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
-            color: #1a237e;
+            color: #111111;
             letter-spacing: 0.5px;
         }
 
@@ -144,7 +144,7 @@ pos_require_auth($activePage);
         }
 
         .items-table tbody tr:last-child td {
-            border-bottom: 2px solid #3f51b5;
+            border-bottom: 2px solid #222222;
         }
 
         .amount-right {
@@ -173,7 +173,7 @@ pos_require_auth($activePage);
         .summary-row.total {
             font-size: 16px;
             font-weight: 700;
-            color: #1a237e;
+            color: #111111;
             border-bottom: none;
             padding: 12px 0;
             margin-top: 8px;
@@ -230,12 +230,12 @@ pos_require_auth($activePage);
         }
 
         .btn-print {
-            background: #3f51b5;
+            background: #222222;
             color: white;
         }
 
         .btn-print:hover {
-            background: #1a237e;
+            background: #111111;
         }
 
         .btn-back {

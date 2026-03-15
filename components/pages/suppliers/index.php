@@ -11,15 +11,15 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage suppliers, bills, credits, and shipments">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Suppliers</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -64,7 +64,7 @@ pos_require_auth($activePage);
 
                 <div class="cards-row">
                     <div class="metric-card">
-                        <div class="metric-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="metric-icon" style="background: linear-gradient(135deg, #222222 0%, #444444 100%);">
                             <i class="fas fa-truck"></i>
                         </div>
                         <div class="metric-content">
@@ -144,11 +144,11 @@ pos_require_auth($activePage);
                                             <i class="fas fa-money-bill-wave"></i>
                                             <span>Pay</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP001', 'Tech World Distributors', 850000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP001', 'Tech World Distributors', 850000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -165,11 +165,11 @@ pos_require_auth($activePage);
                                 <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
                                 <td>
                                     <div style="display: flex; gap: 8px; align-items: center;">
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP002', 'Smart Mobile Solutions', 0)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP002', 'Smart Mobile Solutions', 0)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -190,11 +190,11 @@ pos_require_auth($activePage);
                                             <i class="fas fa-money-bill-wave"></i>
                                             <span>Pay</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP003', 'Global Electronics Ltd', 450000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP003', 'Global Electronics Ltd', 450000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -215,11 +215,11 @@ pos_require_auth($activePage);
                                             <i class="fas fa-money-bill-wave"></i>
                                             <span>Pay</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP004', 'Mobile Kingdom', 680000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP004', 'Mobile Kingdom', 680000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -236,11 +236,11 @@ pos_require_auth($activePage);
                                 <td><span class="status-badge" style="background: #f5f5f5; color: #616161;">Inactive</span></td>
                                 <td>
                                     <div style="display: flex; gap: 8px; align-items: center;">
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP005', 'ValueTech Imports', 0)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP005', 'ValueTech Imports', 0)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -261,11 +261,11 @@ pos_require_auth($activePage);
                                             <i class="fas fa-money-bill-wave"></i>
                                             <span>Pay</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP006', 'Premium Accessories Co.', 285000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP006', 'Premium Accessories Co.', 285000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -286,11 +286,11 @@ pos_require_auth($activePage);
                                             <i class="fas fa-money-bill-wave"></i>
                                             <span>Pay</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP007', 'Digital Source LK', 920000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP007', 'Digital Source LK', 920000)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -307,11 +307,11 @@ pos_require_auth($activePage);
                                 <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
                                 <td>
                                     <div style="display: flex; gap: 8px; align-items: center;">
-                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP008', 'Phone Parts Hub', 0)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('SUP008', 'Phone Parts Hub', 0)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                             <i class="fas fa-shopping-cart"></i>
                                             <span>Stock</span>
                                         </button>
-                                        <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#1a237e'" onmouseout="this.style.background='white'; this.style.borderColor='#e0e7ff'">
+                                        <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onmouseover="this.style.background='#f4f7fc'; this.style.borderColor='#111111'" onmouseout="this.style.background='white'; this.style.borderColor='#e5e7eb'">
                                             <i class="fas fa-eye"></i>
                                             <span>View</span>
                                         </button>
@@ -345,7 +345,7 @@ pos_require_auth($activePage);
                 <!-- Supplier Info -->
                 <div style="background: #f4f7fc; padding: 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #43e97b;">
                     <div style="font-size: 14px; color: #7a86ad; margin-bottom: 8px;">Supplier</div>
-                    <div id="paymentSupplierName" style="font-size: 18px; font-weight: 700; color: #1a237e; margin-bottom: 12px;">-</div>
+                    <div id="paymentSupplierName" style="font-size: 18px; font-weight: 700; color: #111111; margin-bottom: 12px;">-</div>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <div style="font-size: 12px; color: #7a86ad;">Outstanding Balance</div>
@@ -353,7 +353,7 @@ pos_require_auth($activePage);
                         </div>
                         <div style="text-align: right;">
                             <div style="font-size: 12px; color: #7a86ad;">Supplier ID</div>
-                            <div id="paymentSupplierId" style="font-size: 14px; font-weight: 600; color: #1a237e; margin-top: 4px;">-</div>
+                            <div id="paymentSupplierId" style="font-size: 14px; font-weight: 600; color: #111111; margin-top: 4px;">-</div>
                         </div>
                     </div>
                 </div>
@@ -361,14 +361,14 @@ pos_require_auth($activePage);
                 <form id="paymentForm" onsubmit="handlePaymentSubmit(event)">
                     <!-- Payment Amount -->
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-dollar-sign" style="margin-right: 6px; color: #7a86ad;"></i>
                             Payment Amount (LKR)
                         </label>
-                        <input type="number" id="paymentAmount" min="1" step="0.01" required placeholder="Enter payment amount" style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'" oninput="calculateRemaining()">
+                        <input type="number" id="paymentAmount" min="1" step="0.01" required placeholder="Enter payment amount" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'" oninput="calculateRemaining()">
                         <div style="display: flex; gap: 8px; margin-top: 8px;">
-                            <button type="button" onclick="setPartialPayment()" style="padding: 6px 12px; border: 1px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">50%</button>
-                            <button type="button" onclick="setFullPayment()" style="padding: 6px 12px; border: 1px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">Full Amount</button>
+                            <button type="button" onclick="setPartialPayment()" style="padding: 6px 12px; border: 1px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">50%</button>
+                            <button type="button" onclick="setFullPayment()" style="padding: 6px 12px; border: 1px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">Full Amount</button>
                         </div>
                     </div>
 
@@ -382,11 +382,11 @@ pos_require_auth($activePage);
 
                     <!-- Payment Method -->
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-credit-card" style="margin-right: 6px; color: #7a86ad;"></i>
                             Payment Method
                         </label>
-                        <select id="paymentMethod" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'" onchange="toggleChequeFields()">
+                        <select id="paymentMethod" required style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'" onchange="toggleChequeFields()">
                             <option value="">Select payment method...</option>
                             <option value="cash">Cash</option>
                             <option value="bank_transfer">Bank Transfer</option>
@@ -395,11 +395,11 @@ pos_require_auth($activePage);
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-vault" style="margin-right: 6px; color: #7a86ad;"></i>
                             Account
                         </label>
-                        <select id="paymentAccount" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                        <select id="paymentAccount" required style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'">
                             <option value="">Select account...</option>
                         </select>
                         <div id="paymentAccountHint" style="font-size: 12px; color: #7a86ad; margin-top: 6px;">Select payment method first.</div>
@@ -408,31 +408,31 @@ pos_require_auth($activePage);
                     <!-- Cheque Details (conditional) -->
                     <div id="chequeFields" style="display: none; margin-bottom: 20px; padding: 16px; background: #f4f7fc; border-radius: 8px;">
                         <div style="margin-bottom: 12px;">
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Cheque Number</label>
-                            <input type="text" id="chequeNumber" placeholder="Enter cheque number" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 6px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Cheque Number</label>
+                            <input type="text" id="chequeNumber" placeholder="Enter cheque number" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Bank Name</label>
-                            <input type="text" id="bankName" placeholder="Enter bank name" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 6px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Bank Name</label>
+                            <input type="text" id="bankName" placeholder="Enter bank name" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Cheque Date</label>
-                            <input type="date" id="chequeDate" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 6px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Cheque Date</label>
+                            <input type="date" id="chequeDate" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                     </div>
 
                     <!-- Payment Note -->
                     <div style="margin-bottom: 24px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-sticky-note" style="margin-right: 6px; color: #7a86ad;"></i>
                             Payment Note (Optional)
                         </label>
-                        <textarea id="paymentNote" rows="3" placeholder="Add any notes about this payment..." style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; resize: vertical; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'"></textarea>
+                        <textarea id="paymentNote" rows="3" placeholder="Add any notes about this payment..." style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; resize: vertical; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
                     </div>
 
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                        <button type="button" onclick="closePaymentDialog()" style="padding: 12px 24px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
+                        <button type="button" onclick="closePaymentDialog()" style="padding: 12px 24px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
                             Cancel
                         </button>
                         <button type="submit" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
@@ -448,7 +448,7 @@ pos_require_auth($activePage);
     <!-- Stock Purchase Dialog -->
     <div class="search-overlay" id="stockPurchaseDialog" role="dialog" aria-modal="true" aria-label="New Stock Purchase">
         <div class="search-dialog" role="document" style="max-width: 700px; padding: 0; max-height: 90vh; overflow-y: auto;">
-            <div class="search-dialog-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px 12px 0 0; position: sticky; top: 0; z-index: 10;">
+            <div class="search-dialog-header" style="background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; padding: 20px; border-radius: 12px 12px 0 0; position: sticky; top: 0; z-index: 10;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
                     <h3 style="margin: 0; font-size: 18px; font-weight: 600;">New Stock Purchase</h3>
@@ -459,11 +459,11 @@ pos_require_auth($activePage);
             </div>
             <div style="padding: 24px;">
                 <!-- Supplier Info -->
-                <div style="background: #f4f7fc; padding: 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #667eea;">
+                <div style="background: #f4f7fc; padding: 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #222222;">
                     <div style="display: flex; justify-content: space-between; align-items: start;">
                         <div>
                             <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">Supplier</div>
-                            <div id="stockSupplierName" style="font-size: 18px; font-weight: 700; color: #1a237e;">-</div>
+                            <div id="stockSupplierName" style="font-size: 18px; font-weight: 700; color: #111111;">-</div>
                         </div>
                         <div style="text-align: right;">
                             <div style="font-size: 12px; color: #7a86ad; margin-bottom: 4px;">Current Outstanding</div>
@@ -475,11 +475,11 @@ pos_require_auth($activePage);
                 <form id="stockPurchaseForm" onsubmit="handleStockPurchaseSubmit(event)">
                     <div style="margin-bottom: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
-                            <label style="display: block; font-weight: 600; color: #1a237e; font-size: 14px; margin: 0;">
+                            <label style="display: block; font-weight: 600; color: #111111; font-size: 14px; margin: 0;">
                                 <i class="fas fa-layer-group" style="margin-right: 6px; color: #7a86ad;"></i>
                                 Products for This Purchase
                             </label>
-                            <button type="button" onclick="addPurchaseProduct()" style="padding: 10px 16px; border: none; background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onmouseover="this.style.opacity='0.92'" onmouseout="this.style.opacity='1'">
+                            <button type="button" onclick="addPurchaseProduct()" style="padding: 10px 16px; border: none; background: linear-gradient(135deg, #111111 0%, #222222 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onmouseover="this.style.opacity='0.92'" onmouseout="this.style.opacity='1'">
                                 <i class="fas fa-plus"></i>
                                 Add Product
                             </button>
@@ -490,20 +490,20 @@ pos_require_auth($activePage);
 
                     <!-- Purchase Amount -->
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-dollar-sign" style="margin-right: 6px; color: #7a86ad;"></i>
                             Total Purchase Amount (LKR)
                         </label>
-                        <input type="number" id="purchaseAmount" min="0" step="0.01" required readonly placeholder="Calculated from product cost prices" style="width: 100%; padding: 12px; border: 2px solid #d7def7; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s; background: #f7f9ff; font-weight: 700;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#d7def7'">
+                        <input type="number" id="purchaseAmount" min="0" step="0.01" required readonly placeholder="Calculated from product cost prices" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; transition: all 0.2s; background: #f5f5f5; font-weight: 700;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'">
                     </div>
 
                     <!-- Payment Type -->
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-hand-holding-usd" style="margin-right: 6px; color: #7a86ad;"></i>
                             Payment Type
                         </label>
-                        <select id="purchasePaymentType" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'" onchange="togglePurchasePaymentFields()">
+                        <select id="purchasePaymentType" required style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'" onchange="togglePurchasePaymentFields()">
                             <option value="">Select payment type...</option>
                             <option value="full">Full Settlement</option>
                             <option value="partial">Partial Settlement</option>
@@ -512,11 +512,11 @@ pos_require_auth($activePage);
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-credit-card" style="margin-right: 6px; color: #7a86ad;"></i>
                             Payment Method
                         </label>
-                        <select id="purchasePaymentMethod" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'" onchange="togglePurchasePaymentFields()">
+                        <select id="purchasePaymentMethod" required style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'" onchange="togglePurchasePaymentFields()">
                             <option value="">Select payment method...</option>
                             <option value="cash">Cash</option>
                             <option value="bank_transfer">Bank Transfer</option>
@@ -525,11 +525,11 @@ pos_require_auth($activePage);
                     </div>
 
                     <div id="purchaseAccountWrap" style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-vault" style="margin-right: 6px; color: #7a86ad;"></i>
                             Account
                         </label>
-                        <select id="purchaseAccount" required style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'">
+                        <select id="purchaseAccount" required style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; background: white; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'">
                             <option value="">Select account...</option>
                         </select>
                         <div id="purchaseAccountHint" style="font-size: 12px; color: #7a86ad; margin-top: 6px;">Select payment method first.</div>
@@ -537,41 +537,41 @@ pos_require_auth($activePage);
 
                     <!-- Partial Payment Field -->
                     <div id="partialPaymentField" style="display: none; margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-coins" style="margin-right: 6px; color: #7a86ad;"></i>
                             Amount Paying Now (LKR)
                         </label>
-                        <input type="number" id="partialAmount" min="1" step="0.01" placeholder="Enter amount to pay now" style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'" oninput="calculatePurchasePayment()">
+                        <input type="number" id="partialAmount" min="1" step="0.01" placeholder="Enter amount to pay now" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'" oninput="calculatePurchasePayment()">
                     </div>
 
                     <!-- Cheque Details for Purchase -->
                     <div id="purchaseChequeFields" style="display: none; margin-bottom: 20px; padding: 16px; background: #f4f7fc; border-radius: 8px;">
                         <div style="margin-bottom: 12px;">
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Cheque Number</label>
-                            <input type="text" id="purchaseChequeNumber" placeholder="Enter cheque number" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 6px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Cheque Number</label>
+                            <input type="text" id="purchaseChequeNumber" placeholder="Enter cheque number" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Bank Name</label>
-                            <input type="text" id="purchaseBankName" placeholder="Enter bank name" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 6px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Bank Name</label>
+                            <input type="text" id="purchaseBankName" placeholder="Enter bank name" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Cheque Date</label>
-                            <input type="date" id="purchaseChequeDate" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 6px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Cheque Date</label>
+                            <input type="date" id="purchaseChequeDate" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                     </div>
 
                     <!-- Payment Summary -->
                     <div id="purchasePaymentSummary" style="display: none; margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, #f4f7fc 0%, #e8f5e9 100%); border-radius: 8px; border: 2px solid #43e97b;">
-                        <div style="font-weight: 700; color: #1a237e; margin-bottom: 12px; font-size: 16px;">Payment Summary</div>
+                        <div style="font-weight: 700; color: #111111; margin-bottom: 12px; font-size: 16px;">Payment Summary</div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span style="color: #7a86ad;">Total Purchase:</span>
-                            <span id="summaryTotal" style="font-weight: 600; color: #1a237e;">LKR 0</span>
+                            <span id="summaryTotal" style="font-weight: 600; color: #111111;">LKR 0</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span style="color: #7a86ad;">Paying Now:</span>
                             <span id="summaryPaying" style="font-weight: 600; color: #43e97b;">LKR 0</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 2px solid #e0e7ff;">
+                        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 2px solid #e5e7eb;">
                             <span style="color: #7a86ad; font-weight: 600;">New Outstanding:</span>
                             <span id="summaryOutstanding" style="font-weight: 700; color: #f44336; font-size: 18px;">LKR 0</span>
                         </div>
@@ -579,19 +579,19 @@ pos_require_auth($activePage);
 
                     <!-- Purchase Note -->
                     <div style="margin-bottom: 24px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1a237e; font-size: 14px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #111111; font-size: 14px;">
                             <i class="fas fa-sticky-note" style="margin-right: 6px; color: #7a86ad;"></i>
                             Additional Notes (Optional)
                         </label>
-                        <textarea id="purchaseNote" rows="2" placeholder="Add any notes about this purchase..." style="width: 100%; padding: 12px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; resize: vertical; transition: all 0.2s;" onfocus="this.style.borderColor='#1a237e'" onblur="this.style.borderColor='#e0e7ff'"></textarea>
+                        <textarea id="purchaseNote" rows="2" placeholder="Add any notes about this purchase..." style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; resize: vertical; transition: all 0.2s;" onfocus="this.style.borderColor='#111111'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
                     </div>
 
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                        <button type="button" onclick="closeStockPurchaseDialog()" style="padding: 12px 24px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
+                        <button type="button" onclick="closeStockPurchaseDialog()" style="padding: 12px 24px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
                             Cancel
                         </button>
-                        <button type="submit" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button type="submit" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             <i class="fas fa-check" style="margin-right: 6px;"></i>
                             Complete Purchase
                         </button>
@@ -652,7 +652,7 @@ pos_require_auth($activePage);
                 icon: 'info',
                 title: 'Notice',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -661,7 +661,7 @@ pos_require_auth($activePage);
                 icon: 'success',
                 title: 'Success',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -670,7 +670,7 @@ pos_require_auth($activePage);
                 icon: 'error',
                 title: 'Error',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -680,7 +680,7 @@ pos_require_auth($activePage);
                 input: 'text',
                 inputPlaceholder: placeholder,
                 showCancelButton: true,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
                 cancelButtonColor: '#7a86ad',
                 inputValidator: (inputValue) => {
                     if (required && !String(inputValue || '').trim()) {
@@ -851,11 +851,11 @@ pos_require_auth($activePage);
                                     <i class="fas fa-money-bill-wave"></i>
                                     <span>Pay</span>
                                 </button>
-                                <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('${escapeHtml(row.supplier_id)}', '${escapeHtml(row.name)}', ${outstandingValue})">
+                                <button style="padding: 8px 12px; border: none; background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="New Stock Purchase" onclick="openStockPurchaseDialog('${escapeHtml(row.supplier_id)}', '${escapeHtml(row.name)}', ${outstandingValue})">
                                     <i class="fas fa-shopping-cart"></i>
                                     <span>Stock</span>
                                 </button>
-                                <button style="padding: 8px 12px; border: 2px solid #e0e7ff; background: white; color: #1a237e; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onclick="openSupplierDetails('${escapeHtml(row.supplier_id)}')">
+                                <button style="padding: 8px 12px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;" title="View Details" onclick="openSupplierDetails('${escapeHtml(row.supplier_id)}')">
                                     <i class="fas fa-eye"></i>
                                     <span>View</span>
                                 </button>
@@ -1101,14 +1101,14 @@ pos_require_auth($activePage);
 
         function createPurchaseProductCard(productId) {
             return `
-                <div class="purchase-product-card" data-product-id="${productId}" style="background: white; border: 2px solid #e0e7ff; border-radius: 14px; padding: 18px; box-shadow: 0 10px 24px rgba(26, 35, 126, 0.05);">
+                <div class="purchase-product-card" data-product-id="${productId}" style="background: white; border: 2px solid #e5e7eb; border-radius: 14px; padding: 18px; box-shadow: 0 10px 24px rgba(26, 35, 126, 0.05);">
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
                         <div>
-                            <div class="purchase-product-title" style="font-size: 16px; font-weight: 700; color: #1a237e;">${getProductCardTitle(productId)}</div>
+                            <div class="purchase-product-title" style="font-size: 16px; font-weight: 700; color: #111111;">${getProductCardTitle(productId)}</div>
                             <div style="font-size: 12px; color: #7a86ad; margin-top: 4px;">Enter item details to build the supplier purchase preview.</div>
                         </div>
                         <div style="display: flex; gap: 8px; align-items: center;">
-                            <button type="button" class="purchase-regenerate-sku" style="padding: 8px 12px; border: 1px solid #d7def7; background: #f7f9ff; color: #1a237e; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                            <button type="button" class="purchase-regenerate-sku" style="padding: 8px 12px; border: 1px solid #e5e7eb; background: #f5f5f5; color: #111111; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
                                 <i class="fas fa-rotate"></i>
                                 New SKU
                             </button>
@@ -1121,74 +1121,74 @@ pos_require_auth($activePage);
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Product Name</label>
-                            <input type="text" class="purchase-product-name" required placeholder="e.g. iPhone 15 Pro" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Product Name</label>
+                            <input type="text" class="purchase-product-name" required placeholder="e.g. iPhone 15 Pro" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Product Type</label>
-                            <select class="purchase-product-type" required style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; background: white; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Product Type</label>
+                            <select class="purchase-product-type" required style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; background: white; outline: none;">
                                 <option value="">Select type...</option>
                                 <option value="Phone">Phone</option>
                                 <option value="Accessory">Accessory</option>
                             </select>
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Brand</label>
-                            <input type="text" class="purchase-product-brand" required placeholder="e.g. Apple" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Brand</label>
+                            <input type="text" class="purchase-product-brand" required placeholder="e.g. Apple" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Model</label>
-                            <input type="text" class="purchase-product-model" placeholder="e.g. A3101" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Model</label>
+                            <input type="text" class="purchase-product-model" placeholder="e.g. A3101" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Storage/Capacity</label>
-                            <input type="text" class="purchase-product-capacity" placeholder="e.g. 256GB" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Storage/Capacity</label>
+                            <input type="text" class="purchase-product-capacity" placeholder="e.g. 256GB" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Color</label>
-                            <input type="text" class="purchase-product-color" placeholder="e.g. Titanium Blue" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Color</label>
+                            <input type="text" class="purchase-product-color" placeholder="e.g. Titanium Blue" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Condition</label>
-                            <input type="text" class="purchase-product-condition" placeholder="e.g. Brand New" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Condition</label>
+                            <input type="text" class="purchase-product-condition" placeholder="e.g. Brand New" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">SKU</label>
-                            <input type="text" class="purchase-product-sku" readonly style="width: 100%; padding: 10px; border: 2px solid #d7def7; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; background: #f7f9ff; font-weight: 700;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">SKU</label>
+                            <input type="text" class="purchase-product-sku" readonly style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; background: #f5f5f5; font-weight: 700;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">IMEI Number</label>
-                            <input type="text" class="purchase-product-imei" placeholder="Required for phone items" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">IMEI Number</label>
+                            <input type="text" class="purchase-product-imei" placeholder="Required for phone items" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Barcode</label>
-                            <input type="text" class="purchase-product-barcode" placeholder="Enter barcode" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Barcode</label>
+                            <input type="text" class="purchase-product-barcode" placeholder="Enter barcode" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Serial Number</label>
-                            <input type="text" class="purchase-product-serial" placeholder="Enter serial number" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Serial Number</label>
+                            <input type="text" class="purchase-product-serial" placeholder="Enter serial number" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Cost Price (LKR)</label>
-                            <input type="number" class="purchase-product-cost" min="0" step="0.01" required placeholder="0.00" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Cost Price (LKR)</label>
+                            <input type="number" class="purchase-product-cost" min="0" step="0.01" required placeholder="0.00" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Selling Price (LKR)</label>
-                            <input type="number" class="purchase-product-selling" min="0" step="0.01" placeholder="0.00" style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Selling Price (LKR)</label>
+                            <input type="number" class="purchase-product-selling" min="0" step="0.01" placeholder="0.00" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Quantity in Stock</label>
-                            <input type="number" class="purchase-product-quantity" min="1" step="1" value="1" required style="width: 100%; padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Quantity in Stock</label>
+                            <input type="number" class="purchase-product-quantity" min="1" step="1" value="1" required style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #1a237e; font-size: 13px;">Supplier</label>
-                            <input type="text" class="purchase-product-supplier" readonly style="width: 100%; padding: 10px; border: 2px solid #d7def7; border-radius: 8px; font-size: 14px; color: #1a237e; outline: none; background: #f7f9ff;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Supplier</label>
+                            <input type="text" class="purchase-product-supplier" readonly style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; background: #f5f5f5;">
                         </div>
                     </div>
 
-                    <div style="margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: linear-gradient(135deg, #f7f9ff 0%, #eef3ff 100%); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <div style="margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: linear-gradient(135deg, #f5f5f5 0%, #eef3ff 100%); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
                         <div style="font-size: 13px; color: #7a86ad;">Line Total = Cost Price × Quantity</div>
-                        <div class="purchase-product-line-total" style="font-size: 18px; font-weight: 800; color: #1a237e;">LKR 0</div>
+                        <div class="purchase-product-line-total" style="font-size: 18px; font-weight: 800; color: #111111;">LKR 0</div>
                     </div>
                 </div>
             `;

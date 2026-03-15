@@ -15,15 +15,15 @@ $canManageRoles = pos_has_permission('roles.manage');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage system users">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Users</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -68,7 +68,7 @@ $canManageRoles = pos_has_permission('roles.manage');
 
                 <div class="cards-row">
                     <div class="metric-card">
-                        <div class="metric-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="metric-icon" style="background: linear-gradient(135deg, #222222 0%, #444444 100%);">
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="metric-content">
@@ -339,8 +339,8 @@ $canManageRoles = pos_has_permission('roles.manage');
 
         function roleBadge(roleName) {
             const normalized = String(roleName || '').toLowerCase();
-            if (normalized === 'admin') return '<span class="status-badge" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Admin</span>';
-            if (normalized === 'manager') return '<span class="status-badge" style="background: #e3f2fd; color: #1976d2;">Manager</span>';
+            if (normalized === 'admin') return '<span class="status-badge" style="background: linear-gradient(135deg, #222222 0%, #444444 100%); color: white;">Admin</span>';
+            if (normalized === 'manager') return '<span class="status-badge" style="background: #f3f4f6; color: #1976d2;">Manager</span>';
             if (normalized === 'cashier') return '<span class="status-badge" style="background: #f3e5f5; color: #7b1fa2;">Cashier</span>';
             return `<span class="status-badge" style="background:#fff3e0; color:#ef6c00;">${escapeHtml(roleName || 'Role')}</span>`;
         }
@@ -365,7 +365,7 @@ $canManageRoles = pos_has_permission('roles.manage');
                 <tr data-role="${escapeHtml(String(record.role?.name || '').toLowerCase())}" data-status="${escapeHtml(String(record.status || '').toLowerCase())}">
                     <td>
                         <div style="display:flex; align-items:center; gap:12px;">
-                            <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex; align-items:center; justify-content:center; color:white; font-weight:600;">
+                            <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, #222222 0%, #444444 100%); display:flex; align-items:center; justify-content:center; color:white; font-weight:600;">
                                 ${escapeHtml(initials(record.name))}
                             </div>
                             <strong>${escapeHtml(record.name)}</strong>
@@ -528,7 +528,7 @@ $canManageRoles = pos_has_permission('roles.manage');
                 <div style="border:1px solid #e6ebf5; border-radius:12px; padding:14px; margin-bottom:10px;">
                     <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
                         <div>
-                            <div style="font-weight:700; color:#1a237e;">${escapeHtml(role.name)}</div>
+                            <div style="font-weight:700; color:#111111;">${escapeHtml(role.name)}</div>
                             <div style="font-size:12px; color:#667085; margin-top:4px;">${escapeHtml(role.description || 'No description')}</div>
                         </div>
                         <button type="button" class="button-secondary" onclick="openRoleDialog('${escapeHtml(role.role_id)}')">Edit</button>

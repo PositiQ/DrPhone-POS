@@ -18,6 +18,25 @@ $navItems = [
     ['page' => 'returns-repairs', 'href' => 'returns-repairs/index.php', 'icon' => 'fa-tools', 'label' => 'Returns & Repairs', 'permission' => 'returns_repairs.view'],
 ];
 ?>
+<style>
+    .sidebar {
+        background: linear-gradient(180deg, #111111 0%, #000000 100%) !important;
+        scrollbar-color: #333333 #111111 !important;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: #111111 !important;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: #333333 !important;
+    }
+
+    .sidebar .nav-item.active,
+    .sidebar .nav-item.active i {
+        color: #111111 !important;
+    }
+</style>
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="shop-logo">

@@ -10,15 +10,15 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage vault and account balances">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · <?php echo $pageTitle; ?></title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -36,7 +36,7 @@ pos_require_auth($activePage);
             padding: 24px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid #3f51b5;
+            border-left: 4px solid #222222;
         }
 
         .stat-card.outgoing {
@@ -59,7 +59,7 @@ pos_require_auth($activePage);
         .stat-card .amount {
             font-size: 28px;
             font-weight: 700;
-            color: #1a237e;
+            color: #111111;
             margin-bottom: 8px;
         }
 
@@ -79,11 +79,11 @@ pos_require_auth($activePage);
             margin: 0;
             font-size: 18px;
             font-weight: 700;
-            color: #1a237e;
+            color: #111111;
         }
 
         .btn-primary {
-            background: #3f51b5;
+            background: #222222;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -95,7 +95,7 @@ pos_require_auth($activePage);
         }
 
         .btn-primary:hover {
-            background: #1a237e;
+            background: #111111;
         }
 
         .btn-secondary {
@@ -160,7 +160,7 @@ pos_require_auth($activePage);
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #3f51b5;
+            border-color: #222222;
         }
 
         .transactions-section {
@@ -187,7 +187,7 @@ pos_require_auth($activePage);
             text-align: left;
             font-size: 12px;
             font-weight: 600;
-            color: #1a237e;
+            color: #111111;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -280,7 +280,7 @@ pos_require_auth($activePage);
         .modal-header h2 {
             margin: 0;
             font-size: 18px;
-            color: #1a237e;
+            color: #111111;
         }
 
         .close-btn {
@@ -343,13 +343,13 @@ pos_require_auth($activePage);
         }
 
         .pagination button.active {
-            background: #3f51b5;
+            background: #222222;
             color: white;
-            border-color: #3f51b5;
+            border-color: #222222;
         }
 
         .pagination button:hover:not(.disabled) {
-            border-color: #3f51b5;
+            border-color: #222222;
         }
 
         .pagination button.disabled {
@@ -371,7 +371,7 @@ pos_require_auth($activePage);
             <!-- Page Header -->
             <div style="margin-bottom: 30px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <h2 style="margin: 0; font-size: 24px; color: #1a237e; font-weight: 700;"></h2>
+                    <h2 style="margin: 0; font-size: 24px; color: #111111; font-weight: 700;"></h2>
                     <div style="display: flex; gap: 10px;">
                         <button class="button-secondary" id="addVaultBtn" style="cursor: pointer;">
                             <i class="fas fa-landmark"></i> Add Vault Account
@@ -387,7 +387,7 @@ pos_require_auth($activePage);
             <!-- Balance Cards -->
             <div class="cards-row" id="balanceCards">
                 <div class="metric-card">
-                    <div class="metric-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #222222 0%, #444444 100%);">
                         <i class="fas fa-arrow-down"></i>
                     </div>
                     <div class="metric-content">
@@ -746,7 +746,7 @@ pos_require_auth($activePage);
         .modal-header h2 {
             margin: 0;
             font-size: 18px;
-            color: #1a237e;
+            color: #111111;
         }
 
         .close-btn {
@@ -787,7 +787,7 @@ pos_require_auth($activePage);
                 icon: 'success',
                 title: 'Success',
                 text: message,
-                confirmButtonColor: '#3f51b5',
+                confirmButtonColor: '#222222',
             });
         }
 
@@ -1214,7 +1214,7 @@ pos_require_auth($activePage);
 
             // Page buttons
             for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
-                const activeStyle = i === currentPage ? 'background: #3f51b5; color: white; border-color: #3f51b5;' : '';
+                const activeStyle = i === currentPage ? 'background: #222222; color: white; border-color: #222222;' : '';
                 html += `<button style="padding: 6px 12px; border: 1px solid #e0e0e0; background: white; cursor: pointer; border-radius: 4px; font-size: 12px; transition: all 0.3s; ${activeStyle}" onclick="loadTransactions(${i})">${i}</button>`;
             }
 

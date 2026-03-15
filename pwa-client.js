@@ -113,7 +113,7 @@ class POSPWAManager {
           top: 0;
           left: 0;
           right: 0;
-          background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+          background: linear-gradient(135deg, #111111 0%, #000000 100%);
           color: white;
           padding: 16px;
           z-index: 9999;
@@ -562,7 +562,7 @@ class POSPWAManager {
       if (this.serviceWorkerRegistration) {
         this.serviceWorkerRegistration.showNotification(title, {
           icon: '/manifest.json',
-          badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect fill="%231a237e" width="96" height="96"/><text x="50%" y="50%" font-size="50" font-weight="bold" fill="%23ffd700" text-anchor="middle" dominant-baseline="central">P</text></svg>',
+          badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect fill="%23111111" width="96" height="96"/><text x="50%" y="50%" font-size="50" font-weight="bold" fill="%23ffd700" text-anchor="middle" dominant-baseline="central">P</text></svg>',
           ...options
         });
       }

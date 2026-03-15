@@ -11,15 +11,15 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage return products and repairs">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Returns & Repairs</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -31,7 +31,7 @@ pos_require_auth($activePage);
             gap: 12px;
         }
         .ticket-section {
-            border: 2px solid #e0e7ff;
+            border: 2px solid #e5e7eb;
             border-radius: 10px;
             padding: 14px;
             margin-bottom: 14px;
@@ -39,7 +39,7 @@ pos_require_auth($activePage);
         }
         .ticket-section h4 {
             margin: 0 0 10px 0;
-            color: #1a237e;
+            color: #111111;
             font-size: 14px;
             font-weight: 700;
         }
@@ -60,7 +60,7 @@ pos_require_auth($activePage);
             border-radius: 8px;
             padding: 9px;
             font-size: 13px;
-            color: #1a237e;
+            color: #111111;
             background: white;
             outline: none;
         }
@@ -88,7 +88,7 @@ pos_require_auth($activePage);
         }
         .section-title {
             margin: 14px 0 10px 0;
-            color: #1a237e;
+            color: #111111;
             font-size: 15px;
             font-weight: 700;
         }
@@ -129,7 +129,7 @@ pos_require_auth($activePage);
 
                 <div class="cards-row">
                     <div class="metric-card">
-                        <div class="metric-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="metric-icon" style="background: linear-gradient(135deg, #222222 0%, #444444 100%);">
                             <i class="fas fa-ticket-alt"></i>
                         </div>
                         <div class="metric-content">
@@ -311,7 +311,7 @@ pos_require_auth($activePage);
                 icon: 'success',
                 title: 'Success',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -320,7 +320,7 @@ pos_require_auth($activePage);
                 icon: 'error',
                 title: 'Error',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -329,7 +329,7 @@ pos_require_auth($activePage);
                 icon: 'info',
                 title: 'Notice',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -364,7 +364,7 @@ pos_require_auth($activePage);
             tableBody.innerHTML = rows.map((ticket) => `
                 <tr data-type="${escapeHtml(ticket.ticket_type)}" data-status="${escapeHtml(ticket.status)}">
                     <td><strong>${escapeHtml(ticket.ticket_id)}</strong></td>
-                    <td><span class="status-badge" style="${ticket.ticket_type === 'return' ? 'background:#e8f5e9;color:#2e7d32;' : 'background:#e3f2fd;color:#1976d2;'}">${escapeHtml(titleCase(ticket.ticket_type))}</span></td>
+                    <td><span class="status-badge" style="${ticket.ticket_type === 'return' ? 'background:#e8f5e9;color:#2e7d32;' : 'background:#f3f4f6;color:#1976d2;'}">${escapeHtml(titleCase(ticket.ticket_type))}</span></td>
                     <td>${escapeHtml(ticket.customer_name || '-')}</td>
                     <td>${escapeHtml(ticket.device_name || '-')}</td>
                     <td>
@@ -415,7 +415,7 @@ pos_require_auth($activePage);
             const partsHtml = repairParts.length
                 ? `
                     <div style="margin-top:12px; border-top:1px solid #e5e9f5; padding-top:10px;">
-                        <div style="font-weight:700; color:#1a237e; margin-bottom:8px;">Repair Parts</div>
+                        <div style="font-weight:700; color:#111111; margin-bottom:8px;">Repair Parts</div>
                         <table style="width:100%; border-collapse:collapse; font-size:12px;">
                             <thead>
                                 <tr>
@@ -458,7 +458,7 @@ pos_require_auth($activePage);
 
                     ${ticket.ticket_type === 'return' ? `
                         <div style="margin-top:12px; border-top:1px solid #e5e9f5; padding-top:10px;">
-                            <div style="font-weight:700; color:#1a237e; margin-bottom:8px;">Return Details</div>
+                            <div style="font-weight:700; color:#111111; margin-bottom:8px;">Return Details</div>
                             <div><strong>Can Return to Stock:</strong> ${ticket.can_return_to_stock ? 'Yes' : 'No'}</div>
                             <div><strong>Return Stock Qty:</strong> ${escapeHtml(ticket.return_stock_qty || 0)}</div>
                             <div><strong>Usable Product:</strong> ${ticket.is_usable_product ? 'Yes' : 'No'}</div>
@@ -469,7 +469,7 @@ pos_require_auth($activePage);
 
                     ${ticket.ticket_type === 'repair' ? `
                         <div style="margin-top:12px; border-top:1px solid #e5e9f5; padding-top:10px;">
-                            <div style="font-weight:700; color:#1a237e; margin-bottom:8px;">Repair Details</div>
+                            <div style="font-weight:700; color:#111111; margin-bottom:8px;">Repair Details</div>
                             <div><strong>Repair Mode:</strong> ${escapeHtml(titleCase(ticket.repair_mode || '-'))}</div>
                             <div><strong>Repair Timeline:</strong> ${escapeHtml(ticket.repair_timeline || '-')}</div>
                             <div><strong>Repair Cost:</strong> ${escapeHtml(formatLkr(ticket.repair_cost || 0))}</div>
@@ -487,7 +487,7 @@ pos_require_auth($activePage);
                 html,
                 width: 900,
                 confirmButtonText: 'Close',
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -913,7 +913,7 @@ pos_require_auth($activePage);
                 width: 980,
                 showCancelButton: true,
                 confirmButtonText: 'Create Ticket',
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
                 cancelButtonColor: '#7a86ad',
                 didOpen: () => {
                     bindTicketModalEvents();
@@ -1019,7 +1019,7 @@ pos_require_auth($activePage);
                 inputOptions: options,
                 inputPlaceholder: 'Select status',
                 showCancelButton: true,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
                 preConfirm: async (status) => {
                     if (!status) {
                         Swal.showValidationMessage('Status is required');
@@ -1033,7 +1033,7 @@ pos_require_auth($activePage);
                             input: 'textarea',
                             inputPlaceholder: 'Enter customer action note',
                             showCancelButton: true,
-                            confirmButtonColor: '#1a237e',
+                            confirmButtonColor: '#111111',
                             inputValidator: (value) => {
                                 if (!String(value || '').trim()) {
                                     return 'Action note is required';
@@ -1146,7 +1146,7 @@ pos_require_auth($activePage);
                 width: 980,
                 showCancelButton: true,
                 confirmButtonText: 'Save Changes',
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
                 cancelButtonColor: '#7a86ad',
                 didOpen: () => {
                     bindTicketModalEvents();

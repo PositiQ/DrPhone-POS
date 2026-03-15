@@ -43,12 +43,12 @@ $topNavUserInitials = pos_user_initials();
         margin: 0;
         font-size: 14px;
         font-weight: 700;
-        color: #1a237e;
+        color: #111111;
     }
 
     .notif-mark-all {
         font-size: 11px;
-        color: #5c6bc0;
+        color: #333333;
         cursor: pointer;
         background: none;
         border: none;
@@ -71,14 +71,14 @@ $topNavUserInitials = pos_user_initials();
         border-left: 3px solid transparent;
     }
 
-    .notif-item:hover { background: #f5f7ff; }
+    .notif-item:hover { background: #f3f4f6; }
 
     .notif-item.unread {
-        background: #eef0fb;
-        border-left-color: #3f51b5;
+        background: #f3f4f6;
+        border-left-color: #222222;
     }
 
-    .notif-item.unread:hover { background: #e3e6f7; }
+    .notif-item.unread:hover { background: #e5e7eb; }
 
     .notif-icon-wrap {
         width: 36px;
@@ -116,7 +116,7 @@ $topNavUserInitials = pos_user_initials();
 
     .notif-footer a {
         font-size: 12px;
-        color: #3f51b5;
+        color: #222222;
         text-decoration: none;
         font-weight: 500;
     }
@@ -126,7 +126,7 @@ $topNavUserInitials = pos_user_initials();
     .notif-dot {
         width: 7px;
         height: 7px;
-        background: #3f51b5;
+        background: #222222;
         border-radius: 50%;
         margin-top: 6px;
         flex-shrink: 0;
@@ -323,8 +323,8 @@ $topNavUserInitials = pos_user_initials();
 
         list.innerHTML = items.map((n) => `
             <div class="notif-item unread" data-notification-id="${escapeHtml(n.id || '')}" onclick="markRead(this)">
-                <div class="notif-icon-wrap" style="background:${escapeHtml(n.iconBg || '#eef0fb')};">
-                    <i class="fas ${escapeHtml(n.icon || 'fa-bell')}" style="color:${escapeHtml(n.iconColor || '#3f51b5')};"></i>
+                <div class="notif-icon-wrap" style="background:${escapeHtml(n.iconBg || '#f3f4f6')};">
+                    <i class="fas ${escapeHtml(n.icon || 'fa-bell')}" style="color:${escapeHtml(n.iconColor || '#222222')};"></i>
                 </div>
                 <div class="notif-body">
                     <p>${escapeHtml(n.message)}</p>

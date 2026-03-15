@@ -50,7 +50,7 @@
     .app-dialog-header h3 {
         margin: 0;
         font-size: 18px;
-        color: #1a237e;
+        color: #111111;
     }
 
     .app-dialog-close {
@@ -64,8 +64,8 @@
     }
 
     .app-dialog-close:hover {
-        color: #1a237e;
-        border-color: #1a237e;
+        color: #111111;
+        border-color: #111111;
     }
 
     .app-dialog-body {
@@ -93,7 +93,7 @@
         font-size: 12px;
         letter-spacing: 0.04em;
         font-weight: 700;
-        color: #1a237e;
+        color: #111111;
     }
 
     .app-dialog-row {
@@ -106,7 +106,7 @@
         border: 1px solid #dde5ff;
         border-radius: 6px;
         padding: 1px 5px;
-        color: #1a237e;
+        color: #111111;
     }
 
     .app-dialog-pill {

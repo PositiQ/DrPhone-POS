@@ -11,15 +11,15 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage shop expenses and spending">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Expenses</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -71,7 +71,7 @@ pos_require_auth($activePage);
         .modal-header h2 {
             margin: 0;
             font-size: 18px;
-            color: #1a237e;
+            color: #111111;
         }
 
         .close-btn {
@@ -302,7 +302,7 @@ pos_require_auth($activePage);
 
         function getCategoryColor(category) {
             const colors = {
-                rent: '#3f51b5',
+                rent: '#222222',
                 utilities: '#ff9800',
                 salary: '#d32f2f',
                 supplies: '#2e7d32',
@@ -332,7 +332,7 @@ pos_require_auth($activePage);
                 icon: 'success',
                 title: 'Success',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -341,7 +341,7 @@ pos_require_auth($activePage);
                 icon: 'error',
                 title: 'Error',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -350,7 +350,7 @@ pos_require_auth($activePage);
                 icon: 'warning',
                 title: 'Notice',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -507,7 +507,7 @@ pos_require_auth($activePage);
                                     <div style="display: flex; align-items: center; gap: 8px;">
                                         <div style="width: 32px; height: 32px; border-radius: 50%; background: ${categoryColor}; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px;">${categoryCode}</div>
                                         <div>
-                                            <div style="font-weight: 600; color: #1a237e;">${String(category || 'other').toUpperCase()}</div>
+                                            <div style="font-weight: 600; color: #111111;">${String(category || 'other').toUpperCase()}</div>
                                             <div style="font-size: 12px; color: #999;">${exp.description || '-'}</div>
                                         </div>
                                     </div>
@@ -556,7 +556,7 @@ pos_require_auth($activePage);
             }
 
             for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
-                const activeStyle = i === currentPage ? 'background: #3f51b5; color: white; border-color: #3f51b5;' : '';
+                const activeStyle = i === currentPage ? 'background: #222222; color: white; border-color: #222222;' : '';
                 html += `<button style="padding: 6px 12px; border: 1px solid #e0e0e0; background: white; cursor: pointer; border-radius: 4px; font-size: 12px; ${activeStyle}" onclick="loadExpenses(${i})">${i}</button>`;
             }
 

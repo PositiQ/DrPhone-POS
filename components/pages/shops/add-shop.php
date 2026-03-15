@@ -51,7 +51,7 @@ pos_require_auth($activePage);
 
         .owner-suggestion-name {
             font-weight: 600;
-            color: #1a237e;
+            color: #111111;
             font-size: 14px;
         }
 

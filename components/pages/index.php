@@ -10,7 +10,7 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Dr.Mobile POS System - Dashboard">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,8 +19,8 @@ pos_require_auth($activePage);
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <!-- PWA Icons -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -195,7 +195,7 @@ pos_require_auth($activePage);
                 const value = Number(values[idx] || 0);
                 const h = Math.max(10, Math.round((value / max) * 210));
                 const highlight = value === Math.max(...values) && value > 0;
-                const color = highlight ? '#ffd700' : '#1a237e';
+                const color = highlight ? '#ffd700' : '#111111';
                 return `
                     <div style="flex:1; text-align:center;">
                         <div title="${formatLkr(value)}" style="height:${h}px; background:${color}; border-radius:8px 8px 0 0; margin-bottom:8px;"></div>
@@ -222,7 +222,7 @@ pos_require_auth($activePage);
                             <span style="font-size:13px; font-weight:600;">${pct}%</span>
                         </div>
                         <div style="height:8px; background:#f0f0f0; border-radius:4px;">
-                            <div style="width:${Math.min(100, pct)}%; height:100%; background:#1a237e; border-radius:4px;"></div>
+                            <div style="width:${Math.min(100, pct)}%; height:100%; background:#111111; border-radius:4px;"></div>
                         </div>
                     </div>
                 `;
@@ -244,7 +244,7 @@ pos_require_auth($activePage);
                     <td>${r.date || '-'}</td>
                     <td>${formatLkr(r.amount)}</td>
                     <td><span class="status-badge ${statusBadgeClass(r.status)}">${String(r.status || 'pending').toUpperCase()}</span></td>
-                    <td><a href="./invoices-quotations/index.php" title="View Invoices"><i class="fas fa-print" style="cursor:pointer; color:#1a237e;"></i></a></td>
+                    <td><a href="./invoices-quotations/index.php" title="View Invoices"><i class="fas fa-print" style="cursor:pointer; color:#111111;"></i></a></td>
                 </tr>
             `).join('');
         }

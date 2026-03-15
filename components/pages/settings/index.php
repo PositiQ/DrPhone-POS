@@ -11,15 +11,15 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage general settings and invoice details">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Settings</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -37,10 +37,10 @@ pos_require_auth($activePage);
             cursor: pointer;
             overflow: hidden;
             flex-shrink: 0;
-            background: #f5f7ff;
+            background: #f3f4f6;
             transition: border-color 0.2s, background 0.2s;
         }
-        .logo-upload-area:hover { border-color: #3f51b5; background: #eef0fb; }
+        .logo-upload-area:hover { border-color: #222222; background: #f3f4f6; }
         .logo-upload-area img { width: 100%; height: 100%; object-fit: contain; }
         .logo-upload-area .placeholder-icon { font-size: 30px; color: #9fa8da; margin-bottom: 4px; }
         .logo-upload-area .placeholder-label { font-size: 11px; color: #9fa8da; text-align: center; padding: 0 6px; }
@@ -376,7 +376,7 @@ pos_require_auth($activePage);
                 text: 'This will reset all form fields to default values and save them to the database.',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3f51b5',
+                confirmButtonColor: '#222222',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Yes, Reset Form',
             }).then(async (result) => {

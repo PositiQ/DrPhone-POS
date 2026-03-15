@@ -11,15 +11,15 @@ pos_require_auth($activePage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a237e">
+    <meta name="theme-color" content="#111111">
     <meta name="description" content="Manage shops, devices, and settlements">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PositiQ POS">
     <title>PositiQ POS System · Shops</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a237e' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23111111' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'>POS</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
@@ -51,7 +51,7 @@ pos_require_auth($activePage);
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #1a237e 0%, #2196f3 100%);
+            background: linear-gradient(135deg, #111111 0%, #2196f3 100%);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s ease;
@@ -60,7 +60,7 @@ pos_require_auth($activePage);
         .shop-card:hover {
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
             transform: translateY(-4px);
-            border-color: #1a237e;
+            border-color: #111111;
         }
 
         .shop-card:hover::before {
@@ -78,7 +78,7 @@ pos_require_auth($activePage);
             width: 56px;
             height: 56px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #1a237e 0%, #2196f3 100%);
+            background: linear-gradient(135deg, #111111 0%, #2196f3 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -92,7 +92,7 @@ pos_require_auth($activePage);
         }
 
         .shop-name h3 {
-            color: #1a237e;
+            color: #111111;
             font-size: 18px;
             font-weight: 700;
             margin: 0 0 4px 0;
@@ -138,7 +138,7 @@ pos_require_auth($activePage);
         .shop-stat-value {
             font-size: 20px;
             font-weight: 700;
-            color: #1a237e;
+            color: #111111;
         }
 
         .shop-stat-value.outstanding {
@@ -177,7 +177,7 @@ pos_require_auth($activePage);
         }
 
         .shop-action-btn.primary {
-            background: linear-gradient(135deg, #1a237e 0%, #2196f3 100%);
+            background: linear-gradient(135deg, #111111 0%, #2196f3 100%);
             color: #ffffff;
         }
 
@@ -188,7 +188,7 @@ pos_require_auth($activePage);
 
         .shop-action-btn.secondary {
             background: #f8f9fc;
-            color: #1a237e;
+            color: #111111;
         }
 
         .shop-action-btn.secondary:hover {
@@ -245,7 +245,7 @@ pos_require_auth($activePage);
         }
 
         .modal-header h2 {
-            color: #1a237e;
+            color: #111111;
             font-size: 22px;
             font-weight: 700;
             margin: 0;
@@ -257,7 +257,7 @@ pos_require_auth($activePage);
             border-radius: 8px;
             border: none;
             background: #f8f9fc;
-            color: #1a237e;
+            color: #111111;
             font-size: 18px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -280,7 +280,7 @@ pos_require_auth($activePage);
         }
 
         .modal-section h3 {
-            color: #1a237e;
+            color: #111111;
             font-size: 16px;
             font-weight: 700;
             margin: 0 0 16px 0;
@@ -301,7 +301,7 @@ pos_require_auth($activePage);
         }
 
         .settlement-option:hover {
-            border-color: #1a237e;
+            border-color: #111111;
             background: #ffffff;
         }
 
@@ -311,7 +311,7 @@ pos_require_auth($activePage);
 
         .settlement-option label {
             font-weight: 600;
-            color: #1a237e;
+            color: #111111;
             cursor: pointer;
         }
 
@@ -321,7 +321,7 @@ pos_require_auth($activePage);
 
         .form-group label {
             display: block;
-            color: #1a237e;
+            color: #111111;
             font-weight: 600;
             font-size: 14px;
             margin-bottom: 8px;
@@ -348,13 +348,13 @@ pos_require_auth($activePage);
 
         .form-group input:focus {
             outline: none;
-            border-color: #1a237e;
+            border-color: #111111;
             box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
         }
 
         .form-group select:focus {
             outline: none;
-            border-color: #1a237e;
+            border-color: #111111;
             box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
         }
 
@@ -376,7 +376,7 @@ pos_require_auth($activePage);
         }
 
         .modal-btn.primary {
-            background: linear-gradient(135deg, #1a237e 0%, #2196f3 100%);
+            background: linear-gradient(135deg, #111111 0%, #2196f3 100%);
             color: #ffffff;
         }
 
@@ -387,7 +387,7 @@ pos_require_auth($activePage);
 
         .modal-btn.secondary {
             background: #f8f9fc;
-            color: #1a237e;
+            color: #111111;
         }
 
         .modal-btn.secondary:hover {
@@ -413,7 +413,7 @@ pos_require_auth($activePage);
         }
 
         .detail-value {
-            color: #1a237e;
+            color: #111111;
             font-weight: 700;
         }
 
@@ -429,7 +429,7 @@ pos_require_auth($activePage);
         }
 
         .empty-state h3 {
-            color: #1a237e;
+            color: #111111;
             font-size: 20px;
             font-weight: 700;
             margin: 0 0 8px 0;
@@ -752,7 +752,7 @@ pos_require_auth($activePage);
                 icon: 'success',
                 title: 'Success',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -761,7 +761,7 @@ pos_require_auth($activePage);
                 icon: 'error',
                 title: 'Error',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -770,7 +770,7 @@ pos_require_auth($activePage);
                 icon: 'warning',
                 title: 'Notice',
                 text: message,
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
             });
         }
 
@@ -782,7 +782,7 @@ pos_require_auth($activePage);
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'Cancel',
-                confirmButtonColor: '#1a237e',
+                confirmButtonColor: '#111111',
                 cancelButtonColor: '#9e9e9e',
             });
 
