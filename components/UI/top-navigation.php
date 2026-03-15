@@ -144,7 +144,7 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
     <div class="header-right">
         <div class="header-icon notif-wrapper" id="notifWrapper">
             <i class="far fa-bell" id="notifBell" style="cursor:pointer;" onclick="toggleNotifDropdown()"></i>
-            <span class="badge" id="notifBadge">5</span>
+            <span class="badge" id="notifBadge" style="display:none;">0</span>
 
             <div class="notif-dropdown" id="notifDropdown">
                 <div class="notif-header">
@@ -152,57 +152,15 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
                     <button class="notif-mark-all" onclick="markAllRead()">Mark all as read</button>
                 </div>
                 <div class="notif-list" id="notifList">
-                    <div class="notif-item unread" onclick="markRead(this)">
-                        <div class="notif-icon-wrap" style="background:#e8eaf6;">
-                            <i class="fas fa-box" style="color:#3f51b5;"></i>
-                        </div>
+                    <div class="notif-item">
                         <div class="notif-body">
-                            <p>12 products are low on stock and need restocking soon.</p>
-                            <span class="notif-time">2 minutes ago</span>
-                        </div>
-                        <div class="notif-dot"></div>
-                    </div>
-                    <div class="notif-item unread" onclick="markRead(this)">
-                        <div class="notif-icon-wrap" style="background:#fce4ec;">
-                            <i class="fas fa-exclamation-triangle" style="color:#e91e63;"></i>
-                        </div>
-                        <div class="notif-body">
-                            <p>Samsung S23 is completely out of stock.</p>
-                            <span class="notif-time">18 minutes ago</span>
-                        </div>
-                        <div class="notif-dot"></div>
-                    </div>
-                    <div class="notif-item unread" onclick="markRead(this)">
-                        <div class="notif-icon-wrap" style="background:#e8f5e9;">
-                            <i class="fas fa-shopping-bag" style="color:#4caf50;"></i>
-                        </div>
-                        <div class="notif-body">
-                            <p>New sale #INV-2026-089 created for LKR 14,500.</p>
-                            <span class="notif-time">45 minutes ago</span>
-                        </div>
-                        <div class="notif-dot"></div>
-                    </div>
-                    <div class="notif-item" onclick="markRead(this)">
-                        <div class="notif-icon-wrap" style="background:#fff3e0;">
-                            <i class="fas fa-user-plus" style="color:#ff9800;"></i>
-                        </div>
-                        <div class="notif-body">
-                            <p>New customer <strong>Priya Fernando</strong> registered.</p>
-                            <span class="notif-time">2 hours ago</span>
-                        </div>
-                    </div>
-                    <div class="notif-item" onclick="markRead(this)">
-                        <div class="notif-icon-wrap" style="background:#e3f2fd;">
-                            <i class="fas fa-file-invoice" style="color:#2196f3;"></i>
-                        </div>
-                        <div class="notif-body">
-                            <p>Invoice #INV-2026-084 payment is still pending.</p>
-                            <span class="notif-time">Yesterday, 4:30 PM</span>
+                            <p>Loading notifications...</p>
+                            <span class="notif-time">Please wait</span>
                         </div>
                     </div>
                 </div>
                 <div class="notif-footer">
-                    <a href="#">View all notifications</a>
+                    <a href="#" onclick="event.preventDefault();">Live updates from system records</a>
                 </div>
             </div>
         </div>
@@ -219,8 +177,12 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
 
 <script>
 (function () {
+    const NOTIFICATIONS_API = 'http://localhost:3000/api/notifications?limit=25';
+
     function toggleNotifDropdown() {
-        document.getElementById('notifDropdown').classList.toggle('open');
+        const dropdown = document.getElementById('notifDropdown');
+        if (!dropdown) return;
+        dropdown.classList.toggle('open');
     }
 
     function markRead(item) {
@@ -239,6 +201,77 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             if (dot) dot.remove();
         });
         updateBadge();
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function renderNotifications(items) {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+
+        if (!Array.isArray(items) || items.length === 0) {
+            list.innerHTML = `
+                <div class="notif-item">
+                    <div class="notif-body">
+                        <p>No notifications right now.</p>
+                        <span class="notif-time">System is up to date</span>
+                    </div>
+                </div>
+            `;
+            updateBadge();
+            return;
+        }
+
+        list.innerHTML = items.map((n) => `
+            <div class="notif-item unread" onclick="markRead(this)">
+                <div class="notif-icon-wrap" style="background:${escapeHtml(n.iconBg || '#eef0fb')};">
+                    <i class="fas ${escapeHtml(n.icon || 'fa-bell')}" style="color:${escapeHtml(n.iconColor || '#3f51b5')};"></i>
+                </div>
+                <div class="notif-body">
+                    <p>${escapeHtml(n.message)}</p>
+                    <span class="notif-time">${escapeHtml(n.relativeTime || 'Just now')}</span>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+        `).join('');
+
+        updateBadge();
+    }
+
+    function renderLoadError(message) {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        list.innerHTML = `
+            <div class="notif-item">
+                <div class="notif-body">
+                    <p>${escapeHtml(message || 'Failed to load notifications.')}</p>
+                    <span class="notif-time">Please try again later</span>
+                </div>
+            </div>
+        `;
+        updateBadge();
+    }
+
+    async function loadNotifications() {
+        try {
+            const response = await fetch(NOTIFICATIONS_API);
+            const result = await response.json();
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || 'Failed to fetch notifications');
+            }
+            const items = result.data?.notifications || [];
+            renderNotifications(items);
+        } catch (error) {
+            renderLoadError(error.message);
+            console.error('Notification load failed:', error);
+        }
     }
 
     function updateBadge() {
@@ -263,5 +296,8 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
     window.toggleNotifDropdown = toggleNotifDropdown;
     window.markRead = markRead;
     window.markAllRead = markAllRead;
+
+    loadNotifications();
+    setInterval(loadNotifications, 60000);
 }());
 </script>
