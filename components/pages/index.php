@@ -43,9 +43,9 @@ $basePath = './';
                 <div class="alert-card">
                     <div class="alert-content">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <span>4 products are running low on stock. 2 items are out of stock!</span>
+                        <span id="dashboardAlertText">Loading stock alerts...</span>
                     </div>
-                    <div class="alert-btn">View Inventory</div>
+                    <a class="alert-btn" href="./inventory/index.php" style="text-decoration: none; color: inherit;">View Inventory</a>
                 </div>
 
                 <!-- Stats Cards -->
@@ -53,8 +53,8 @@ $basePath = './';
                     <div class="stat-card">
                         <div class="stat-info">
                             <h3>Today's Sales</h3>
-                            <div class="value">LKR 12,450</div>
-                            <small style="color: #4caf50;">↑ 12% from yesterday</small>
+                            <div class="value" id="statTodaysSales">LKR 0.00</div>
+                            <small style="color: #4caf50;" id="statTodaysSalesSub">Live from sales records</small>
                         </div>
                         <div class="stat-icon">
                             <i class="fas fa-rupee-sign"></i>
@@ -64,8 +64,8 @@ $basePath = './';
                     <div class="stat-card">
                         <div class="stat-info">
                             <h3>Orders</h3>
-                            <div class="value">156</div>
-                            <small style="color: #4caf50;">+23 new</small>
+                            <div class="value" id="statOrders">0</div>
+                            <small style="color: #4caf50;" id="statOrdersSub">Today's invoices</small>
                         </div>
                         <div class="stat-icon">
                             <i class="fas fa-shopping-bag"></i>
@@ -75,8 +75,8 @@ $basePath = './';
                     <div class="stat-card">
                         <div class="stat-info">
                             <h3>Products</h3>
-                            <div class="value">1,245</div>
-                            <small style="color: #ff9800;">12 low stock</small>
+                            <div class="value" id="statProducts">0</div>
+                            <small style="color: #ff9800;" id="statProductsSub">0 low stock</small>
                         </div>
                         <div class="stat-icon">
                             <i class="fas fa-box"></i>
@@ -86,8 +86,8 @@ $basePath = './';
                     <div class="stat-card">
                         <div class="stat-info">
                             <h3>Customers</h3>
-                            <div class="value">892</div>
-                            <small style="color: #4caf50;">+18 this week</small>
+                            <div class="value" id="statCustomers">0</div>
+                            <small style="color: #4caf50;" id="statCustomersSub">Registered customers</small>
                         </div>
                         <div class="stat-icon">
                             <i class="fas fa-user-friends"></i>
@@ -142,36 +142,8 @@ $basePath = './';
                                 <option>This Year</option>
                             </select>
                         </div>
-                        <div style="height: 250px; display: flex; align-items: flex-end; gap: 10px;">
-                            <!-- Simple bar chart representation -->
-                            <div style="flex: 1; text-align: center;">
-                                <div style="height: 120px; background: #1a237e; border-radius: 8px 8px 0 0; margin-bottom: 8px;"></div>
-                                <span style="font-size: 12px;">Mon</span>
-                            </div>
-                            <div style="flex: 1; text-align: center;">
-                                <div style="height: 180px; background: #1a237e; border-radius: 8px 8px 0 0; margin-bottom: 8px;"></div>
-                                <span style="font-size: 12px;">Tue</span>
-                            </div>
-                            <div style="flex: 1; text-align: center;">
-                                <div style="height: 150px; background: #1a237e; border-radius: 8px 8px 0 0; margin-bottom: 8px;"></div>
-                                <span style="font-size: 12px;">Wed</span>
-                            </div>
-                            <div style="flex: 1; text-align: center;">
-                                <div style="height: 200px; background: #ffd700; border-radius: 8px 8px 0 0; margin-bottom: 8px;"></div>
-                                <span style="font-size: 12px;">Thu</span>
-                            </div>
-                            <div style="flex: 1; text-align: center;">
-                                <div style="height: 160px; background: #1a237e; border-radius: 8px 8px 0 0; margin-bottom: 8px;"></div>
-                                <span style="font-size: 12px;">Fri</span>
-                            </div>
-                            <div style="flex: 1; text-align: center;">
-                                <div style="height: 190px; background: #1a237e; border-radius: 8px 8px 0 0; margin-bottom: 8px;"></div>
-                                <span style="font-size: 12px;">Sat</span>
-                            </div>
-                            <div style="flex: 1; text-align: center;">
-                                <div style="height: 140px; background: #1a237e; border-radius: 8px 8px 0 0; margin-bottom: 8px;"></div>
-                                <span style="font-size: 12px;">Sun</span>
-                            </div>
+                        <div id="salesOverviewBars" style="height: 250px; display: flex; align-items: flex-end; gap: 10px;">
+                            <div style="width: 100%; text-align: center; color: #7a86ad;">Loading chart...</div>
                         </div>
                     </div>
 
@@ -183,44 +155,7 @@ $basePath = './';
                                 <option>This Week</option>
                             </select>
                         </div>
-                        <div style="padding: 10px 0;">
-                            <div style="margin-bottom: 15px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                    <span style="font-size: 13px;">iPhone 14 Pro</span>
-                                    <span style="font-size: 13px; font-weight: 600;">45%</span>
-                                </div>
-                                <div style="height: 8px; background: #f0f0f0; border-radius: 4px;">
-                                    <div style="width: 45%; height: 100%; background: #1a237e; border-radius: 4px;"></div>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                    <span style="font-size: 13px;">Samsung S23</span>
-                                    <span style="font-size: 13px; font-weight: 600;">32%</span>
-                                </div>
-                                <div style="height: 8px; background: #f0f0f0; border-radius: 4px;">
-                                    <div style="width: 32%; height: 100%; background: #1a237e; border-radius: 4px;"></div>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                    <span style="font-size: 13px;">Google Pixel 7</span>
-                                    <span style="font-size: 13px; font-weight: 600;">28%</span>
-                                </div>
-                                <div style="height: 8px; background: #f0f0f0; border-radius: 4px;">
-                                    <div style="width: 28%; height: 100%; background: #1a237e; border-radius: 4px;"></div>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                    <span style="font-size: 13px;">Xiaomi 13</span>
-                                    <span style="font-size: 13px; font-weight: 600;">21%</span>
-                                </div>
-                                <div style="height: 8px; background: #f0f0f0; border-radius: 4px;">
-                                    <div style="width: 21%; height: 100%; background: #1a237e; border-radius: 4px;"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="topProductsList" style="padding: 10px 0; color: #7a86ad;">Loading top products...</div>
                     </div>
                 </div>
 
@@ -242,46 +177,9 @@ $basePath = './';
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="recentInvoicesBody">
                             <tr>
-                                <td>INV-2024-001</td>
-                                <td>John Smith</td>
-                                <td>2024-01-15</td>
-                                <td>LKR 1,299</td>
-                                <td><span class="status-badge status-paid">Paid</span></td>
-                                <td><i class="fas fa-print" style="cursor: pointer; color: #1a237e;"></i></td>
-                            </tr>
-                            <tr>
-                                <td>INV-2024-002</td>
-                                <td>Sarah Johnson</td>
-                                <td>2024-01-15</td>
-                                <td>LKR 899</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><i class="fas fa-print" style="cursor: pointer; color: #1a237e;"></i></td>
-                            </tr>
-                            <tr>
-                                <td>INV-2024-003</td>
-                                <td>Mike Wilson</td>
-                                <td>2024-01-14</td>
-                                <td>LKR 2,450</td>
-                                <td><span class="status-badge status-processing">Processing</span></td>
-                                <td><i class="fas fa-print" style="cursor: pointer; color: #1a237e;"></i></td>
-                            </tr>
-                            <tr>
-                                <td>INV-2024-004</td>
-                                <td>Emma Davis</td>
-                                <td>2024-01-14</td>
-                                <td>LKR 699</td>
-                                <td><span class="status-badge status-paid">Paid</span></td>
-                                <td><i class="fas fa-print" style="cursor: pointer; color: #1a237e;"></i></td>
-                            </tr>
-                            <tr>
-                                <td>INV-2024-005</td>
-                                <td>David Brown</td>
-                                <td>2024-01-13</td>
-                                <td>LKR 1,599</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><i class="fas fa-print" style="cursor: pointer; color: #1a237e;"></i></td>
+                                <td colspan="6" style="text-align:center; color:#7a86ad;">Loading invoices...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -304,6 +202,125 @@ $basePath = './';
     </div>
 
     <script>
+        const DASHBOARD_API = 'http://localhost:3000/api/dashboard/overview';
+
+        function formatLkr(value) {
+            return `LKR ${Number(value || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        function statusBadgeClass(status) {
+            const s = String(status || '').toLowerCase();
+            if (s === 'completed' || s === 'paid') return 'status-paid';
+            if (s === 'processing') return 'status-processing';
+            return 'status-pending';
+        }
+
+        function renderSalesOverview(data) {
+            const root = document.getElementById('salesOverviewBars');
+            if (!root) return;
+            const labels = Array.isArray(data?.labels) ? data.labels : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const values = Array.isArray(data?.values) ? data.values : [0, 0, 0, 0, 0, 0, 0];
+            const max = Math.max(...values, 1);
+
+            root.innerHTML = labels.map((label, idx) => {
+                const value = Number(values[idx] || 0);
+                const h = Math.max(10, Math.round((value / max) * 210));
+                const highlight = value === Math.max(...values) && value > 0;
+                const color = highlight ? '#ffd700' : '#1a237e';
+                return `
+                    <div style="flex:1; text-align:center;">
+                        <div title="${formatLkr(value)}" style="height:${h}px; background:${color}; border-radius:8px 8px 0 0; margin-bottom:8px;"></div>
+                        <span style="font-size:12px;">${label}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTopProducts(list) {
+            const root = document.getElementById('topProductsList');
+            if (!root) return;
+            if (!Array.isArray(list) || list.length === 0) {
+                root.innerHTML = '<div style="padding: 6px 0; color:#7a86ad;">No product sales yet.</div>';
+                return;
+            }
+
+            root.innerHTML = list.map((p) => {
+                const pct = Number(p.percentage || 0);
+                return `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px; gap: 8px;">
+                            <span style="font-size:13px; overflow-wrap:anywhere;">${p.name}</span>
+                            <span style="font-size:13px; font-weight:600;">${pct}%</span>
+                        </div>
+                        <div style="height:8px; background:#f0f0f0; border-radius:4px;">
+                            <div style="width:${Math.min(100, pct)}%; height:100%; background:#1a237e; border-radius:4px;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRecentInvoices(rows) {
+            const body = document.getElementById('recentInvoicesBody');
+            if (!body) return;
+            if (!Array.isArray(rows) || rows.length === 0) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#7a86ad;">No invoices found.</td></tr>';
+                return;
+            }
+
+            body.innerHTML = rows.map((r) => `
+                <tr>
+                    <td>${r.invoiceNo || '-'}</td>
+                    <td>${r.customer || 'Walk-in Customer'}</td>
+                    <td>${r.date || '-'}</td>
+                    <td>${formatLkr(r.amount)}</td>
+                    <td><span class="status-badge ${statusBadgeClass(r.status)}">${String(r.status || 'pending').toUpperCase()}</span></td>
+                    <td><a href="./invoices-quotations/index.php" title="View Invoices"><i class="fas fa-print" style="cursor:pointer; color:#1a237e;"></i></a></td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadDashboardOverview() {
+            try {
+                const resp = await fetch(DASHBOARD_API);
+                const json = await resp.json();
+                if (!resp.ok || !json.success || !json.data) {
+                    throw new Error(json.message || 'Failed to load dashboard data');
+                }
+                const data = json.data;
+
+                const stats = data.stats || {};
+                const alerts = data.alerts || {};
+
+                const alertText = document.getElementById('dashboardAlertText');
+                if (alertText) {
+                    alertText.textContent = alerts.text || 'No critical stock alerts.';
+                }
+
+                const statTodaysSales = document.getElementById('statTodaysSales');
+                const statOrders = document.getElementById('statOrders');
+                const statProducts = document.getElementById('statProducts');
+                const statCustomers = document.getElementById('statCustomers');
+                const statProductsSub = document.getElementById('statProductsSub');
+
+                if (statTodaysSales) statTodaysSales.textContent = formatLkr(stats.todaysSales || 0);
+                if (statOrders) statOrders.textContent = Number(stats.todaysOrders || 0).toLocaleString();
+                if (statProducts) statProducts.textContent = Number(stats.productsCount || 0).toLocaleString();
+                if (statCustomers) statCustomers.textContent = Number(stats.customersCount || 0).toLocaleString();
+                if (statProductsSub) statProductsSub.textContent = `${Number(stats.lowStock || 0).toLocaleString()} low stock`;
+
+                renderSalesOverview(data.salesOverview);
+                renderTopProducts(data.topProducts || []);
+                renderRecentInvoices(data.recentInvoices || []);
+            } catch (error) {
+                const alertText = document.getElementById('dashboardAlertText');
+                if (alertText) {
+                    alertText.textContent = 'Failed to load live dashboard data.';
+                }
+                console.error('Dashboard data load failed:', error);
+            }
+        }
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
@@ -386,6 +403,8 @@ $basePath = './';
                 closeSearchModal();
             }
         });
+
+        document.addEventListener('DOMContentLoaded', loadDashboardOverview);
     </script>
 </body>
 
