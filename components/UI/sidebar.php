@@ -1,6 +1,22 @@
 <?php
+require_once __DIR__ . '/auth.php';
 $activePage = $activePage ?? '';
 $basePath = $basePath ?? './';
+$currentUserName = pos_user_display_name();
+$currentUserRole = pos_user_role_name();
+$navItems = [
+    ['page' => 'dashboard', 'href' => 'index.php', 'icon' => 'fa-chart-pie', 'label' => 'Dashboard', 'permission' => 'dashboard.view'],
+    ['page' => 'sales', 'href' => 'sales/index.php', 'icon' => 'fa-shopping-cart', 'label' => 'Sales', 'permission' => 'sales.view'],
+    ['page' => 'inventory', 'href' => 'inventory/index.php', 'icon' => 'fa-boxes', 'label' => 'Inventory', 'permission' => 'inventory.view'],
+    ['page' => 'products', 'href' => 'products/index.php', 'icon' => 'fa-mobile', 'label' => 'Products', 'permission' => 'products.view'],
+    ['page' => 'customers', 'href' => 'customers/index.php', 'icon' => 'fa-users', 'label' => 'Customers', 'permission' => 'customers.view'],
+    ['page' => 'invoices-quotations', 'href' => 'invoices-quotations/index.php', 'icon' => 'fa-file-invoice', 'label' => 'Invoices', 'permission' => 'invoices.view'],
+    ['page' => 'vault-balance', 'href' => 'vault-balance/index.php', 'icon' => 'fa-vault', 'label' => 'Vault & Balance', 'permission' => 'vault.view'],
+    ['page' => 'expenses', 'href' => 'expenses/index.php', 'icon' => 'fa-wallet', 'label' => 'Expenses', 'permission' => 'expenses.view'],
+    ['page' => 'suppliers', 'href' => 'suppliers/index.php', 'icon' => 'fa-truck', 'label' => 'Suppliers', 'permission' => 'suppliers.view'],
+    ['page' => 'shops', 'href' => 'shops/index.php', 'icon' => 'fa-store', 'label' => 'Shops', 'permission' => 'shops.view'],
+    ['page' => 'returns-repairs', 'href' => 'returns-repairs/index.php', 'icon' => 'fa-tools', 'label' => 'Returns & Repairs', 'permission' => 'returns_repairs.view'],
+];
 ?>
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -8,77 +24,44 @@ $basePath = $basePath ?? './';
             <img id="sidebarBusinessLogo" src="https://res.cloudinary.com/dhqcnszvn/image/upload/v1771863002/Gemini_Generated_Image_ijmf3cijmf3cijmf_1_1_1_gbxcyz.png" alt="logo" width="50px">
             <div class="shop-info">
                 <h2 id="sidebarBusinessName">Doctor Phone</h2>
-                <p>Admin Dashboard</p>
+                <p><?php echo htmlspecialchars($currentUserRole, ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
         </div>
     </div>
 
     <div class="nav-menu">
-        <a class="nav-item<?php echo $activePage === 'dashboard' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>index.php">
-            <i class="fas fa-chart-pie"></i>
-            <span>Dashboard</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'sales' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>sales/index.php">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Sales</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'inventory' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>inventory/index.php">
-            <i class="fas fa-boxes"></i>
-            <span>Inventory</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'products' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>products/index.php">
-            <i class="fas fa-mobile"></i>
-            <span>Products</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'customers' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>customers/index.php">
-            <i class="fas fa-users"></i>
-            <span>Customers</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'invoices-quotations' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>invoices-quotations/index.php">
-            <i class="fas fa-file-invoice"></i>
-            <span>Invoices</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'vault-balance' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>vault-balance/index.php">
-            <i class="fas fa-vault"></i>
-            <span>Vault & Balance</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'expenses' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>expenses/index.php">
-            <i class="fas fa-wallet"></i>
-            <span>Expenses</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'suppliers' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>suppliers/index.php">
-            <i class="fas fa-truck"></i>
-            <span>Suppliers</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'shops' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>shops/index.php">
-            <i class="fas fa-store"></i>
-            <span>Shops</span>
-        </a>
-
-        <a class="nav-item<?php echo $activePage === 'returns-repairs' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>returns-repairs/index.php">
-            <i class="fas fa-tools"></i>
-            <span>Returns & Repairs</span>
-        </a>
+        <?php foreach ($navItems as $item): ?>
+            <?php if (!pos_has_permission($item['permission'])) { continue; } ?>
+            <a class="nav-item<?php echo $activePage === $item['page'] ? ' active' : ''; ?>" href="<?php echo htmlspecialchars($basePath . $item['href'], ENT_QUOTES, 'UTF-8'); ?>">
+                <i class="fas <?php echo htmlspecialchars($item['icon'], ENT_QUOTES, 'UTF-8'); ?>"></i>
+                <span><?php echo htmlspecialchars($item['label'], ENT_QUOTES, 'UTF-8'); ?></span>
+            </a>
+        <?php endforeach; ?>
 
         <div class="nav-divider"></div>
 
-        <a class="nav-item<?php echo $activePage === 'settings' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>settings/index.php">
-            <i class="fas fa-cog"></i>
-            <span>Settings</span>
+        <a class="nav-item<?php echo $activePage === 'profile' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>profile/index.php">
+            <i class="fas fa-id-badge"></i>
+            <span>My Profile</span>
         </a>
 
-        <a class="nav-item<?php echo $activePage === 'users' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>users/index.php">
-            <i class="fas fa-user-shield"></i>
-            <span>Users</span>
+        <?php if (pos_has_permission('settings.view')): ?>
+            <a class="nav-item<?php echo $activePage === 'settings' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>settings/index.php">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        <?php endif; ?>
+
+        <?php if (pos_has_permission('users.view')): ?>
+            <a class="nav-item<?php echo $activePage === 'users' ? ' active' : ''; ?>" href="<?php echo $basePath; ?>users/index.php">
+                <i class="fas fa-user-shield"></i>
+                <span>Users</span>
+            </a>
+        <?php endif; ?>
+
+        <a class="nav-item" href="/logout.php">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
         </a>
     </div>
 </div>

@@ -3,6 +3,8 @@ $activePage = 'expenses';
 $basePath = '../';
 $pageTitle = 'Expenses';
 $pageSubtitle = 'Manage shop expenses and track spending.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

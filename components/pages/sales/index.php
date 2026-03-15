@@ -3,6 +3,8 @@ $activePage = 'sales';
 $basePath = '../';
 $pageTitle = 'Sales';
 $pageSubtitle = 'View sales insights and add new sales.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -3,6 +3,12 @@ $activePage = 'users';
 $basePath = '../';
 $pageTitle = 'Users';
 $pageSubtitle = 'Add and manage system users.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
+$authToken = pos_get_token();
+$currentUser = pos_get_current_user();
+$canManageUsers = pos_has_permission('users.manage');
+$canManageRoles = pos_has_permission('roles.manage');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +27,7 @@ $pageSubtitle = 'Add and manage system users.';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <script src="/pwa-client.js"></script>
@@ -36,10 +43,6 @@ $pageSubtitle = 'Add and manage system users.';
                         <input type="text" class="search-input" placeholder="Search users..." id="searchUser" style="width: 300px;">
                         <select class="filter-select" id="filterRole">
                             <option value="">All Roles</option>
-                            <option value="admin">Admin</option>
-                            <option value="manager">Manager</option>
-                            <option value="cashier">Cashier</option>
-                            <option value="staff">Staff</option>
                         </select>
                         <select class="filter-select" id="filterStatus">
                             <option value="">All Status</option>
@@ -47,15 +50,19 @@ $pageSubtitle = 'Add and manage system users.';
                             <option value="inactive">Inactive</option>
                         </select>
                     </div>
-                    <div class="toolbar-actions">
-                        <button class="button-primary" type="button">
-                            <i class="fas fa-plus"></i>
-                            Add User
-                        </button>
-                        <button class="button-secondary" type="button">
-                            <i class="fas fa-download"></i>
-                            Export
-                        </button>
+                    <div class="toolbar-actions" style="display:flex; gap:10px;">
+                        <?php if ($canManageUsers): ?>
+                            <button class="button-primary" type="button" id="addUserBtn">
+                                <i class="fas fa-plus"></i>
+                                Add User
+                            </button>
+                        <?php endif; ?>
+                        <?php if ($canManageRoles): ?>
+                            <button class="button-secondary" type="button" id="manageRolesBtn">
+                                <i class="fas fa-user-cog"></i>
+                                Manage Roles
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -66,7 +73,7 @@ $pageSubtitle = 'Add and manage system users.';
                         </div>
                         <div class="metric-content">
                             <div class="metric-label">Total Users</div>
-                            <div class="metric-value">12</div>
+                            <div class="metric-value" id="totalUsersValue">0</div>
                             <div class="metric-change">System accounts</div>
                         </div>
                     </div>
@@ -77,7 +84,7 @@ $pageSubtitle = 'Add and manage system users.';
                         </div>
                         <div class="metric-content">
                             <div class="metric-label">Active Users</div>
-                            <div class="metric-value">10</div>
+                            <div class="metric-value" id="activeUsersValue">0</div>
                             <div class="metric-change positive">Currently enabled</div>
                         </div>
                     </div>
@@ -88,7 +95,7 @@ $pageSubtitle = 'Add and manage system users.';
                         </div>
                         <div class="metric-content">
                             <div class="metric-label">Administrators</div>
-                            <div class="metric-value">2</div>
+                            <div class="metric-value" id="adminUsersValue">0</div>
                             <div class="metric-change">Full system access</div>
                         </div>
                     </div>
@@ -99,18 +106,14 @@ $pageSubtitle = 'Add and manage system users.';
                         </div>
                         <div class="metric-content">
                             <div class="metric-label">Online Now</div>
-                            <div class="metric-value">4</div>
-                            <div class="metric-change">Currently logged in</div>
+                            <div class="metric-value" id="onlineUsersValue">0</div>
+                            <div class="metric-change">Users with recent logins</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="filter-pills">
+                <div class="filter-pills" id="rolePills">
                     <button class="pill active" data-filter="all">All Users</button>
-                    <button class="pill" data-filter="admin">Admins</button>
-                    <button class="pill" data-filter="manager">Managers</button>
-                    <button class="pill" data-filter="cashier">Cashiers</button>
-                    <button class="pill" data-filter="staff">Staff</button>
                 </div>
 
                 <div class="chart-card">
@@ -128,173 +131,8 @@ $pageSubtitle = 'Add and manage system users.';
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
-                            <tr data-role="admin" data-status="active">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            AU
-                                        </div>
-                                        <strong>Admin User</strong>
-                                    </div>
-                                </td>
-                                <td>admin@doctorphone.lk</td>
-                                <td>+94 77 123 4567</td>
-                                <td><span class="status-badge" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Admin</span></td>
-                                <td>2 mins ago</td>
-                                <td>Jan 1, 2025</td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-role="admin" data-status="active">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            SK
-                                        </div>
-                                        <strong>Sandun Kumarasinghe</strong>
-                                    </div>
-                                </td>
-                                <td>sandun@doctorphone.lk</td>
-                                <td>+94 77 234 5678</td>
-                                <td><span class="status-badge" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Admin</span></td>
-                                <td>15 mins ago</td>
-                                <td>Jan 15, 2025</td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-role="manager" data-status="active">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            NP
-                                        </div>
-                                        <strong>Nimal Perera</strong>
-                                    </div>
-                                </td>
-                                <td>nimal@doctorphone.lk</td>
-                                <td>+94 71 345 6789</td>
-                                <td><span class="status-badge" style="background: #e3f2fd; color: #1976d2;">Manager</span></td>
-                                <td>Today, 9:30 AM</td>
-                                <td>Feb 1, 2025</td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-role="manager" data-status="active">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            AS
-                                        </div>
-                                        <strong>Anusha Silva</strong>
-                                    </div>
-                                </td>
-                                <td>anusha@doctorphone.lk</td>
-                                <td>+94 76 456 7890</td>
-                                <td><span class="status-badge" style="background: #e3f2fd; color: #1976d2;">Manager</span></td>
-                                <td>Yesterday, 5:45 PM</td>
-                                <td>Feb 5, 2025</td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-role="cashier" data-status="active">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            KD
-                                        </div>
-                                        <strong>Kasun De Silva</strong>
-                                    </div>
-                                </td>
-                                <td>kasun@doctorphone.lk</td>
-                                <td>+94 75 567 8901</td>
-                                <td><span class="status-badge" style="background: #f3e5f5; color: #7b1fa2;">Cashier</span></td>
-                                <td>Today, 8:15 AM</td>
-                                <td>Jan 20, 2026</td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-role="cashier" data-status="active">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            TP
-                                        </div>
-                                        <strong>Thilini Pathirana</strong>
-                                    </div>
-                                </td>
-                                <td>thilini@doctorphone.lk</td>
-                                <td>+94 77 678 9012</td>
-                                <td><span class="status-badge" style="background: #f3e5f5; color: #7b1fa2;">Cashier</span></td>
-                                <td>Today, 10:00 AM</td>
-                                <td>Jan 25, 2026</td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-role="staff" data-status="active">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            RF
-                                        </div>
-                                        <strong>Rashmi Fernando</strong>
-                                    </div>
-                                </td>
-                                <td>rashmi@doctorphone.lk</td>
-                                <td>+94 71 789 0123</td>
-                                <td><span class="status-badge" style="background: #fff3e0; color: #ef6c00;">Staff</span></td>
-                                <td>Yesterday, 6:30 PM</td>
-                                <td>Feb 10, 2026</td>
-                                <td><span class="status-badge" style="background: #e8f5e9; color: #2e7d32;">Active</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-role="staff" data-status="inactive">
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: #9e9e9e; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            NJ
-                                        </div>
-                                        <strong>Nuwan Jayawardena</strong>
-                                    </div>
-                                </td>
-                                <td>nuwan@doctorphone.lk</td>
-                                <td>+94 76 890 1234</td>
-                                <td><span class="status-badge" style="background: #fff3e0; color: #ef6c00;">Staff</span></td>
-                                <td>Feb 15, 2026</td>
-                                <td>Dec 1, 2025</td>
-                                <td><span class="status-badge" style="background: #f5f5f5; color: #616161;">Inactive</span></td>
-                                <td>
-                                    <button class="icon-btn" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
+                            <tr>
+                                <td colspan="8" style="text-align:center; color:#7a86ad;">Loading users...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -316,7 +154,20 @@ $pageSubtitle = 'Add and manage system users.';
         </div>
     </div>
 
+    <?php include __DIR__ . '/../../UI/custom-dialog.php'; ?>
+
     <script>
+        const AUTH_TOKEN = <?php echo json_encode($authToken, JSON_UNESCAPED_SLASHES); ?>;
+        const CURRENT_USER_ID = <?php echo json_encode($currentUser['user_id'] ?? '', JSON_UNESCAPED_SLASHES); ?>;
+        const CAN_MANAGE_USERS = <?php echo $canManageUsers ? 'true' : 'false'; ?>;
+        const CAN_MANAGE_ROLES = <?php echo $canManageRoles ? 'true' : 'false'; ?>;
+        const USERS_API = 'http://localhost:3000/api/users';
+
+        let users = [];
+        let roles = [];
+        let permissions = [];
+        let activeRolePill = 'all';
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
@@ -326,7 +177,7 @@ $pageSubtitle = 'Add and manage system users.';
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menuToggle');
 
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 768 && sidebar && menuToggle) {
                 if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
                     sidebar.classList.remove('active');
                 }
@@ -337,6 +188,11 @@ $pageSubtitle = 'Add and manage system users.';
         const searchModalInput = document.getElementById('globalSearchModal');
         const searchTrigger = document.getElementById('searchTrigger');
         const searchClose = document.getElementById('searchClose');
+        const searchInput = document.getElementById('searchUser');
+        const roleFilter = document.getElementById('filterRole');
+        const statusFilter = document.getElementById('filterStatus');
+        const tableBody = document.getElementById('userTableBody');
+        const rolePills = document.getElementById('rolePills');
 
         function openSearchModal() {
             if (!searchOverlay || !searchModalInput) {
@@ -389,56 +245,350 @@ $pageSubtitle = 'Add and manage system users.';
             }
         });
 
-        // Search and filter functionality
-        const searchInput = document.getElementById('searchUser');
-        const roleFilter = document.getElementById('filterRole');
-        const statusFilter = document.getElementById('filterStatus');
-        const tableBody = document.getElementById('userTableBody');
-        const pills = document.querySelectorAll('.pill');
+        function formatDate(value) {
+            if (!value) return '-';
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return '-';
+            return date.toLocaleDateString();
+        }
 
-        function searchUsers() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const rows = tableBody.querySelectorAll('tr');
+        function formatDateTime(value) {
+            if (!value) return '-';
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return '-';
+            return date.toLocaleString();
+        }
 
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                const matchesSearch = text.includes(searchTerm);
-                const roleValue = roleFilter.value;
-                const statusValue = statusFilter.value;
-                
-                const matchesRole = !roleValue || row.dataset.role === roleValue;
-                const matchesStatus = !statusValue || row.dataset.status === statusValue;
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
 
-                if (matchesSearch && matchesRole && matchesStatus) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
+        async function apiRequest(path = '', method = 'GET', payload) {
+            const response = await fetch(`${USERS_API}${path}`, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${AUTH_TOKEN}`,
+                },
+                body: payload ? JSON.stringify(payload) : undefined,
+            });
+            const json = await response.json();
+            if (!response.ok || !json.success) {
+                throw new Error(json.message || 'Request failed');
+            }
+            return json.data;
+        }
+
+        function renderStats(stats) {
+            document.getElementById('totalUsersValue').textContent = Number(stats.total || 0).toLocaleString();
+            document.getElementById('activeUsersValue').textContent = Number(stats.active || 0).toLocaleString();
+            document.getElementById('adminUsersValue').textContent = Number(stats.admins || 0).toLocaleString();
+            document.getElementById('onlineUsersValue').textContent = Number(stats.online || 0).toLocaleString();
+        }
+
+        function renderRoleFilters() {
+            roleFilter.innerHTML = '<option value="">All Roles</option>';
+            const roleButtons = ['<button class="pill active" data-filter="all">All Users</button>'];
+
+            roles.forEach((role) => {
+                const slug = String(role.name || '').toLowerCase();
+                roleFilter.insertAdjacentHTML('beforeend', `<option value="${escapeHtml(slug)}">${escapeHtml(role.name)}</option>`);
+                roleButtons.push(`<button class="pill" data-filter="${escapeHtml(slug)}">${escapeHtml(role.name)}</button>`);
+            });
+
+            rolePills.innerHTML = roleButtons.join('');
+            rolePills.querySelectorAll('.pill').forEach((pill) => {
+                pill.addEventListener('click', function() {
+                    rolePills.querySelectorAll('.pill').forEach((item) => item.classList.remove('active'));
+                    this.classList.add('active');
+                    activeRolePill = this.dataset.filter;
+                    renderUsers();
+                });
+            });
+        }
+
+        function filteredUsers() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const selectedRole = roleFilter.value.trim().toLowerCase();
+            const selectedStatus = statusFilter.value.trim().toLowerCase();
+
+            return users.filter((record) => {
+                const text = [record.name, record.email, record.phone, record.role?.name, record.status].join(' ').toLowerCase();
+                const roleName = String(record.role?.name || '').toLowerCase();
+                const statusName = String(record.status || '').toLowerCase();
+                const matchesSearch = !searchTerm || text.includes(searchTerm);
+                const matchesRoleSelect = !selectedRole || roleName === selectedRole;
+                const matchesRolePill = activeRolePill === 'all' || roleName === activeRolePill;
+                const matchesStatus = !selectedStatus || statusName === selectedStatus;
+                return matchesSearch && matchesRoleSelect && matchesRolePill && matchesStatus;
+            });
+        }
+
+        function statusBadge(status) {
+            const normalized = String(status || '').toLowerCase();
+            if (normalized === 'active') {
+                return '<span class="status-badge" style="background:#e8f5e9; color:#2e7d32;">Active</span>';
+            }
+            return '<span class="status-badge" style="background:#f5f5f5; color:#616161;">Inactive</span>';
+        }
+
+        function roleBadge(roleName) {
+            const normalized = String(roleName || '').toLowerCase();
+            if (normalized === 'admin') return '<span class="status-badge" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Admin</span>';
+            if (normalized === 'manager') return '<span class="status-badge" style="background: #e3f2fd; color: #1976d2;">Manager</span>';
+            if (normalized === 'cashier') return '<span class="status-badge" style="background: #f3e5f5; color: #7b1fa2;">Cashier</span>';
+            return `<span class="status-badge" style="background:#fff3e0; color:#ef6c00;">${escapeHtml(roleName || 'Role')}</span>`;
+        }
+
+        function initials(name) {
+            return String(name || 'U')
+                .split(/\s+/)
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((part) => part[0].toUpperCase())
+                .join('') || 'U';
+        }
+
+        function renderUsers() {
+            const rows = filteredUsers();
+            if (!rows.length) {
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#7a86ad;">No users found.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = rows.map((record) => `
+                <tr data-role="${escapeHtml(String(record.role?.name || '').toLowerCase())}" data-status="${escapeHtml(String(record.status || '').toLowerCase())}">
+                    <td>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex; align-items:center; justify-content:center; color:white; font-weight:600;">
+                                ${escapeHtml(initials(record.name))}
+                            </div>
+                            <strong>${escapeHtml(record.name)}</strong>
+                        </div>
+                    </td>
+                    <td>${escapeHtml(record.email)}</td>
+                    <td>${escapeHtml(record.phone || 'N/A')}</td>
+                    <td>${roleBadge(record.role?.name)}</td>
+                    <td>${escapeHtml(formatDateTime(record.last_login_at))}</td>
+                    <td>${escapeHtml(formatDate(record.createdAt))}</td>
+                    <td>${statusBadge(record.status)}</td>
+                    <td>
+                        ${CAN_MANAGE_USERS ? `<button class="icon-btn" title="Edit User" onclick="openUserDialog('${escapeHtml(record.user_id)}')"><i class="fas fa-pen"></i></button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function syncProfileSession(token, user) {
+            return fetch('/auth-sync.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token, user }),
+            });
+        }
+
+        async function loadData() {
+            try {
+                const [userResponse, roleResponse, permissionResponse] = await Promise.all([
+                    apiRequest('', 'GET'),
+                    apiRequest('/roles', 'GET'),
+                    CAN_MANAGE_ROLES ? apiRequest('/permissions', 'GET') : Promise.resolve([]),
+                ]);
+
+                users = userResponse.users || [];
+                roles = roleResponse || [];
+                permissions = permissionResponse || [];
+                renderStats(userResponse.stats || {});
+                renderRoleFilters();
+                renderUsers();
+            } catch (error) {
+                tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#c62828;">${escapeHtml(error.message)}</td></tr>`;
+            }
+        }
+
+        function userFormHtml(record) {
+            const roleOptions = roles.map((role) => {
+                const selected = record && record.role?.role_id === role.role_id ? 'selected' : '';
+                return `<option value="${escapeHtml(role.role_id)}" ${selected}>${escapeHtml(role.name)}</option>`;
+            }).join('');
+
+            return `
+                <form id="userForm" style="display:grid; gap:14px;">
+                    <input type="hidden" id="userId" value="${escapeHtml(record?.user_id || '')}">
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Name</label>
+                        <input id="userName" class="search-input" style="width:100%;" value="${escapeHtml(record?.name || '')}" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Email</label>
+                        <input id="userEmail" type="email" class="search-input" style="width:100%;" value="${escapeHtml(record?.email || '')}" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Phone</label>
+                        <input id="userPhone" class="search-input" style="width:100%;" value="${escapeHtml(record?.phone || '')}">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Role</label>
+                        <select id="userRoleId" class="filter-select" style="width:100%;">${roleOptions}</select>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Status</label>
+                        <select id="userStatus" class="filter-select" style="width:100%;">
+                            <option value="active" ${record?.status === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="inactive" ${record?.status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">${record ? 'New Password (optional)' : 'Password'}</label>
+                        <input id="userPassword" type="password" class="search-input" style="width:100%;" ${record ? '' : 'required'}>
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+                        <button type="button" class="button-secondary" onclick="AppDialog.close()">Cancel</button>
+                        <button type="submit" class="button-primary">${record ? 'Save Changes' : 'Create User'}</button>
+                    </div>
+                </form>
+            `;
+        }
+
+        async function openUserDialog(userId = '') {
+            const record = users.find((item) => item.user_id === userId) || null;
+            AppDialog.open({
+                title: record ? 'Edit User' : 'Create User',
+                html: userFormHtml(record),
+                width: '560px',
+            });
+
+            document.getElementById('userForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const payload = {
+                    name: document.getElementById('userName').value.trim(),
+                    email: document.getElementById('userEmail').value.trim(),
+                    phone: document.getElementById('userPhone').value.trim(),
+                    role_id: document.getElementById('userRoleId').value,
+                    status: document.getElementById('userStatus').value,
+                    password: document.getElementById('userPassword').value,
+                };
+
+                try {
+                    const data = record
+                        ? await apiRequest(`/${record.user_id}`, 'PUT', payload)
+                        : await apiRequest('', 'POST', payload);
+
+                    if (data.user_id === CURRENT_USER_ID) {
+                        await syncProfileSession(AUTH_TOKEN, data);
+                    }
+
+                    AppDialog.close();
+                    await loadData();
+                    Swal.fire({ icon: 'success', title: record ? 'User updated' : 'User created', text: record ? 'User details were saved successfully.' : 'New user has been created successfully.' });
+                } catch (error) {
+                    Swal.fire({ icon: 'error', title: 'Action failed', text: error.message });
                 }
             });
         }
 
-        searchInput.addEventListener('input', searchUsers);
-        roleFilter.addEventListener('change', searchUsers);
-        statusFilter.addEventListener('change', searchUsers);
+        function roleFormHtml(record) {
+            const selectedPermissions = new Set(record?.permissions || []);
+            const permissionHtml = permissions.map((permission) => `
+                <label style="display:flex; align-items:center; gap:8px; padding:6px 0; font-size:13px;">
+                    <input type="checkbox" class="role-permission" value="${escapeHtml(permission)}" ${selectedPermissions.has(permission) ? 'checked' : ''}>
+                    <span>${escapeHtml(permission)}</span>
+                </label>
+            `).join('');
 
-        // Pill filters
-        pills.forEach(pill => {
-            pill.addEventListener('click', function() {
-                pills.forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
+            return `
+                <form id="roleForm" style="display:grid; gap:14px;">
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Role Name</label>
+                        <input id="roleName" class="search-input" style="width:100%;" value="${escapeHtml(record?.name || '')}" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Description</label>
+                        <textarea id="roleDescription" class="search-input" style="width:100%; min-height:90px;">${escapeHtml(record?.description || '')}</textarea>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-weight:600;">Permissions</label>
+                        <div style="max-height:260px; overflow:auto; border:1px solid #d8deef; border-radius:10px; padding:12px;">${permissionHtml}</div>
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+                        <button type="button" class="button-secondary" onclick="AppDialog.close()">Close</button>
+                        <button type="submit" class="button-primary">${record ? 'Save Role' : 'Create Role'}</button>
+                    </div>
+                </form>
+            `;
+        }
 
-                const filter = this.dataset.filter;
-                const rows = tableBody.querySelectorAll('tr');
+        function openRoleManager() {
+            const roleCards = roles.map((role) => `
+                <div style="border:1px solid #e6ebf5; border-radius:12px; padding:14px; margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+                        <div>
+                            <div style="font-weight:700; color:#1a237e;">${escapeHtml(role.name)}</div>
+                            <div style="font-size:12px; color:#667085; margin-top:4px;">${escapeHtml(role.description || 'No description')}</div>
+                        </div>
+                        <button type="button" class="button-secondary" onclick="openRoleDialog('${escapeHtml(role.role_id)}')">Edit</button>
+                    </div>
+                </div>
+            `).join('');
 
-                rows.forEach(row => {
-                    if (filter === 'all') {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = row.dataset.role === filter ? '' : 'none';
-                    }
-                });
+            AppDialog.open({
+                title: 'Manage Roles',
+                width: '760px',
+                html: `
+                    <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+                        <button type="button" class="button-primary" onclick="openRoleDialog()"><i class="fas fa-plus"></i> Create Role</button>
+                    </div>
+                    <div>${roleCards || '<div style="color:#667085;">No roles available.</div>'}</div>
+                `,
             });
-        });
+        }
+
+        function openRoleDialog(roleId = '') {
+            const record = roles.find((item) => item.role_id === roleId) || null;
+            AppDialog.open({
+                title: record ? 'Edit Role' : 'Create Role',
+                html: roleFormHtml(record),
+                width: '760px',
+            });
+
+            document.getElementById('roleForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const payload = {
+                    name: document.getElementById('roleName').value.trim(),
+                    description: document.getElementById('roleDescription').value.trim(),
+                    permissions: Array.from(document.querySelectorAll('.role-permission:checked')).map((item) => item.value),
+                };
+
+                try {
+                    if (record) {
+                        await apiRequest(`/roles/${record.role_id}`, 'PUT', payload);
+                    } else {
+                        await apiRequest('/roles', 'POST', payload);
+                    }
+                    await loadData();
+                    openRoleManager();
+                    Swal.fire({ icon: 'success', title: record ? 'Role updated' : 'Role created', text: 'Role permissions were saved successfully.' });
+                } catch (error) {
+                    Swal.fire({ icon: 'error', title: 'Action failed', text: error.message });
+                }
+            });
+        }
+
+        if (searchInput) searchInput.addEventListener('input', renderUsers);
+        if (roleFilter) roleFilter.addEventListener('change', renderUsers);
+        if (statusFilter) statusFilter.addEventListener('change', renderUsers);
+        if (document.getElementById('addUserBtn')) document.getElementById('addUserBtn').addEventListener('click', () => openUserDialog());
+        if (document.getElementById('manageRolesBtn')) document.getElementById('manageRolesBtn').addEventListener('click', openRoleManager);
+
+        loadData();
+        window.openUserDialog = openUserDialog;
+        window.openRoleDialog = openRoleDialog;
+        window.openRoleManager = openRoleManager;
     </script>
 </body>
 </html>

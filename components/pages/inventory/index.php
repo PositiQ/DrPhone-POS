@@ -3,6 +3,8 @@ $activePage = 'inventory';
 $basePath = '../';
 $pageTitle = 'Inventory';
 $pageSubtitle = 'Manage stocks, show low stocks and out of stocks.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -2,6 +2,8 @@
 $activePage = 'sales';
 $basePath = '../';
 $pageTitle = 'Create Sale';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

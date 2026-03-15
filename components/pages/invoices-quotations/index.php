@@ -3,6 +3,8 @@ $activePage = 'invoices-quotations';
 $basePath = '../';
 $pageTitle = 'Invoices';
 $pageSubtitle = 'View, manage, and re-print invoices from sales records.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

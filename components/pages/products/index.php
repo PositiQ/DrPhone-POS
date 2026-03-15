@@ -3,6 +3,8 @@ $activePage = 'products';
 $basePath = '../';
 $pageTitle = 'Products';
 $pageSubtitle = 'Add and manage products, categories, and labels.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

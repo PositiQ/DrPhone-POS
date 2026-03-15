@@ -3,6 +3,8 @@ $activePage = 'customers';
 $basePath = '../';
 $pageTitle = 'Customers';
 $pageSubtitle = 'Manage customers, invoices, and credit sales.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

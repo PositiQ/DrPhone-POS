@@ -1,5 +1,9 @@
 <?php
+require_once __DIR__ . '/auth.php';
 $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
+$topNavUserName = pos_user_display_name();
+$topNavUserRole = pos_user_role_name();
+$topNavUserInitials = pos_user_initials();
 ?>
 <style>
     .notif-wrapper {
@@ -165,13 +169,13 @@ $resolvedPageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             </div>
         </div>
 
-        <div class="user-profile">
-            <img src="https://ui-avatars.com/api/?name=Admin+User&background=1a237e&color=ffd700&bold=true" alt="User">
+        <a class="user-profile" href="<?php echo htmlspecialchars($basePath ?? '../', ENT_QUOTES, 'UTF-8'); ?>profile/index.php" style="text-decoration:none; color:inherit;">
+            <img src="https://ui-avatars.com/api/?name=<?php echo rawurlencode($topNavUserInitials); ?>&background=1a237e&color=ffd700&bold=true" alt="User">
             <div class="user-info">
-                <h4>Admin User</h4>
-                <p>Super Admin</p>
+                <h4><?php echo htmlspecialchars($topNavUserName, ENT_QUOTES, 'UTF-8'); ?></h4>
+                <p><?php echo htmlspecialchars($topNavUserRole, ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
-        </div>
+        </a>
     </div>
 </div>
 

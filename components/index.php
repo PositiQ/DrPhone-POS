@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/UI/auth.php';
+pos_require_auth('dashboard');
+
 // Handle navigation redirects
 // If someone tries to access /components/[section]/index.php
 // redirect them to /components/pages/[section]/index.php

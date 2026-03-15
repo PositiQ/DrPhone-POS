@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth('products');
 $name = $_GET['name'] ?? 'Product';
 $imei = $_GET['imei'] ?? 'N/A';
 $productId = $_GET['product_id'] ?? 'N/A';

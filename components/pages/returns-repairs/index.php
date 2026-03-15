@@ -3,6 +3,8 @@ $activePage = 'returns-repairs';
 $basePath = '../';
 $pageTitle = 'Returns & Repairs';
 $pageSubtitle = 'Manage return products and mobile phone repairs.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">

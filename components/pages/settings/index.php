@@ -3,6 +3,8 @@ $activePage = 'settings';
 $basePath = '../';
 $pageTitle = 'Settings';
 $pageSubtitle = 'Manage general settings and invoice details.';
+require_once __DIR__ . '/../../UI/auth.php';
+pos_require_auth($activePage);
 ?>
 <!DOCTYPE html>
 <html lang="en">
