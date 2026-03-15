@@ -131,6 +131,54 @@ $topNavUserInitials = pos_user_initials();
         margin-top: 6px;
         flex-shrink: 0;
     }
+
+    .global-search-suggestions {
+        margin-top: 10px;
+        border: 1px solid #dbe2f6;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 10px 24px rgba(26, 35, 126, 0.12);
+        max-height: 300px;
+        overflow: auto;
+        display: none;
+    }
+
+    .global-search-suggestions.open {
+        display: block;
+    }
+
+    .global-search-item {
+        padding: 10px 12px;
+        border-bottom: 1px solid #edf1fb;
+        cursor: pointer;
+    }
+
+    .global-search-item:last-child {
+        border-bottom: none;
+    }
+
+    .global-search-item:hover,
+    .global-search-item.active {
+        background: #f3f6ff;
+    }
+
+    .global-search-title {
+        font-size: 13px;
+        color: #1e2a4a;
+        font-weight: 600;
+    }
+
+    .global-search-meta {
+        margin-top: 3px;
+        font-size: 11px;
+        color: #6a7698;
+    }
+
+    .global-search-highlight {
+        background: #fff5b8;
+        border-radius: 2px;
+        padding: 0 2px;
+    }
 </style>
 <div class="top-header">
     <div class="header-left">
@@ -348,5 +396,240 @@ $topNavUserInitials = pos_user_initials();
 
     loadNotifications();
     setInterval(loadNotifications, 60000);
+}());
+</script>
+
+<script>
+(function () {
+    const GLOBAL_SEARCH_INDEX = [
+        { title: 'Dashboard Overview', section: 'Summary Cards', url: '/components/pages/index.php', keywords: ['dashboard', 'overview', 'sales', 'orders', 'products', 'customers'] },
+        { title: 'Dashboard Alerts', section: 'Low / Out Of Stock', url: '/components/pages/index.php', keywords: ['alert', 'low stock', 'out of stock', 'inventory warning'] },
+        { title: 'Sales List', section: 'Sales Records', url: '/components/pages/sales/index.php', keywords: ['sales', 'invoice', 'orders', 'transactions'] },
+        { title: 'Create Sale', section: 'New Sale Form', url: '/components/pages/sales/create.php', keywords: ['new sale', 'create sale', 'billing'] },
+        { title: 'Products', section: 'Product Table', url: '/components/pages/products/index.php', keywords: ['products', 'imei', 'device', 'stock item'] },
+        { title: 'Add Product', section: 'Add Product Form', url: '/components/pages/products/add-product.php', keywords: ['add product', 'new product'] },
+        { title: 'Inventory', section: 'Stock Management', url: '/components/pages/inventory/index.php', keywords: ['inventory', 'stock', 'quantity', 'warehouse'] },
+        { title: 'Customers', section: 'Customer List', url: '/components/pages/customers/index.php', keywords: ['customers', 'client', 'credit customers'] },
+        { title: 'Suppliers', section: 'Supplier Management', url: '/components/pages/suppliers/index.php', keywords: ['supplier', 'purchase', 'payments', 'cheque'] },
+        { title: 'Expenses', section: 'Expense Management', url: '/components/pages/expenses/index.php', keywords: ['expenses', 'cost', 'spending'] },
+        { title: 'Vault & Balance', section: 'Accounts and Transactions', url: '/components/pages/vault-balance/index.php', keywords: ['vault', 'drawer', 'bank', 'balance'] },
+        { title: 'Shops', section: 'Shop Management', url: '/components/pages/shops/index.php', keywords: ['shop', 'branches', 'store'] },
+        { title: 'Returns & Repairs', section: 'Tickets', url: '/components/pages/returns-repairs/index.php', keywords: ['repair', 'return', 'ticket', 'service'] },
+        { title: 'Invoices', section: 'Invoice History', url: '/components/pages/invoices-quotations/index.php', keywords: ['invoice', 'quotation', 'billing history'] },
+        { title: 'Notifications', section: 'Top Header Bell', url: window.location.pathname || '/components/pages/index.php', keywords: ['notifications', 'alerts', 'mark as read'] },
+        { title: 'Settings', section: 'Business / Invoice / Regional', url: '/components/pages/settings/index.php', keywords: ['settings', 'business info', 'invoice settings', 'regional'] },
+        { title: 'Users', section: 'Users and Roles', url: '/components/pages/users/index.php', keywords: ['users', 'roles', 'permissions', 'auth'] },
+        { title: 'My Profile', section: 'Profile & Password', url: '/components/pages/profile/index.php', keywords: ['profile', 'change password', 'account'] }
+    ];
+
+    function scoreResult(item, term) {
+        const t = term.toLowerCase();
+        const haystack = [item.title, item.section, (item.keywords || []).join(' ')].join(' ').toLowerCase();
+        if (!haystack.includes(t)) {
+            return -1;
+        }
+
+        let score = 0;
+        if (item.title.toLowerCase().includes(t)) score += 5;
+        if (item.section.toLowerCase().includes(t)) score += 3;
+        if ((item.keywords || []).some((k) => k.toLowerCase().includes(t))) score += 2;
+        if (item.title.toLowerCase().startsWith(t)) score += 2;
+        return score;
+    }
+
+    function searchIndex(term) {
+        return GLOBAL_SEARCH_INDEX
+            .map((item) => ({ item, score: scoreResult(item, term) }))
+            .filter((row) => row.score >= 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 8)
+            .map((row) => row.item);
+    }
+
+    function getOverlayElements() {
+        return {
+            overlay: document.getElementById('searchOverlay'),
+            input: document.getElementById('globalSearchModal'),
+            trigger: document.getElementById('searchTrigger'),
+        };
+    }
+
+    function createSuggestionContainer(input) {
+        const container = document.createElement('div');
+        container.id = 'globalSearchSuggestions';
+        container.className = 'global-search-suggestions';
+        input.insertAdjacentElement('afterend', container);
+        return container;
+    }
+
+    function buildSearchUrl(baseUrl, searchText, section) {
+        const url = new URL(baseUrl, window.location.origin);
+        url.searchParams.set('global_search', searchText);
+        url.searchParams.set('search_scope', section || '');
+        return `${url.pathname}${url.search}`;
+    }
+
+    function renderSuggestions(container, items, searchText) {
+        if (!items.length) {
+            container.innerHTML = '';
+            container.classList.remove('open');
+            return;
+        }
+
+        container.innerHTML = items.map((item, index) => `
+            <div class="global-search-item${index === 0 ? ' active' : ''}" data-url="${item.url}" data-title="${item.title}" data-section="${item.section}">
+                <div class="global-search-title">${item.title}</div>
+                <div class="global-search-meta">${item.section}</div>
+            </div>
+        `).join('');
+
+        container.classList.add('open');
+
+        container.querySelectorAll('.global-search-item').forEach((node) => {
+            node.addEventListener('click', function () {
+                const url = buildSearchUrl(this.getAttribute('data-url') || '/components/pages/index.php', searchText, this.getAttribute('data-section') || '');
+                window.location.href = url;
+            });
+        });
+    }
+
+    function applySearchContext() {
+        const params = new URLSearchParams(window.location.search || '');
+        const searchText = params.get('global_search');
+        if (!searchText) {
+            return;
+        }
+
+        const knownInputs = ['searchUser', 'searchProduct', 'searchCustomer', 'searchSale', 'globalSearch'];
+        knownInputs.forEach((id) => {
+            const input = document.getElementById(id);
+            if (input && !input.readOnly) {
+                input.value = searchText;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+
+        const root = document.querySelector('.content-area');
+        if (!root) {
+            return;
+        }
+
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+                const parent = node.parentElement;
+                if (!parent) return NodeFilter.FILTER_REJECT;
+                const tag = parent.tagName ? parent.tagName.toLowerCase() : '';
+                if (['script', 'style', 'noscript'].includes(tag)) return NodeFilter.FILTER_REJECT;
+                if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                return node.nodeValue.toLowerCase().includes(searchText.toLowerCase())
+                    ? NodeFilter.FILTER_ACCEPT
+                    : NodeFilter.FILTER_SKIP;
+            }
+        });
+
+        const firstMatch = walker.nextNode();
+        if (!firstMatch) {
+            return;
+        }
+
+        const text = firstMatch.nodeValue;
+        const index = text.toLowerCase().indexOf(searchText.toLowerCase());
+        if (index < 0) {
+            return;
+        }
+
+        const before = text.slice(0, index);
+        const match = text.slice(index, index + searchText.length);
+        const after = text.slice(index + searchText.length);
+
+        const mark = document.createElement('mark');
+        mark.className = 'global-search-highlight';
+        mark.textContent = match;
+
+        const fragment = document.createDocumentFragment();
+        if (before) fragment.appendChild(document.createTextNode(before));
+        fragment.appendChild(mark);
+        if (after) fragment.appendChild(document.createTextNode(after));
+
+        firstMatch.parentNode.replaceChild(fragment, firstMatch);
+        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function initGlobalSearch() {
+        const { overlay, input, trigger } = getOverlayElements();
+        if (!overlay || !input || !trigger) {
+            applySearchContext();
+            return;
+        }
+
+        const suggestions = createSuggestionContainer(input);
+
+        trigger.addEventListener('click', function () {
+            overlay.classList.add('active');
+            input.focus();
+        });
+
+        input.addEventListener('input', function () {
+            const value = this.value.trim();
+            if (!value) {
+                suggestions.classList.remove('open');
+                suggestions.innerHTML = '';
+                return;
+            }
+
+            const items = searchIndex(value);
+            renderSuggestions(suggestions, items, value);
+        });
+
+        input.addEventListener('keydown', function (event) {
+            const nodes = Array.from(suggestions.querySelectorAll('.global-search-item'));
+            const active = suggestions.querySelector('.global-search-item.active');
+            const activeIndex = nodes.indexOf(active);
+
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (!nodes.length) return;
+                const next = nodes[(activeIndex + 1) % nodes.length];
+                nodes.forEach((node) => node.classList.remove('active'));
+                next.classList.add('active');
+                return;
+            }
+
+            if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (!nodes.length) return;
+                const next = nodes[(activeIndex - 1 + nodes.length) % nodes.length];
+                nodes.forEach((node) => node.classList.remove('active'));
+                next.classList.add('active');
+                return;
+            }
+
+            if (event.key === 'Enter') {
+                const query = input.value.trim();
+                if (!query) return;
+                event.preventDefault();
+                const selected = active || nodes[0];
+                if (selected) {
+                    const url = buildSearchUrl(selected.getAttribute('data-url') || '/components/pages/index.php', query, selected.getAttribute('data-section') || '');
+                    window.location.href = url;
+                }
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!suggestions.contains(event.target) && event.target !== input) {
+                suggestions.classList.remove('open');
+            }
+        });
+
+        applySearchContext();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initGlobalSearch);
+    } else {
+        initGlobalSearch();
+    }
 }());
 </script>
