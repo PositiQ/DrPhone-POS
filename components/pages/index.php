@@ -98,39 +98,6 @@ $basePath = './';
                 
                     <br>
 
-                    
-
-                <!-- Quick Actions -->
-                <div class="quick-actions">
-                    <div class="action-btn">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>New Sale</span>
-                    </div>
-                    <div class="action-btn">
-                        <i class="fas fa-file-invoice"></i>
-                        <span>Create Invoice</span>
-                    </div>
-                    <div class="action-btn">
-                        <i class="fas fa-box"></i>
-                        <span>Add Product</span>
-                    </div>
-                    <div class="action-btn">
-                        <i class="fas fa-user-plus"></i>
-                        <span>New Customer</span>
-                    </div>
-                    <div class="action-btn">
-                        <i class="fas fa-truck"></i>
-                        <span>New Order</span>
-                    </div>
-                    <div class="action-btn">
-                        <i class="fas fa-print"></i>
-                        <span>Print Label</span>
-                    </div>
-                </div>
-
-                <br>
-                
-
                 <!-- Charts Row -->
                 <div class="charts-row">
                     <div class="chart-card">
