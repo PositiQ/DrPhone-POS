@@ -813,7 +813,8 @@
 
         .page-intro {
             font-size: 14px;
-            color: #5f6b92;\n            margin-bottom: 20px;
+            color: #5f6b92;         
+            margin-bottom: 20px;
             line-height: 1.6;
         }
 
@@ -1004,7 +1005,7 @@
         }
 
         .status-processing {
-            background: #f3f4f6;
+            background: #e3f2fd;
             color: #000000;
         }
 

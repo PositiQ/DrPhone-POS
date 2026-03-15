@@ -113,7 +113,7 @@ class POSPWAManager {
           top: 0;
           left: 0;
           right: 0;
-          background: linear-gradient(135deg, #111111 0%, #000000 100%);
+          background: #0d0d0e;
           color: white;
           padding: 16px;
           z-index: 9999;

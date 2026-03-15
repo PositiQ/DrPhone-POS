@@ -132,7 +132,7 @@ pos_require_auth($activePage);
     <!-- Stock Transfer Dialog -->
     <div class="search-overlay" id="transferDialog" role="dialog" aria-modal="true" aria-label="Stock Transfer">
         <div class="search-dialog" role="document" style="max-width: 550px; padding: 0;">
-            <div class="search-dialog-header" style="background: linear-gradient(135deg, #111111 0%, #000000 100%); color: white; padding: 20px; border-radius: 12px 12px 0 0;">
+            <div class="search-dialog-header" style="background: #0d0d0e; color: white; padding: 20px; border-radius: 12px 12px 0 0;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <i class="fas fa-exchange-alt" style="font-size: 20px;"></i>
                     <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Transfer Stock</h3>
@@ -243,7 +243,7 @@ pos_require_auth($activePage);
                         <button type="button" onclick="closeTransferDialog()" style="padding: 12px 24px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">
                             Cancel
                         </button>
-                        <button type="submit" id="transferSubmitBtn" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #111111 0%, #000000 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button type="submit" id="transferSubmitBtn" style="padding: 12px 24px; border: none; background: #0d0d0e; color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             <i class="fas fa-check" style="margin-right: 6px;"></i>
                             Transfer Stock
                         </button>
@@ -269,7 +269,7 @@ pos_require_auth($activePage);
     <!-- Complete Sale Dialog -->
     <div class="search-overlay" id="completeSaleDialog" role="dialog" aria-modal="true" aria-label="Complete Sale">
         <div class="search-dialog" role="document" style="max-width: 520px; padding: 0;">
-            <div class="search-dialog-header" style="background: linear-gradient(135deg, #111111 0%, #000000 100%); color: white; padding: 20px; border-radius: 12px 12px 0 0;">
+            <div class="search-dialog-header" style="background: #0d0d0e;; color: white; padding: 20px; border-radius: 12px 12px 0 0;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <i class="fas fa-check-circle" style="font-size: 20px;"></i>
                     <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Complete Sale</h3>
@@ -300,7 +300,7 @@ pos_require_auth($activePage);
 
                     <div style="display: flex; gap: 12px; justify-content: flex-end;">
                         <button type="button" onclick="closeCompleteSaleDialog()" style="padding: 12px 24px; border: 2px solid #e5e7eb; background: white; color: #111111; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f4f7fc'" onmouseout="this.style.background='white'">Cancel</button>
-                        <button type="submit" id="completeSaleSubmitBtn" style="padding: 12px 24px; border: none; background: linear-gradient(135deg, #111111 0%, #000000 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button type="submit" id="completeSaleSubmitBtn" style="padding: 12px 24px; border: none; background: #0d0d0e; color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             <i class="fas fa-check" style="margin-right: 6px;"></i>Complete Sale
                         </button>
                     </div>
