@@ -63,6 +63,24 @@ $pageSubtitle = 'Manage general settings and invoice details.';
             font-size: 13px; font-weight: 600; transition: all 0.2s;
         }
         .btn-danger-outline:hover { background: #ffebee; }
+
+        .settings-layout .cards-row {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .settings-layout .cards-row.full-row {
+            grid-template-columns: 1fr;
+        }
+
+        .settings-layout .chart-card {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .settings-layout .cards-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -73,7 +91,7 @@ $pageSubtitle = 'Manage general settings and invoice details.';
         <div class="main-content">
             <?php include __DIR__ . '/../../UI/top-navigation.php'; ?>
 
-            <div class="content-area">
+            <div class="content-area settings-layout">
                 <div class="toolbar">
                     <div class="filter-group">
                         <h2 style="margin: 0; font-size: 16px; color: #333;">System Configuration</h2>
@@ -91,7 +109,7 @@ $pageSubtitle = 'Manage general settings and invoice details.';
                 </div>
 
                 <!-- Business Information -->
-                <div class="cards-row" style="margin-bottom: 24px;">
+                <div class="cards-row full-row" style="margin-bottom: 24px;">
                     <div class="chart-card" style="flex: 1;">
                         <div class="chart-header">
                             <h3><i class="fas fa-store"></i> Business Information</h3>
@@ -151,7 +169,7 @@ $pageSubtitle = 'Manage general settings and invoice details.';
                 </div>
 
                 <!-- Invoice Settings + Regional Settings -->
-                <div class="cards-row" style="margin-bottom: 24px;">
+                <div class="cards-row full-row" style="margin-bottom: 24px;">
                     <div class="chart-card" style="flex: 1;">
                         <div class="chart-header">
                             <h3><i class="fas fa-receipt"></i> Invoice Settings</h3>
