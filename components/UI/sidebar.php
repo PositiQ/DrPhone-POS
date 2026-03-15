@@ -5,9 +5,9 @@ $basePath = $basePath ?? './';
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="shop-logo">
-            <img src="https://res.cloudinary.com/dhqcnszvn/image/upload/v1771863002/Gemini_Generated_Image_ijmf3cijmf3cijmf_1_1_1_gbxcyz.png" alt="logo" width="50px">
+            <img id="sidebarBusinessLogo" src="https://res.cloudinary.com/dhqcnszvn/image/upload/v1771863002/Gemini_Generated_Image_ijmf3cijmf3cijmf_1_1_1_gbxcyz.png" alt="logo" width="50px">
             <div class="shop-info">
-                <h2>Doctor Phone</h2>
+                <h2 id="sidebarBusinessName">Doctor Phone</h2>
                 <p>Admin Dashboard</p>
             </div>
         </div>
@@ -82,3 +82,32 @@ $basePath = $basePath ?? './';
         </a>
     </div>
 </div>
+
+<script>
+    (function applySidebarBusinessSettings() {
+        const nameEl = document.getElementById('sidebarBusinessName');
+        const logoEl = document.getElementById('sidebarBusinessLogo');
+        if (!nameEl || !logoEl) {
+            return;
+        }
+
+        fetch('http://localhost:3000/api/settings')
+            .then((resp) => resp.json())
+            .then((json) => {
+                if (!json || !json.success || !json.data) {
+                    return;
+                }
+                const settings = json.data;
+                if (settings.businessName) {
+                    nameEl.textContent = settings.businessName;
+                }
+                if (settings.businessLogo) {
+                    logoEl.src = settings.businessLogo;
+                    logoEl.style.objectFit = 'contain';
+                }
+            })
+            .catch(() => {
+                // Keep defaults if settings API is unavailable.
+            });
+    })();
+</script>

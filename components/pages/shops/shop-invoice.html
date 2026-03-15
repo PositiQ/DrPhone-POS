@@ -148,13 +148,13 @@ td.num{
 
 <div class="header">
     <div class="company">
-        <h1>AJ Mobile</h1>
-        <p>No.12, 1st Floor, Bus Stand Complex, Kurunegala</p>
-        <p>Tel: 071 666 0990 | Email: Ajholdings101@gmail.com</p>
+        <h1 id="companyName">Doctor Phone</h1>
+        <p id="companyAddress"></p>
+        <p id="companyContact"></p>
     </div>
 
-    <div>
-        <img src="https://res.cloudinary.com/dhqcnszvn/image/upload/v1773530696/drphone-logo-black_jjof1v.png" width="90px" alt="logo">
+    <div id="companyLogoWrapper">
+        <img id="companyLogoImg" src="" alt="logo" style="max-height:70px;max-width:160px;display:none;">
     </div>
 </div>
 
@@ -227,7 +227,7 @@ td.num{
 
 
 <div class="footer">
-<p>Thank you for your business!</p>
+<p id="invoiceFooterNote">Thank you for your business!</p>
 <p>This is a computer-generated invoice.</p>
 </div>
 
@@ -295,8 +295,10 @@ function populateInvoiceFromPayload() {
 
     setText('summaryItemCount', toNumber(summary.itemCount));
     setText('summaryPieceCount', toNumber(summary.pieceCount));
-    setText('summaryCash', formatMoney(0));
-    setText('summaryCredit', formatMoney(summary.outstanding || 0));
+    const outstanding = toNumber(summary.outstanding || 0);
+    const netAmount = toNumber(summary.netAmount || 0);
+    setText('summaryCash', formatMoney(netAmount - outstanding));
+    setText('summaryCredit', formatMoney(outstanding));
     setText('summarySubtotal', `Rs. ${formatMoney(summary.subtotal || 0)}`);
     setText('summaryDiscount', `- Rs. ${formatMoney(summary.discount || 0)}`);
     setText('summaryNet', `Rs. ${formatMoney(summary.netAmount || 0)}`);
@@ -305,6 +307,54 @@ function populateInvoiceFromPayload() {
 }
 
 populateInvoiceFromPayload();
+
+async function applyBusinessSettings() {
+    const DEFAULT = {
+        businessName: 'Doctor Phone',
+        businessPhone: '',
+        businessEmail: '',
+        businessAddress: '',
+        businessLogo: '',
+        invoiceFooter: 'Thank you for your business!',
+    };
+    let s = { ...DEFAULT };
+    try {
+        const resp = await fetch('http://localhost:3000/api/settings');
+        const json = await resp.json();
+        if (resp.ok && json.success && json.data) {
+            s = { ...DEFAULT, ...json.data };
+        }
+    } catch (_) {}
+
+    const nameEl = document.getElementById('companyName');
+    if (nameEl) nameEl.textContent = s.businessName || DEFAULT.businessName;
+
+    const addrEl = document.getElementById('companyAddress');
+    if (addrEl) addrEl.textContent = s.businessAddress || '';
+
+    const contactEl = document.getElementById('companyContact');
+    if (contactEl) {
+        const parts = [];
+        if (s.businessPhone) parts.push('Tel: ' + s.businessPhone);
+        if (s.businessEmail) parts.push(s.businessEmail);
+        contactEl.textContent = parts.join(' | ');
+    }
+
+    const logoImg = document.getElementById('companyLogoImg');
+    if (logoImg) {
+        if (s.businessLogo) {
+            logoImg.src = s.businessLogo;
+            logoImg.style.display = 'block';
+        } else {
+            logoImg.style.display = 'none';
+        }
+    }
+
+    const footerEl = document.getElementById('invoiceFooterNote');
+    if (footerEl) footerEl.textContent = s.invoiceFooter || DEFAULT.invoiceFooter;
+}
+
+applyBusinessSettings();
 
 const params = new URLSearchParams(window.location.search);
 if (params.get('autoprint') === '1') {

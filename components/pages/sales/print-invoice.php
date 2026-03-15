@@ -317,17 +317,14 @@ $pageTitle = 'Print Invoice';
             }
 
             try {
-                console.log('Loading invoice with ID:', invoiceId);
+                container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading invoice...</div>';
                 const response = await fetch(`${SALES_API}/${invoiceId}`);
                 const result = await response.json();
-
-                console.log('API Response:', result);
 
                 if (!response.ok) {
                     throw new Error(result.message || result.error || `HTTP ${response.status}`);
                 }
 
-                // Handle different API response structures
                 let invoice = null;
                 if (result.success && result.data) {
                     invoice = result.data;
@@ -338,7 +335,6 @@ $pageTitle = 'Print Invoice';
                 } else if (result.sale) {
                     invoice = result.sale;
                 } else {
-                    // If none of the above, try to use the result directly
                     invoice = result;
                 }
 
@@ -346,88 +342,55 @@ $pageTitle = 'Print Invoice';
                     throw new Error('Invalid invoice data structure - missing sales_id');
                 }
 
-                console.log('Invoice data:', invoice);
-                renderInvoice(invoice);
+                redirectToInvoicePrint(invoice);
             } catch (error) {
                 console.error('Error loading invoice:', error);
                 container.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> ${error.message}</div>`;
             }
         }
 
-        async function loadTemplate() {
-            try {
-                const response = await fetch('invoice-template.html');
-                if (!response.ok) throw new Error('Failed to load template');
-                return await response.text();
-            } catch (error) {
-                console.error('Error loading template:', error);
-                throw error;
-            }
-        }
-
-        function renderInvoice(invoice) {
+        function redirectToInvoicePrint(invoice) {
             const customerName = invoice.customer?.name || 'Walk-in Customer';
             const customerPhone = invoice.customer?.phone_number || invoice.customer?.phone || '-';
-            const customerAddress = invoice.customer?.address || '-';
+            const customerId = invoice.customer_id || invoice.customer?.customer_id || '-';
             const items = Array.isArray(invoice.items) ? invoice.items : [];
-            const invoiceDate = formatDate(invoice.sales_date || invoice.createdAt);
-            const status = (invoice.status || 'unknown').toLowerCase();
-            const paymentMethod = (invoice.payment_method || '-').replace('_', ' ');
             const totalAmount = Number(invoice.total_amount || 0);
             const totalDiscount = Number(invoice.total_discount || 0);
             const subtotal = totalAmount + totalDiscount;
+            const paymentMethod = (invoice.payment_method || 'cash').toLowerCase();
+            const isCredit = paymentMethod === 'credit';
 
-            // Load template and populate
-            loadTemplate().then(templateHtml => {
-                container.innerHTML = templateHtml;
+            const payload = {
+                invoiceNumber: invoice.sales_id,
+                dateTime: formatDate(invoice.sales_date || invoice.createdAt),
+                paymentMethod: paymentMethod.replace(/_/g, ' '),
+                status: invoice.status || 'completed',
+                shop: {
+                    id: customerId,
+                    name: customerName,
+                    ownerName: customerName,
+                    contact: customerPhone,
+                },
+                items: items.map((item) => ({
+                    product_name: item.product?.productName || item.productName || item.product_id || 'Product',
+                    imei: item.imei || item.IMEI || '-',
+                    color: item.color || '-',
+                    qty: item.quantity || 1,
+                    unit_price: item.unit_price || item.price || 0,
+                    amount: item.total_price || ((item.quantity || 1) * (item.unit_price || item.price || 0)),
+                })),
+                summary: {
+                    itemCount: items.length,
+                    pieceCount: items.reduce((sum, item) => sum + (item.quantity || 1), 0),
+                    subtotal: subtotal,
+                    discount: totalDiscount,
+                    netAmount: totalAmount,
+                    outstanding: isCredit ? totalAmount : 0,
+                },
+            };
 
-                // Populate customer info
-                document.getElementById('tpl-invoice-number').textContent = invoice.sales_id || '-';
-                document.getElementById('tpl-invoice-date').textContent = invoiceDate;
-                document.getElementById('tpl-customer-name').textContent = customerName;
-                document.getElementById('tpl-customer-phone').textContent = customerPhone;
-                document.getElementById('tpl-customer-address').textContent = customerAddress;
-
-                // Populate payment info
-                document.getElementById('tpl-payment-method').textContent = paymentMethod;
-                const statusBadge = `<div class="status-badge" style="${getStatusBadgeStyle(status)}">${status.toUpperCase()}</div>`;
-                document.getElementById('tpl-status-badge').innerHTML = statusBadge;
-
-                // Populate items
-                const itemsBody = document.getElementById('tpl-items-body');
-                if (items.length) {
-                    itemsBody.innerHTML = items.map(item => {
-                        const productName = item.product?.productName || item.productName || item.product_id || '-';
-                        const quantity = item.quantity || 0;
-                        const unitPrice = item.unit_price || item.price || 0;
-                        const discount = item.discount || 0;
-                        const totalPrice = item.total_price || (quantity * unitPrice);
-                        
-                        return `
-                            <tr>
-                                <td>${productName}</td>
-                                <td class="amount-right">${quantity}</td>
-                                <td class="amount-right">${formatLkr(unitPrice)}</td>
-                                <td class="amount-right">${formatLkr(discount)}</td>
-                                <td class="amount-right"><strong>${formatLkr(totalPrice)}</strong></td>
-                            </tr>
-                        `;
-                    }).join('');
-                } else {
-                    itemsBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#7a86ad;">No items</td></tr>';
-                }
-
-                // Populate summary
-                document.getElementById('tpl-subtotal').textContent = formatLkr(subtotal);
-                document.getElementById('tpl-discount').textContent = `-${formatLkr(totalDiscount)}`;
-                document.getElementById('tpl-total').textContent = formatLkr(totalAmount);
-
-                // Populate footer
-                document.getElementById('tpl-footer').textContent = `PositiQ POS System - Invoice printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`;
-            }).catch(error => {
-                console.error('Error rendering invoice:', error);
-                container.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> ${error.message}</div>`;
-            });
+            localStorage.setItem('shopInvoicePayload', JSON.stringify(payload));
+            window.location.href = '/components/pages/shops/shop-invoice.html?autoprint=1';
         }
 
         // Load invoice on page load
