@@ -173,9 +173,8 @@ pos_require_auth($activePage);
     };
 
     allProducts.forEach(product => {
-      const stockStatus = getStockStatus(product);
       const stock = product.Product_Stock;
-      const apiStatus = stock ? stock.status : 'sold';
+      const apiStatus = getEffectiveApiStatus(stock);
       
       // Count based on API status
       if (apiStatus === 'in_stock' || apiStatus === 'active') {
@@ -197,12 +196,34 @@ pos_require_auth($activePage);
     if (metricCards[3]) metricCards[3].querySelector('.metric-value').textContent = stats.issued.toLocaleString();
   }
 
+  function getEffectiveApiStatus(stock) {
+    if (!stock) return 'sold';
+
+    const quantity = Number(stock.quantity_in_stock);
+    if (Number.isFinite(quantity) && quantity <= 0) {
+      return 'sold';
+    }
+
+    return String(stock.status || 'active').toLowerCase();
+  }
+
+  function formatDisplayDate(dateValue) {
+    if (!dateValue) return 'N/A';
+
+    const parsedDate = new Date(dateValue);
+    if (Number.isNaN(parsedDate.getTime())) {
+      return String(dateValue);
+    }
+
+    return parsedDate.toLocaleDateString();
+  }
+
   // Determine stock status based on product data
   function getStockStatus(product) {
     if (!product.Product_Stock) return 'sold-out';
     
     const stock = product.Product_Stock;
-    const stockStatus = stock.status || 'active';
+    const stockStatus = getEffectiveApiStatus(stock);
     
     // Map API status to display status
     if (stockStatus === 'sold') return 'sold-out';
@@ -244,7 +265,7 @@ pos_require_auth($activePage);
       const productDetails = `${product.capacity || ''} · ${product.color || ''}`.replace(/^·\s*|\s*·$/g, '').trim();
       
       // Get actual status from API
-      const apiStatus = stock.status || 'N/A';
+      const apiStatus = getEffectiveApiStatus(stock);
       const productType = product.product_type || 'phone';
       const productTypeLabel = productType === 'phone' ? 'Phone' : 'Accessory';
       
@@ -490,6 +511,8 @@ pos_require_auth($activePage);
         if (result.success && result.data) {
           const product = result.data;
           const stock = product.Product_Stock || {};
+          const effectiveStatus = getEffectiveApiStatus(stock);
+          const dateAdded = stock.date_added || product.date_added || null;
           const detailsHtml = `
             <div class="app-dialog-section">
               <div class="app-dialog-section-title">PRODUCT DETAILS</div>
@@ -532,7 +555,8 @@ pos_require_auth($activePage);
             <div class="app-dialog-section">
               <div class="app-dialog-section-title">STOCK</div>
               <div class="app-dialog-row"><strong>In Stock Quantity:</strong> ${stock.quantity_in_stock ?? 'N/A'}</div>
-              <div class="app-dialog-row"><strong>Status:</strong> <span class="app-dialog-pill">${stock.status || 'N/A'}</span></div>
+              <div class="app-dialog-row"><strong>Status:</strong> <span class="app-dialog-pill">${effectiveStatus.toUpperCase()}</span></div>
+              <div class="app-dialog-row"><strong>Date Added:</strong> ${formatDisplayDate(dateAdded)}</div>
               <div class="app-dialog-row"><strong>Minimum Stock:</strong> ${stock.minimum_stock_level ?? 'N/A'}</div>
               <div class="app-dialog-row"><strong>Supplier:</strong> ${stock.supplier || 'N/A'}</div>
               <div class="app-dialog-row"><strong>Storage Location:</strong> ${stock.storage_location || 'N/A'}</div>

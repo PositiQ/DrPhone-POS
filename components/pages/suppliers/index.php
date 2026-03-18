@@ -1099,7 +1099,12 @@ pos_require_auth($activePage);
             return `Product ${index}`;
         }
 
+        function getTodayDateInputValue() {
+            return new Date().toISOString().slice(0, 10);
+        }
+
         function createPurchaseProductCard(productId) {
+            const defaultDateAdded = getTodayDateInputValue();
             return `
                 <div class="purchase-product-card" data-product-id="${productId}" style="background: white; border: 2px solid #e5e7eb; border-radius: 14px; padding: 18px; box-shadow: 0 10px 24px rgba(26, 35, 126, 0.05);">
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
@@ -1183,6 +1188,10 @@ pos_require_auth($activePage);
                         <div>
                             <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Supplier</label>
                             <input type="text" class="purchase-product-supplier" readonly style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none; background: #f5f5f5;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #111111; font-size: 13px;">Date Added</label>
+                            <input type="date" class="purchase-product-date-added" value="${defaultDateAdded}" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111111; outline: none;">
                         </div>
                     </div>
 
@@ -1279,6 +1288,7 @@ pos_require_auth($activePage);
                     sellingPrice: parseFloat(card.querySelector('.purchase-product-selling').value) || 0,
                     quantityInStock: quantity,
                     supplier: card.querySelector('.purchase-product-supplier').value,
+                    date_added: card.querySelector('.purchase-product-date-added')?.value || null,
                     lineTotal: costPrice * quantity
                 };
             });
